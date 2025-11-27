@@ -1,0 +1,43 @@
+.input-container {
+  width: 100%;
+}
+
+.input-container__wrap {
+  width: 100%;
+  position: relative;
+}
+
+.input-container__label {
+  text-align: start;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
+  // color
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+
+  background-color: #ffffff;
+  border: 1px solid #C3C8D3;
+
+  &:hover {
+    
+  }
+
+  &:focus {
+    color: #000000;
+    border-color: #000000;
+    outline: none;
+    &::placeholder {
+      color: #000000;
+    }
+  }
+}
+
+.input--error {
+  border-color: red;
+}
