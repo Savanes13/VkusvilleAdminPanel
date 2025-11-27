@@ -1,4 +1,5 @@
 import Authorization from '@/components/pages/authorization/Authorization.vue'
+import DefaultLayout from '@/components/layout/default/DefaultLayout.vue'
 import Main from '@/components/pages/main/Main.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -8,16 +9,17 @@ const router = createRouter({
     {
       name: 'main',
       path: '/',
-      component: Main,
-      children: [],
+      component: DefaultLayout,
+      children: [
+        { path: "", component: Main }
+      ],
       props: true,
     },
     {
       name: 'authorization',
       path: '/authorization',
       component: Authorization,
-      children: [],
-      props: true,
+      children: []
     },
   ],
 })
