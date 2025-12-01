@@ -1,0 +1,97 @@
+<script lang="ts" setup>
+
+</script>
+
+<template>
+  <div class="default-button">
+    <slot></slot>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
+.default-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.5s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;   
+  -ms-user-select: none;   
+  user-select: none;
+  cursor: pointer;
+}
+
+.default-button__size--large {
+  height: 44px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  border-radius: 16px;
+}
+
+.default-button__size--small {
+  height: 40px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  border-radius: 12px;
+}
+
+.default-button__color-green {
+  background: #2DBE64;
+  color: color.$main_white;
+}
+
+.default-button__color-green:hover {
+  background: #22A353;
+}
+
+.default-button__color-transparent {
+  background: transparent;
+  color: #179C49;
+}
+
+.default-button__color-transparent:hover {
+  background: #F5F5F5;
+}
+
+.default-button__color-gray {
+  background: #F5F5F5;
+  color: #333333;
+}
+
+.default-button__color-gray:hover {
+  background: #EBEBEB;
+}
+
+.default-button__color-green-transparent {
+  background: #DCFAE7;
+  color: #179C49;
+}
+
+.default-button__color-green-transparent:hover {
+  background: #C0EDD0;
+}
+
+.default-button--disabled {
+  opacity: 64%;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .default-button__size--large {
+    height: 48px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .default-button__size--small {
+    height: 38px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+</style>
