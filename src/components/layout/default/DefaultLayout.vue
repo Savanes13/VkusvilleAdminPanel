@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Header from './components/Header.vue';
-import LeftPanel from './components/LeftPanel.vue';
+import LeftPanel from './components/leftPanel/LeftPanel.vue';
 </script>
 
 <template>
