@@ -3,8 +3,11 @@ import EntranceLayout from '@/components/layout/entrance/EntranceLayout.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import type { IInputPasswordProps } from '@/types/inputs/types';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+
+const rememberUser = ref<boolean>(false);
 
 const emailInputObj = reactive<IInputPasswordProps>({
   value: '',
@@ -29,9 +32,7 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 
 <template>
   <EntranceLayout>
-
     <div class="authorization">
-
       <div class="authorization__info">
         <div class="title">
           <p>Вход в аккаунт</p>
@@ -40,7 +41,6 @@ const passwordInputObj = reactive<IInputPasswordProps>({
           <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту - обратитесь к администратору программы</p>
         </div>
       </div>
-
       <div class="authorization__inputs">
         <DefaultInput
           class="input-item"
@@ -57,7 +57,6 @@ const passwordInputObj = reactive<IInputPasswordProps>({
           :error="passwordInputObj.error"
         />
       </div>
-
       <div class="authorization__register">
         <div class="no-account">
           <p>Нет аккаунта?</p>
@@ -68,15 +67,20 @@ const passwordInputObj = reactive<IInputPasswordProps>({
           </div>
         </router-link>
       </div>
-
       <DefaultButton
         class="default-button__size--small default-button__color-green"
       >
         Войти
       </DefaultButton>
-
+      <div class="checkbox-block">
+        <CheckMark
+          v-model:state="rememberUser"
+        />
+        <div class="checkbox-block__text">
+          <p>Запомнить меня на этом устройстве</p>
+        </div>
+      </div>
     </div>
-
   </EntranceLayout>
 </template>
 
@@ -120,5 +124,18 @@ const passwordInputObj = reactive<IInputPasswordProps>({
   font-size: 16px;
   line-height: 25px;
   color: #179C49;
+}
+
+.checkbox-block {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.checkbox-block__text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #333333;
 }
 </style>
