@@ -1,6 +1,5 @@
 export interface IInputDefaultProps {
   value: string,
-  validity: boolean,
   label: string,
   placeholder: string,
   error: {
