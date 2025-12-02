@@ -36,6 +36,6 @@ import logo from '@/assets/images/logo/logoGroup.svg'
 }
 
 .content {
-  margin-top: 99px;
+  margin-top: 25px;
 }
 </style>

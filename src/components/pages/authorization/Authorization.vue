@@ -2,6 +2,7 @@
 import EntranceLayout from '@/components/layout/entrance/EntranceLayout.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
+import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import type { IInputPasswordProps } from '@/types/inputs/types';
 import { reactive } from 'vue';
 
@@ -33,10 +34,10 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 
       <div class="authorization__info">
         <div class="title">
-          <p>Регистрация</p>
+          <p>Вход в аккаунт</p>
         </div>
         <div class="text">
-          <p>Какой-то поясняющий текст про авторизацию. Может даже в две строки</p>
+          <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту - обратитесь к администратору программы</p>
         </div>
       </div>
 
@@ -57,6 +58,22 @@ const passwordInputObj = reactive<IInputPasswordProps>({
         />
       </div>
 
+      <div class="authorization__register">
+        <div class="no-account">
+          <p>Нет аккаунта?</p>
+        </div>
+        <router-link to="/registration">
+          <div class="register">
+            <p>Зарегистрировать</p>
+          </div>
+        </router-link>
+      </div>
+
+      <DefaultButton
+        class="default-button__size--small default-button__color-green"
+      >
+        Войти
+      </DefaultButton>
 
     </div>
 
@@ -82,5 +99,26 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 
 .input-item {
   margin-bottom: 23px;
+}
+
+.authorization__register {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0px;
+  margin-bottom: 24px;
+}
+
+.no-account {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 100%;
+  color: #333333;
+}
+
+.register {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  color: #179C49;
 }
 </style>
