@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import star from '@/assets/images/leftpanel/star.svg'
 import PanelItem from './components/PanelItem.vue';
 </script>
 
@@ -7,18 +6,46 @@ import PanelItem from './components/PanelItem.vue';
   <div class="left-panel">
     <PanelItem
       :is-active="true"
-      :icon="star"
+      icon="star"
       text="Главные KPI"
       path="/"
     />
     <PanelItem
       :is-active="false"
-      :icon="star"
-      text="Главные KPI"
+      icon="stages"
+      text="Этапы"
       path="/"
     />
-    
-
+    <PanelItem
+      :is-active="false"
+      icon="content"
+      text="Контент"
+      path="/"
+    />
+    <PanelItem
+      :is-active="false"
+      icon="enrolle"
+      text="Абитуриенты"
+      path="/"
+    />
+    <PanelItem
+      :is-active="false"
+      icon="expert"
+      text="Эксперты"
+      path="/"
+    />
+    <PanelItem
+      :is-active="false"
+      icon="lock"
+      text="Доступы"
+      path="/"
+    />
+    <PanelItem
+      :is-active="false"
+      icon="meeting"
+      text="Собеседования"
+      path="/"
+    />
   </div>
 </template>
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { leftPanelIcons } from '@/components/shared/icons/leftPanel/icons';
+
 interface IPanelItemProps {
   isActive: boolean;
   icon: string;
@@ -21,7 +23,9 @@ const {
     :class="{'panel-item--active' : isActive}"
   >
     <div>
-      <img :src="icon" alt="">
+      <span
+        v-html="leftPanelIcons[icon]"
+      ></span>
     </div>
     <div class="panel-item__text">
       <p>{{ text }}</p>
@@ -36,17 +40,20 @@ const {
   gap: 10px;
   padding: 16px;
   border-radius: 12px;
+  color: #333333;
 }
 
 .panel-item--active {
   color: #179C49;
   background: #DCFAE7;
+  :deep(svg path) {
+    fill: #179C49;
+  }
 }
 
 .panel-item__text {
   font-weight: 500;
   font-size: 16px;
   line-height: 25px;
-  color: #333333;
 }
 </style>
