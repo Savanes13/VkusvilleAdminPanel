@@ -1,0 +1,28 @@
+$path: '@/assets/fonts/EuclidCircularB';
+
+@function map-weight($weight) {
+  @return if(
+      $weight == 'Regular', 400,
+      if(
+          $weight == 'Medium', 500,
+          if(
+              $weight == 'SemiBold', 600,
+              if($weight == 'Bold', 700, null)
+          )
+      )
+  );
+}
+
+@each $weight in (
+  Regular,
+  Medium,
+  SemiBold,
+  Bold,
+) {
+  @font-face {
+    font-family: 'Euclid Circular B';
+    src: url("#{$path}/Euclid Circular B #{$weight}.ttf") format('opentype');
+    font-weight: map-weight($weight);
+    font-style: normal;
+  }
+}
