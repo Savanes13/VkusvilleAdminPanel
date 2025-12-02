@@ -57,16 +57,6 @@ const passwordInputObj = reactive<IInputPasswordProps>({
           :error="passwordInputObj.error"
         />
       </div>
-      <div class="authorization__register">
-        <div class="no-account">
-          <p>Нет аккаунта?</p>
-        </div>
-        <router-link to="/registration">
-          <div class="register">
-            <p>Зарегистрировать</p>
-          </div>
-        </router-link>
-      </div>
       <DefaultButton
         class="default-button__size--small default-button__color-green"
       >
@@ -79,6 +69,16 @@ const passwordInputObj = reactive<IInputPasswordProps>({
         <div class="checkbox-block__text">
           <p>Запомнить меня на этом устройстве</p>
         </div>
+      </div>
+      <div class="authorization__register">
+        <div class="no-account">
+          <p>Нет аккаунта?</p>
+        </div>
+        <router-link to="/registration">
+          <div class="register">
+            <p>Зарегистрировать</p>
+          </div>
+        </router-link>
       </div>
     </div>
   </EntranceLayout>
@@ -109,7 +109,7 @@ const passwordInputObj = reactive<IInputPasswordProps>({
   display: flex;
   justify-content: space-between;
   padding: 10px 0px;
-  margin-bottom: 24px;
+  margin-top: 24px;
 }
 
 .no-account {
@@ -129,7 +129,8 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 .checkbox-block {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  padding: 10px 0px;
+  margin-top: 10px;
 }
 
 .checkbox-block__text {

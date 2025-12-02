@@ -91,16 +91,6 @@ const tokenInputObj = reactive<IInputDefaultProps>({
           :error="tokenInputObj.error"
         />
       </div>
-      <div class="register__authorization">
-        <div class="have-account">
-          <p>Есть аккаунт?</p>
-        </div>
-        <router-link to="/authorization">
-          <div class="auth">
-            <p>Войти</p>
-          </div>
-        </router-link>
-      </div>
       <DefaultButton
         class="default-button__size--small default-button__color-green"
       >
@@ -113,6 +103,16 @@ const tokenInputObj = reactive<IInputDefaultProps>({
         <div class="checkbox-block__text">
           <p>Запомнить меня на этом устройстве</p>
         </div>
+      </div>
+      <div class="register__authorization">
+        <div class="have-account">
+          <p>Есть аккаунт?</p>
+        </div>
+        <router-link to="/authorization">
+          <div class="auth">
+            <p>Войти</p>
+          </div>
+        </router-link>
       </div>
     </div>
   </EntranceLayout>
@@ -142,7 +142,8 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 .checkbox-block {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  padding: 10px 0px;
+  margin-top: 10px;
 }
 
 .checkbox-block__text {
@@ -156,7 +157,7 @@ const tokenInputObj = reactive<IInputDefaultProps>({
   display: flex;
   justify-content: space-between;
   padding: 10px 0px;
-  margin-bottom: 24px;
+  margin-top: 24px;
 }
 
 .have-account {
