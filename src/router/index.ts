@@ -2,6 +2,7 @@ import Authorization from '@/components/pages/authorization/Authorization.vue'
 import Registration from '@/components/pages/registration/Registration.vue'
 import DefaultLayout from '@/components/layout/default/DefaultLayout.vue'
 import Main from '@/components/pages/main/Main.vue'
+import Dashboard from '@/components/pages/dashboard/Dashboard.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -12,7 +13,8 @@ const router = createRouter({
       path: '/',
       component: DefaultLayout,
       children: [
-        { path: "", component: Main }
+        { path: "", component: Main },
+        { path: "dashboard", component: Dashboard }
       ],
       props: true,
     },

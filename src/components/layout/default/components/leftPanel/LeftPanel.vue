@@ -53,6 +53,7 @@ import PanelItem from './components/PanelItem.vue';
 .left-panel {
   width: 344px;
   min-height: 100vh;
+  flex-shrink: 0;
   padding: 24px 20px;
   border-right: 1px solid #D0D7E5
 }
