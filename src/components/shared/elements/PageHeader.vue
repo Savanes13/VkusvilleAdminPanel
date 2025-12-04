@@ -14,5 +14,6 @@
   font-size: 32px;
   line-height: 100%;
   color: #333333;
+  margin-bottom: 24px
 }
 </style>
