@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
-import WrapperBlock from './WrapperBlock.vue';
+import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 </script>
 
 <template>

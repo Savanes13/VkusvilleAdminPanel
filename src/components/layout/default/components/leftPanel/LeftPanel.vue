@@ -14,7 +14,7 @@ import PanelItem from './components/PanelItem.vue';
       :is-active="false"
       icon="stages"
       text="Этапы"
-      path="/"
+      path="/stages"
     />
     <PanelItem
       :is-active="false"
