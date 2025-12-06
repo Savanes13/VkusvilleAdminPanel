@@ -1,17 +1,20 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
 import PanelItem from './components/PanelItem.vue';
+
+const route = useRoute();
 </script>
 
 <template>
   <div class="left-panel">
     <PanelItem
-      :is-active="true"
+      :is-active="route.path === '/dashboard' || route.path === '/'"
       icon="star"
       text="Главные KPI"
-      path="/"
+      path="/dashboard"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/stages'"
       icon="stages"
       text="Этапы"
       path="/stages"
