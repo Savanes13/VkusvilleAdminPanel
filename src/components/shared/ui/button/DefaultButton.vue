@@ -1,10 +1,36 @@
 <script lang="ts" setup>
+import { buttonIcons } from '../../icons/button/icons';
 
+interface IDefaultButtonProps {
+  leftIcon?: string;
+  rightIcon?: string;
+};
+
+const {
+  leftIcon,
+  rightIcon
+} = defineProps<IDefaultButtonProps>();
 </script>
 
 <template>
   <div class="default-button">
+    <div 
+      v-if="leftIcon"
+      class="default-button__left-icon"
+    >
+      <span
+        v-html="buttonIcons[leftIcon]"
+      ></span>
+    </div>
     <slot></slot>
+    <div 
+      v-if="rightIcon"
+      class="default-button__right-icon"
+    >
+      <span
+        v-html="buttonIcons[rightIcon]"
+      ></span>
+    </div>
   </div>
 </template>
 
@@ -22,6 +48,16 @@
   -ms-user-select: none;   
   user-select: none;
   cursor: pointer;
+}
+
+.default-button__left-icon {
+  line-height: 0;      
+  margin-right: 6px;
+}
+
+.default-button__right-icon {
+  line-height: 0;      
+  margin-left: 6px;
 }
 
 .default-button__size--large {

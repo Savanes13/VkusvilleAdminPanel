@@ -94,7 +94,10 @@ const stabStages = {
             </div>
           </div>
           <div class="header-stage__stage-button">
-            <DefaultButton class="default-button__color-green-transparent default-button__size--small">
+            <DefaultButton 
+              class="default-button__color-green-transparent default-button__size--small"
+              left-icon="edit"
+            >
               Настроить
             </DefaultButton>
           </div>
@@ -187,7 +190,10 @@ const stabStages = {
             </div>
           </div>
           <div class="header-stage__stage-button">
-            <DefaultButton class="default-button__color-green-transparent default-button__size--small">
+            <DefaultButton 
+              class="default-button__color-green-transparent default-button__size--small"
+              left-icon="edit"
+            >
               Настроить
             </DefaultButton>
           </div>
@@ -284,7 +290,10 @@ const stabStages = {
           <p>Этот этап не настраивается</p>
         </div>
         <div class="interview-button">
-          <DefaultButton class="default-button__color-green-transparent default-button__size--small">
+          <DefaultButton 
+            class="default-button__color-green-transparent default-button__size--small"
+            right-icon="chevronRight"
+          >
             К собеседованиям
           </DefaultButton>
         </div>
