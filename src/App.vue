@@ -15,4 +15,8 @@
 .app {
   font-family: font.$font-EuclidCircularB;
 }
+
+body {
+  font-family: font.$font-EuclidCircularB;
+}
 </style>

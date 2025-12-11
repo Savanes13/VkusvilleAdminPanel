@@ -1,7 +1,11 @@
 <script lang="ts" setup>
+import StageWindow from '@/components/shared/elements/modalWindow/stages/StageWindow.vue';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import { ref } from 'vue';
+
+const stageWindowVisibility = ref<boolean>(true);
 
 const stabStages = {
   stageFirst: {
@@ -299,6 +303,15 @@ const stabStages = {
         </div>
       </WrapperBlock>
     </div>
+
+    <transition name="fadeFast" mode="out-in">
+      <StageWindow
+        v-if="stageWindowVisibility"
+      >
+
+      </StageWindow>
+    </transition>
+
   </div>
 </template>
 
