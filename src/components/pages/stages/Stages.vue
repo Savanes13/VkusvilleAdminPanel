@@ -80,6 +80,9 @@ const stabStages = reactive({
 })
 
 
+const closeStageWindow = () => {
+  stageWindowVisibility.value = false;
+}
 
 const updateStartDate = (val: string) => {
   // тут запрос на бэк и при положительном ответе ставим дату
@@ -88,12 +91,28 @@ const updateStartDate = (val: string) => {
   const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
   const days = String(date.getDate()).padStart(2, '0');
   const formatted = `${yers}-${months}-${days}`;
-
   stabStages.stageFirst.deadlines.startDate.date = formatted;
 };
 
+const updateOpportunityDate = (val: string) => {
+  // тут запрос на бэк и при положительном ответе ставим дату
+  const date = new Date(val);
+  const yers = date.getFullYear();
+  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
+  const days = String(date.getDate()).padStart(2, '0');
+  const formatted = `${yers}-${months}-${days}`;
+  stabStages.stageFirst.deadlines.startDate.date = formatted;
+};
 
-
+const updateDeadlineDate = (val: string) => {
+  // тут запрос на бэк и при положительном ответе ставим дату
+  const date = new Date(val);
+  const yers = date.getFullYear();
+  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
+  const days = String(date.getDate()).padStart(2, '0');
+  const formatted = `${yers}-${months}-${days}`;
+  stabStages.stageFirst.deadlines.startDate.date = formatted;
+};
 </script>
 
 <template>
@@ -329,6 +348,10 @@ const updateStartDate = (val: string) => {
         :deadline-all="stabStages.stageFirst.deadlines.deadlineAll.date"
 
         @update:start-date="updateStartDate"
+        @update:opportunity-date="updateOpportunityDate"
+        @update:deadline-date="updateDeadlineDate"
+
+        @close="closeStageWindow"
       >
 
       </StageWindow>

@@ -18,6 +18,8 @@ const {
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'update:start-date', value: string): void;
+  (e: 'update:opportunity-date', value: string): void;
+  (e: 'update:deadline-date', value: string): void;
 }>();
 
 const closeWindow = () => {
@@ -25,7 +27,8 @@ const closeWindow = () => {
 };
 
 const startDateValue = ref<Date>(new Date(startDate));
-
+const opportunityDateValue = ref<Date>(new Date(opportunityDate));
+const deadlineAllValue = ref<Date>(new Date(deadlineAll));
 
 
 watch(() => startDate, (newVal) => {
@@ -37,6 +40,22 @@ watch(startDateValue, (val) => {
 });
 
 
+watch(() => opportunityDate, (newVal) => {
+  if (newVal) opportunityDateValue.value = new Date(newVal);
+});
+
+watch(opportunityDateValue, (val) => {
+  emit('update:opportunity-date', val.toISOString()); 
+});
+
+
+watch(() => deadlineAll, (newVal) => {
+  if (newVal) deadlineAllValue.value = new Date(newVal);
+});
+
+watch(deadlineAllValue, (val) => {
+  emit('update:deadline-date', val.toISOString()); 
+});
 </script>
 
 <template>
@@ -46,10 +65,17 @@ watch(startDateValue, (val) => {
     > 
       <ModalWindow
         name="Настройка"
+        @close="closeWindow"
       >
         {{ startDate }}
+        {{ opportunityDate }}
+        {{ deadlineAll }}
 
         <VDatePicker v-model="startDateValue" />
+
+        <VDatePicker v-model="opportunityDateValue" />
+
+        <VDatePicker v-model="deadlineAllValue" />
 
       </ModalWindow>
     </div>
