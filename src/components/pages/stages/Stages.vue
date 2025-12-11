@@ -84,34 +84,28 @@ const closeStageWindow = () => {
   stageWindowVisibility.value = false;
 }
 
-const updateStartDate = (val: string) => {
-  // тут запрос на бэк и при положительном ответе ставим дату
+const dateToString = (val: string) => {
   const date = new Date(val);
   const yers = date.getFullYear();
   const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
   const days = String(date.getDate()).padStart(2, '0');
   const formatted = `${yers}-${months}-${days}`;
-  stabStages.stageFirst.deadlines.startDate.date = formatted;
+  return formatted
+}
+
+const updateStartDate = (val: string) => {
+  // тут запрос на бэк и при положительном ответе ставим дату
+  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
 };
 
 const updateOpportunityDate = (val: string) => {
   // тут запрос на бэк и при положительном ответе ставим дату
-  const date = new Date(val);
-  const yers = date.getFullYear();
-  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
-  const days = String(date.getDate()).padStart(2, '0');
-  const formatted = `${yers}-${months}-${days}`;
-  stabStages.stageFirst.deadlines.startDate.date = formatted;
+  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
 };
 
 const updateDeadlineDate = (val: string) => {
   // тут запрос на бэк и при положительном ответе ставим дату
-  const date = new Date(val);
-  const yers = date.getFullYear();
-  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
-  const days = String(date.getDate()).padStart(2, '0');
-  const formatted = `${yers}-${months}-${days}`;
-  stabStages.stageFirst.deadlines.startDate.date = formatted;
+  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
 };
 </script>
 
