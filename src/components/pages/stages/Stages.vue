@@ -3,11 +3,11 @@ import StageWindow from '@/components/shared/elements/modalWindow/stages/StageWi
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 const stageWindowVisibility = ref<boolean>(true);
 
-const stabStages = {
+const stabStages = reactive({
   stageFirst: {
     name: "Эссе и кружок",
     deadlines: {
@@ -77,7 +77,22 @@ const stabStages = {
   stageThird: {
     name: "Собеседования"
   }
-}
+})
+
+
+
+const updateStartDate = (val: string) => {
+  // тут запрос на бэк и при положительном ответе ставим дату
+  const date = new Date(val);
+  const yers = date.getFullYear();
+  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
+  const days = String(date.getDate()).padStart(2, '0');
+  const formatted = `${yers}-${months}-${days}`;
+
+  stabStages.stageFirst.deadlines.startDate.date = formatted;
+};
+
+
 
 </script>
 
@@ -304,9 +319,16 @@ const stabStages = {
       </WrapperBlock>
     </div>
 
+    {{ stabStages.stageFirst.deadlines.startDate.date }}
+
     <transition name="fadeFast" mode="out-in">
       <StageWindow
         v-if="stageWindowVisibility"
+        :start-date="stabStages.stageFirst.deadlines.startDate.date"
+        :opportunity-date="stabStages.stageFirst.deadlines.opportunityDate.date"
+        :deadline-all="stabStages.stageFirst.deadlines.deadlineAll.date"
+
+        @update:start-date="updateStartDate"
       >
 
       </StageWindow>
