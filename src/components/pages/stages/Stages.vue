@@ -354,7 +354,9 @@ const updateDeadlineDate = (val: string) => {
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .stages__items {
   display: flex;
   flex-direction: column;

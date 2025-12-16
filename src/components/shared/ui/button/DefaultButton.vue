@@ -78,7 +78,7 @@ const {
 
 .default-button__color-green {
   background: #2DBE64;
-  color: color.$main_white;
+  color: #ffffff;
 }
 
 .default-button__color-green:hover {
