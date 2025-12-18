@@ -68,6 +68,7 @@ import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 .number-registrations {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 51px;
   flex-basis: 20%;
 }

@@ -11,7 +11,7 @@
 <style lang="scss" scoped>
 .wrapper-block {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   background: #FFFFFF;
   border-radius: 24px;
   padding: 24px;
