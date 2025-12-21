@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
+import StageElement from './components/StageElement.vue';
 </script>
 
 <template>
@@ -8,6 +9,40 @@ import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
     <PageHeader>
       Дашборд
     </PageHeader>
+
+    <div class="dashboard__second-section">
+      <WrapperBlock class="stages-charts">
+        <StageElement
+          :full = "100"
+          :current = "47"
+          title = "1 этап. Название этапа"
+          :totalpParticipants = "65967"
+          :passed = "15967"
+          :noPassed = "35563"
+        />
+
+        <StageElement
+          :full = "100"
+          :current = "47"
+          title = "1 этап. Название этапа"
+          :totalpParticipants = "65967"
+          :passed = "15967"
+          :noPassed = "35563"
+        />
+      </WrapperBlock>
+    </div>
+
+    <!-- <div>
+      <StageElement
+        :full = "100"
+        :current = "47"
+        title = "1 этап. Название этапа"
+        :totalpParticipants = "65967"
+        :passed = "15967"
+        :noPassed = "35563"
+      />
+    </div> -->
+
 
     <div class="dashboard__first-section">
       <WrapperBlock class="number-registrations">
@@ -128,4 +163,10 @@ import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
   gap: 16px;
 }
 
+.stages-charts {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end; // чтобы StageElement растягивался вниз
+  height: 300px; // фиксированная высота для контейнера
+}
 </style>
