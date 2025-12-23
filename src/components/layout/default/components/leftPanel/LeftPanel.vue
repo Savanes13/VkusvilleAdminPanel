@@ -53,11 +53,12 @@ const route = useRoute();
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .left-panel {
-  width: 344px;
+  width: 207px;
   min-height: 100vh;
   flex-shrink: 0;
-  padding: 24px 20px;
-  border-right: 1px solid #D0D7E5
+  margin-right: 24px;
 }
 </style>

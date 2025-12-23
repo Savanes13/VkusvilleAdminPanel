@@ -41,13 +41,14 @@ const dataSwitch = [
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
 
 .header {
   padding: 16px 24px;
-
-  background: white;
-  
-  border-bottom: 1px solid #D0D7E5
+  background: color.$colorBackgroundWhite;
+  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  margin-bottom: 40px;
 }
 
 .header__left {

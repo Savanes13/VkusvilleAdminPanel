@@ -16,13 +16,19 @@ import LeftPanel from './components/leftPanel/LeftPanel.vue';
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
+.default-layout {
+  background-color: color.$colorBackgroundSecondary;
+  padding: 0px 40px;
+}
+
 .default-layout__content {
   display: flex;
 }
 
 .admin-page {
   width: 100%;
-  padding: 40px;
   background: #F5F5F5;
 }
 </style>

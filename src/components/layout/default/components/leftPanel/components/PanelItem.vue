@@ -22,7 +22,7 @@ const {
     class="panel-item"
     :class="{'panel-item--active' : isActive}"
   >
-    <div>
+    <div class="panel-item__svg">
       <span
         v-html="leftPanelIcons[icon]"
       ></span>
@@ -34,6 +34,8 @@ const {
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .panel-item {
   display: flex;
   align-items: center;
@@ -44,11 +46,7 @@ const {
 }
 
 .panel-item--active {
-  color: #179C49;
-  background: #DCFAE7;
-  :deep(svg path) {
-    fill: #179C49;
-  }
+  background: color.$colorBackgroundWhite;
 }
 
 .panel-item__text {
