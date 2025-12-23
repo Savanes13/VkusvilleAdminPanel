@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import openEye from '@/assets/images/input/eye.svg'
-import closeEye from '@/assets/images/input/closeEye.svg'
+import { inputIcons } from '../../icons/input/icons';
 
 interface IPasswordInputProps {
   value: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   error: {
     show: boolean,
     text: string
@@ -55,20 +54,20 @@ const changeVisibilityPassword = () => {
         v-model="inputValue"
       >
       <transition name="fadeFast" mode="out-in">
-        <img
+        <span
           class="eye-svg"
-          :src="openEye"
+          v-html="inputIcons['eye']"
           v-if="showPassword"
           @click="changeVisibilityPassword"
           key="show-password"
-        />
-        <img
+        ></span>
+        <span
           class="eye-svg"
-          :src="closeEye"
+          v-html="inputIcons['closeEye']"
           v-else
           @click="changeVisibilityPassword"
           key="hide-password"
-        />
+        ></span>
       </transition>
       <transition :name="'fade-slide'" mode="out-in">
         <div 

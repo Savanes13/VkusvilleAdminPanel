@@ -4,7 +4,7 @@ import { computed } from 'vue';
 interface IDefaultInputProps {
   value: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   error: {
     show: boolean,
     text: string

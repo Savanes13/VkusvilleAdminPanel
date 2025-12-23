@@ -39,16 +39,24 @@ const toggleCheck = () => {
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
 
 .check-mark {
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  border: 1px solid #2DBE64;
+  border: 2px solid color.$colorIconTertiary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color transition.$fast;
+  cursor: pointer;
 }
 
 .check-mark--active {
-  background: #2DBE64;
+  background: color.$colorStrokeAccent;
+  border: 1px solid color.$colorStrokeAccent;
 }
 
 .check-mark img {

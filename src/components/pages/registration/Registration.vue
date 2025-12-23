@@ -4,6 +4,8 @@ import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
+import { entranceIcons } from '@/components/shared/icons/entrance/icons';
+import logo from '@/assets/images/logo/logo.svg'
 import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/types';
 import { reactive, ref } from 'vue';
 
@@ -53,64 +55,72 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 <template>
   <EntranceLayout>
     <div class="registration">
-      <div class="registration__info">
-        <div class="title">
-          <p>Регистрация</p>
+      <div class="registration__wrap">
+        <div class="registration__logo">
+          <img :src="logo" alt="logo"/>
         </div>
-        <div class="text">
-          <p>Для регистрации нужна почта и токен доступа — он подтверждает вашу роль. Получите токен у администратора программы</p>
+        <div class="registration__info">
+          <div class="title">
+            <p>Регистрация</p>
+          </div>
+          <div class="text">
+            <p>Для регистрации нужна почта и токен доступа — он подтверждает вашу роль. Получите токен у администратора программы</p>
+          </div>
         </div>
-      </div>
-      <div class="registration__inputs">
-        <DefaultInput
-          class="input-item"
-          v-model:value="emailInputObj.value"
-          :label="emailInputObj.label"
-          :placeholder="emailInputObj.placeholder"
-          :error="emailInputObj.error"
-        />
-        <PasswordInput
-          class="input-item"
-           v-model:value="passwordInputObj.value"
-          :label="passwordInputObj.label"
-          :placeholder="passwordInputObj.placeholder"
-          :error="passwordInputObj.error"
-        />
-        <PasswordInput
-          class="input-item"
-           v-model:value="repeatPasswordInputObj.value"
-          :label="repeatPasswordInputObj.label"
-          :placeholder="repeatPasswordInputObj.placeholder"
-          :error="repeatPasswordInputObj.error"
-        />
-        <DefaultInput
-          class="input-item"
-          v-model:value="tokenInputObj.value"
-          :label="tokenInputObj.label"
-          :placeholder="tokenInputObj.placeholder"
-          :error="tokenInputObj.error"
-        />
-      </div>
-      <DefaultButton
-        class="default-button__size--small default-button__color-green"
-      >
-        Зарегистрировать аккаунт
-      </DefaultButton>
-      <div class="checkbox-block">
-        <CheckMark
-          v-model:state="rememberUser"
-        />
-        <div class="checkbox-block__text">
-          <p>Запомнить меня на этом устройстве</p>
+        <div class="registration__inputs">
+          <DefaultInput
+            class="input-item"
+            v-model:value="emailInputObj.value"
+            :label="emailInputObj.label"
+            :error="emailInputObj.error"
+          />
+          <PasswordInput
+            class="input-item"
+             v-model:value="passwordInputObj.value"
+            :label="passwordInputObj.label"
+            :error="passwordInputObj.error"
+          />
+          <PasswordInput
+            class="input-item"
+             v-model:value="repeatPasswordInputObj.value"
+            :label="repeatPasswordInputObj.label"
+            :error="repeatPasswordInputObj.error"
+          />
+          <DefaultInput
+            class="input-item"
+            v-model:value="tokenInputObj.value"
+            :label="tokenInputObj.label"
+            :error="tokenInputObj.error"
+          />
+        </div>
+        <DefaultButton
+          class="default-button__size--large default-button__color-green"
+        >
+          Зарегистрировать аккаунт
+        </DefaultButton>
+        <div class="checkbox-block">
+          <CheckMark
+            v-model:state="rememberUser"
+          />
+          <div class="checkbox-block__text">
+            <p>Запомнить меня</p>
+          </div>
         </div>
       </div>
       <div class="register__authorization">
         <div class="have-account">
-          <p>Есть аккаунт?</p>
+          <p>Уже есть аккаунт?</p>
         </div>
         <router-link to="/authorization">
           <div class="auth">
-            <p>Войти</p>
+            <div>
+              <p>Войти</p>
+            </div>
+            <div>
+              <span
+                v-html="entranceIcons['chevronRight']"
+              ></span>
+            </div>
           </div>
         </router-link>
       </div>
@@ -118,7 +128,20 @@ const tokenInputObj = reactive<IInputDefaultProps>({
   </EntranceLayout>
 </template>
 
-<style>
+<style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
+.registration__wrap {
+  padding: 40px;
+  background: color.$colorBackgroundWhite;
+  border-radius: 24px;
+}
+
+.registration__logo {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
 .title {
   font-weight: 500;
   font-size: 24px;
@@ -128,15 +151,18 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 }
 
 .text {
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 100%;
+  line-height: 24px;
   text-align: center;
   margin-bottom: 24px;
 }
 
-.input-item {
-  margin-bottom: 23px;
+.registration__inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .checkbox-block {
@@ -168,9 +194,25 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 }
 
 .auth {
+  display: flex;
+  gap: 6px;
   font-weight: 500;
   font-size: 16px;
   line-height: 25px;
   color: #179C49;
+}
+
+.have-account,
+.auth {
+  line-height: 24px;
+}
+
+.auth span {
+  display: flex;
+  align-items: center;
+}
+
+.auth svg {
+  display: block;
 }
 </style>

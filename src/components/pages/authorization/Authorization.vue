@@ -4,7 +4,9 @@ import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
+import { entranceIcons } from '@/components/shared/icons/entrance/icons';
 import type { IInputPasswordProps } from '@/types/inputs/types';
+import logo from '@/assets/images/logo/logo.svg';
 import { reactive, ref } from 'vue';
 
 const rememberUser = ref<boolean>(false);
@@ -33,41 +35,44 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 <template>
   <EntranceLayout>
     <div class="authorization">
-      <div class="authorization__info">
-        <div class="title">
-          <p>Вход в аккаунт</p>
+      <div class="authorization__wrap">
+        <div class="authorization__logo">
+          <img :src="logo" alt="logo"/>
         </div>
-        <div class="text">
-          <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту - обратитесь к администратору программы</p>
+        <div class="authorization__info">
+          <div class="title">
+            <p>Вход в аккаунт</p>
+          </div>
+          <div class="text">
+            <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту — обратитесь на <span>рабочий аккаунт</span></p>
+          </div>
         </div>
-      </div>
-      <div class="authorization__inputs">
-        <DefaultInput
-          class="input-item"
-          v-model:value="emailInputObj.value"
-          :label="emailInputObj.label"
-          :placeholder="emailInputObj.placeholder"
-          :error="emailInputObj.error"
-        />
-        <PasswordInput
-          class="input-item"
-           v-model:value="passwordInputObj.value"
-          :label="passwordInputObj.label"
-          :placeholder="passwordInputObj.placeholder"
-          :error="passwordInputObj.error"
-        />
-      </div>
-      <DefaultButton
-        class="default-button__size--small default-button__color-green"
-      >
-        Войти
-      </DefaultButton>
-      <div class="checkbox-block">
-        <CheckMark
-          v-model:state="rememberUser"
-        />
-        <div class="checkbox-block__text">
-          <p>Запомнить меня на этом устройстве</p>
+        <div class="authorization__inputs">
+          <DefaultInput
+            class="input-item"
+            v-model:value="emailInputObj.value"
+            :label="emailInputObj.label"
+            :error="emailInputObj.error"
+          />
+          <PasswordInput
+            class="input-item"
+             v-model:value="passwordInputObj.value"
+            :label="passwordInputObj.label"
+            :error="passwordInputObj.error"
+          />
+        </div>
+        <DefaultButton
+          class="default-button__size--large default-button__color-green"
+        >
+          Войти
+        </DefaultButton>
+        <div class="checkbox-block">
+          <CheckMark
+            v-model:state="rememberUser"
+          />
+          <div class="checkbox-block__text">
+            <p>Запомнить меня</p>
+          </div>
         </div>
       </div>
       <div class="authorization__register">
@@ -76,7 +81,14 @@ const passwordInputObj = reactive<IInputPasswordProps>({
         </div>
         <router-link to="/registration">
           <div class="register">
-            <p>Зарегистрировать</p>
+            <div>
+              <p>Зарегистрировать</p>
+            </div>
+            <div>
+              <span
+                v-html="entranceIcons['chevronRight']"
+              ></span>
+            </div>
           </div>
         </router-link>
       </div>
@@ -85,6 +97,19 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
+.authorization__wrap {
+  padding: 40px;
+  background: color.$colorBackgroundWhite;
+  border-radius: 24px;
+}
+
+.authorization__logo {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
 .title {
   font-weight: 500;
   font-size: 24px;
@@ -94,15 +119,22 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 }
 
 .text {
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 100%;
+  line-height: 24px;
   text-align: center;
   margin-bottom: 24px;
 }
 
-.input-item {
-  margin-bottom: 23px;
+.text span {
+  color: color.$colorTextAcccent;
+}
+
+.authorization__inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .authorization__register {
@@ -120,10 +152,27 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 }
 
 .register {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 500;
   font-size: 16px;
   line-height: 25px;
   color: #179C49;
+}
+
+.no-account,
+.register {
+  line-height: 24px;
+}
+
+.register span {
+  display: flex;
+  align-items: center;
+}
+
+.register svg {
+  display: block;
 }
 
 .checkbox-block {
