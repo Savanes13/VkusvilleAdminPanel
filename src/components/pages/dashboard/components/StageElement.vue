@@ -20,7 +20,6 @@ const {
 
 <template>
   <div class="stage-element">
-
     <div class="stage-element__grapf">
       <div 
         class="bar-total" 
@@ -31,7 +30,6 @@ const {
         :style="{ height: current + 'px' }"
       ></div>
     </div>
-
     <div class="stage-element__percent">
       <div class="percent-elem">
         <p>{{ current }} %</p>
@@ -83,8 +81,6 @@ const {
 }
 
 .bar-total {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background-color: color.$colorBackgroundAccentAlternative;
   border-radius: 16px;
@@ -128,6 +124,10 @@ const {
   font-size: 16px;
   line-height: 24px;
   color: color.$colorTextSecondary;
+}
+
+.stage-element__info {
+  margin-top: 8px;
 }
 
 .info-item__value {

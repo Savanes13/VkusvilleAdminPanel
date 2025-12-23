@@ -2,6 +2,68 @@
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 import StageElement from './components/StageElement.vue';
+
+const stabDashboard = {
+  charts: [
+    {
+      full: 100,
+      current: 100,
+      title: "Вход в бота",
+      totalpParticipants: 65967,
+      passed: 65967,
+      noPassed: 0
+    },
+    {
+      full: 100,
+      current: 83,
+      title: "Вход в бота",
+      totalpParticipants: 65967,
+      passed: 54343,
+      noPassed: 11043
+    },
+    {
+      full: 100,
+      current: 67,
+      title: "Вход в бота",
+      totalpParticipants: 65967,
+      passed: 47902,
+      noPassed: 17234
+    },
+    {
+      full: 100,
+      current: 42,
+      title: "Вход в бота",
+      totalpParticipants: 65967,
+      passed: 26311,
+      noPassed: 34923
+    }
+  ],
+  totalRegistrations: {
+    all: 68971,
+    forWeak: 1344
+  },
+  averageScore: [
+    {
+      id: 1,
+      current: 3.35,
+      max: 4
+    },
+    {
+      id: 2,
+      current: 3.35,
+      max: 4
+    },
+    {
+      id: 3,
+      current: 4,
+      max: 4
+    }
+  ],
+  deadlineTasks: {
+    applicants: 10000,
+    experts: 5
+  }
+}
 </script>
 
 <template>
@@ -9,48 +71,38 @@ import StageElement from './components/StageElement.vue';
     <PageHeader>
       Дашборд
     </PageHeader>
-
     <div class="dashboard__second-section">
       <WrapperBlock class="stages-charts">
-        <StageElement
-          :full = "100"
-          :current = "47"
-          title = "1 этап. Название этапа"
-          :totalpParticipants = "65967"
-          :passed = "15967"
-          :noPassed = "35563"
-        />
-
-        <StageElement
-          :full = "100"
-          :current = "47"
-          title = "1 этап. Название этапа"
-          :totalpParticipants = "65967"
-          :passed = "15967"
-          :noPassed = "35563"
-        />
+        <div class="stages-charts__title">
+          <p>Конверсия движения абитуриентов</p>
+        </div>
+        <div class="stages-charts__elements">
+          <StageElement
+            v-for="(item, index) in stabDashboard.charts"
+            class="graf-elem"
+            :full = "item.full"
+            :current = "item.current"
+            :title = "item.title"
+            :totalpParticipants = "item.totalpParticipants"
+            :passed = "item.passed"
+            :noPassed = "item.noPassed"
+            :key='`${index} + ${item.title}`'
+          />
+        </div>
       </WrapperBlock>
     </div>
-
-    <!-- <div>
-      <StageElement
-        :full = "100"
-        :current = "47"
-        title = "1 этап. Название этапа"
-        :totalpParticipants = "65967"
-        :passed = "15967"
-        :noPassed = "35563"
-      />
-    </div> -->
-
-
     <div class="dashboard__first-section">
       <WrapperBlock class="number-registrations">
         <div class="number-registrations__name">
-          <p>Общее количество регистраций</p>
+          <p>Всего регистраций</p>
         </div>
         <div class="number-registrations__value">
-          <p>100 000</p>
+          <div>
+            <p>{{ stabDashboard.totalRegistrations.all }}</p>
+          </div>
+          <div class="registrations-weak">
+            <p><span>+{{ stabDashboard.totalRegistrations.forWeak }}</span> за неделю</p>
+          </div>
         </div>
       </WrapperBlock>
       <WrapperBlock class="average-score">
@@ -59,45 +111,60 @@ import StageElement from './components/StageElement.vue';
             <p>Cредний балл</p>
           </div>
           <div>
-
+            <!-- подсказка -->
           </div>
         </div>
         <div class="average-score__info">
-          <div class="border-wrap">
+          <div 
+            class="border-wrap"
+            v-for="item in stabDashboard.averageScore"
+            :key="item.id"
+          >
             <div class="border-wrap__name">
-              <p>1 этап</p>
+              <p>{{ item.id }} этап</p>
             </div>
             <div class="border-wrap__value">
-              <p>1,001 балла</p>
-            </div>
-          </div>
-          <div class="border-wrap">
-            <div class="border-wrap__name">
-              <p>2 этап</p>
-            </div>
-            <div class="border-wrap__value">
-              <p>2,5 балла</p>
-            </div>
-          </div>
-          <div class="border-wrap">
-            <div class="border-wrap__name">
-              <p>3 этап</p>
-            </div>
-            <div class="border-wrap__value">
-              <p>4,31 балла</p>
+              <p>{{ item.current }}<span> / {{ item.max }}</span></p>
             </div>
           </div>
         </div>
       </WrapperBlock> 
     </div>
-
+    <div class="dashboard__third-section">
+      <WrapperBlock class="deadline-tasks">
+        <div class="deadline-tasks__title">
+          <p>Горящие задачи</p>
+        </div>
+        <div class="deadline-tasks__content">
+          <div class="deadline-item border-wrap">
+            <div class="deadline-item__name">
+              <p>Абитуриенты, пропустившие дедлайн</p>
+            </div>
+            <div class="deadline-item__value">
+              <p>{{ stabDashboard.deadlineTasks.applicants }}</p>
+            </div>
+          </div>
+          <div class="deadline-item border-wrap">
+            <div class="deadline-item__name">
+              <p>Зависшие эксперты</p>
+            </div>
+            <div class="deadline-item__value">
+              <p>{{ stabDashboard.deadlineTasks.experts }}</p>
+            </div>
+          </div>
+        </div>
+      </WrapperBlock>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .dashboard__first-section {
   display: flex;
   gap: 24px;
+  margin-bottom: 24px;
 }
 
 .number-registrations {
@@ -112,14 +179,26 @@ import StageElement from './components/StageElement.vue';
   font-weight: 500;
   font-size: 24px;
   line-height: 25px;
-  color: #333333;
+  color: color.$colorTextPrimary;
 }
 
 .number-registrations__value {
   font-weight: 500;
   font-size: 32px;
   line-height: 100%;
-  color: #333333;
+  color: color.$colorTextPrimary;
+}
+
+.registrations-weak {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextSecondary;
+  margin-top: 4px
+}
+
+.registrations-weak span {
+  color: color.$colorTextAcccent;
 }
 
 .average-score {
@@ -150,6 +229,10 @@ import StageElement from './components/StageElement.vue';
   color: #333333;
 }
 
+.border-wrap__value span {
+  color: color.$colorTextTertiary
+}
+
 .average-score__header {
   margin-bottom: 20px;
   font-weight: 500;
@@ -164,9 +247,50 @@ import StageElement from './components/StageElement.vue';
 }
 
 .stages-charts {
+  margin-bottom: 24px;
+}
+
+.stages-charts__title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 25px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 24px;
+}
+
+.stages-charts__elements {
   display: flex;
   gap: 24px;
-  align-items: flex-end; // чтобы StageElement растягивался вниз
-  height: 300px; // фиксированная высота для контейнера
+}
+
+.graf-elem {
+  flex: 1;
+}
+
+.deadline-tasks__title {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 25px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 24px;
+}
+
+.deadline-tasks__content {
+  display: flex;
+  gap: 16px;
+}
+
+.deadline-item__name {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+}
+
+.deadline-item__value {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  color: color.$colorTextPrimary;
 }
 </style>
