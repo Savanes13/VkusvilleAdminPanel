@@ -8,7 +8,8 @@ import one from '@/assets/images/mainIcons/one.svg';
 import { reactive, ref } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 
-const stageWindowVisibility = ref<boolean>(false);
+const stageWindowVisibility = ref<boolean>(true);
+const numberSelectedStage = ref<number>(0);
 
 const stabStages = reactive({
   stageFirst: {
@@ -22,7 +23,7 @@ const stabStages = reactive({
         date: "2025-09-11",
         stringDate: "11 сентября 2025"
       },
-      deadlineAll: {
+      deadlineAllDate: {
         date: "2025-09-11",
         stringDate: "11 сентября 2025"
       },
@@ -55,7 +56,7 @@ const stabStages = reactive({
         date: "2025-09-11",
         stringDate: "11 сентября 2025"
       },
-      deadlineAll: {
+      deadlineAllDate: {
         date: "2025-09-11",
         stringDate: "11 сентября 2025"
       },
@@ -85,6 +86,12 @@ const stabStages = reactive({
 
 const closeStageWindow = () => {
   stageWindowVisibility.value = false;
+  numberSelectedStage.value = 0;
+}
+
+const openStageWindow = (number: number) => {
+  stageWindowVisibility.value = true;
+  numberSelectedStage.value = number;
 }
 
 const dateToString = (val: string) => {
@@ -97,18 +104,18 @@ const dateToString = (val: string) => {
 }
 
 const updateStartDate = (val: string) => {
-  // тут запрос на бэк и при положительном ответе ставим дату
-  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
+  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
+  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.startDate.date = dateToString(val);
 };
 
 const updateOpportunityDate = (val: string) => {
-  // тут запрос на бэк и при положительном ответе ставим дату
-  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
+  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.opportunityDate.date = dateToString(val);
+  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.opportunityDate.date = dateToString(val);
 };
 
 const updateDeadlineDate = (val: string) => {
-  // тут запрос на бэк и при положительном ответе ставим дату
-  stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
+  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.deadlineAllDate.date = dateToString(val);
+  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.deadlineAllDate.date = dateToString(val);
 };
 </script>
 
@@ -132,6 +139,7 @@ const updateDeadlineDate = (val: string) => {
             <IconButton
               class="button-icon__color-green-transparent"
               icon="edit"
+              @click="openStageWindow(1)"
             />
           </div>
           <div class="info-stage">
@@ -149,7 +157,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageFirst.deadlines.startDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -157,7 +166,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageFirst.deadlines.opportunityDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -165,7 +175,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.deadlines.deadlineAll.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageFirst.deadlines.deadlineAllDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageFirst.deadlines.deadlineAllDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -234,6 +245,7 @@ const updateDeadlineDate = (val: string) => {
             <IconButton
               class="button-icon__color-green-transparent"
               icon="edit"
+              @click="openStageWindow(2)"
             />
           </div>
           <div class="info-stage">
@@ -251,7 +263,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageSecond.deadlines.startDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -259,7 +272,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageSecond.deadlines.opportunityDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -267,7 +281,8 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.deadlines.deadlineAll.stringDate }}</p>
+                  <!-- <p>{{ stabStages.stageSecond.deadlines.deadlineAllDate.stringDate }}</p> -->
+                  <p>{{ stabStages.stageSecond.deadlines.deadlineAllDate.date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -356,7 +371,9 @@ const updateDeadlineDate = (val: string) => {
         v-if="stageWindowVisibility"
         :start-date="stabStages.stageFirst.deadlines.startDate.date"
         :opportunity-date="stabStages.stageFirst.deadlines.opportunityDate.date"
-        :deadline-all="stabStages.stageFirst.deadlines.deadlineAll.date"
+        :deadline-all-date="stabStages.stageFirst.deadlines.deadlineAllDate.date"
+
+        :number-selected-stage="numberSelectedStage"
 
         @update:start-date="updateStartDate"
         @update:opportunity-date="updateOpportunityDate"
