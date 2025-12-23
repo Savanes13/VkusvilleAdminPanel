@@ -3,9 +3,12 @@ import StageWindow from '@/components/shared/elements/modalWindow/stages/StageWi
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import meeting from '@/assets/images/mainIcons/meeting.svg';
+import one from '@/assets/images/mainIcons/one.svg';
 import { reactive, ref } from 'vue';
+import IconButton from '@/components/shared/ui/button/IconButton.vue';
 
-const stageWindowVisibility = ref<boolean>(true);
+const stageWindowVisibility = ref<boolean>(false);
 
 const stabStages = reactive({
   stageFirst: {
@@ -115,198 +118,212 @@ const updateDeadlineDate = (val: string) => {
       Этапы
     </PageHeader>
     <div class="stages__items">
-      <WrapperBlock>
-        <div class="header-stage">
-          <div class="header-stage__title">
-            <div class="counter">
-              <p>Этап 1</p>
+      <div class="wrap-editable">
+        <WrapperBlock>
+          <div class="header-stage">
+            <div class="header-stage__title">
+              <div class="counter">
+                <p>Этап 1</p>
+              </div>
+              <div class="name">
+                <p>{{ stabStages.stageFirst.name }}</p>
+              </div>
             </div>
-            <div class="name">
-              <p>{{ stabStages.stageFirst.name }}</p>
-            </div>
+            <IconButton
+              class="button-icon__color-green-transparent"
+              icon="edit"
+            />
           </div>
-          <div class="header-stage__stage-button">
-            <DefaultButton 
-              class="default-button__color-green-transparent default-button__size--small"
-              left-icon="edit"
-            >
-              Настроить
-            </DefaultButton>
-          </div>
-        </div>
-        <div class="info-stage">
-          <div class="info-stage__item">
-            <div class="title-block">
-              <p>Дедлайны</p>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дата начала этапа</p>
+          <div class="info-stage">
+            <div class="info-stage__item">
+              <div class="title-block">
+                <div>
+                  <img :src="meeting" alt="">
+                </div>
+                <div>
+                  <p>Даты и дедлайны</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дата начала этапа</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p>
+                </div>
               </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дедлайн возможности начать этап</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дедлайн возможности начать этап</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дедлайн отправки всех заданий</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.deadlines.deadlineAll.stringDate }}</p>
+                </div>
               </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дедлайн отправки всех заданий</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.deadlines.deadlineAll.stringDate }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Время на выполнение задания</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.deadlines.timeComplete }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Время на выполнение задания</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.deadlines.timeComplete }}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="info-stage__item">
-            <div class="title-block">
-              <p>Оценка</p>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Проходной балл</p>
+            <div class="info-stage__item">
+              <div class="title-block">
+                <div>
+                  <img :src="one" alt="">
+                </div>
+                <div>
+                  <p>Оценка</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.evaluation.passingGrade }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Проходной балл</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.evaluation.passingGrade }}</p>
+                </div>
               </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Текущий диапазон оценки</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Текущий диапазон оценки</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.evaluation.currentRange.min }}–{{ stabStages.stageFirst.evaluation.currentRange.max }}</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.evaluation.currentRange.min }}–{{ stabStages.stageFirst.evaluation.currentRange.max }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оценки стуктуры и логики</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.evaluation.structureLogic.min }}–{{ stabStages.stageFirst.evaluation.structureLogic.max }}</p>
+                </div>
               </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Оценки стуктуры и логики</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.evaluation.structureLogic.min }}–{{ stabStages.stageFirst.evaluation.structureLogic.max }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Оценки мотивации</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageFirst.evaluation.motivation.min }}–{{ stabStages.stageFirst.evaluation.motivation.max }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </WrapperBlock>
-      <WrapperBlock>
-        <div class="header-stage">
-          <div class="header-stage__title">
-            <div class="counter">
-              <p>Этап 2</p>
-            </div>
-            <div class="name">
-              <p>{{ stabStages.stageSecond.name }}</p>
-            </div>
-          </div>
-          <div class="header-stage__stage-button">
-            <DefaultButton 
-              class="default-button__color-green-transparent default-button__size--small"
-              left-icon="edit"
-            >
-              Настроить
-            </DefaultButton>
-          </div>
-        </div>
-        <div class="info-stage">
-          <div class="info-stage__item">
-            <div class="title-block">
-              <p>Дедлайны</p>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дата начала этапа</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дедлайн возможности начать этап</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Дедлайн отправки всех заданий</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.deadlines.deadlineAll.stringDate }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Время на выполнение задания</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.deadlines.timeComplete }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оценки мотивации</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageFirst.evaluation.motivation.min }}–{{ stabStages.stageFirst.evaluation.motivation.max }}</p>
+                </div>
               </div>
             </div>
           </div>
-          <div class="info-stage__item">
-            <div class="title-block">
-              <p>Оценка</p>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Проходной балл</p>
+        </WrapperBlock>
+        <WrapperBlock>
+          <div class="header-stage">
+            <div class="header-stage__title">
+              <div class="counter">
+                <p>Этап 2</p>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.evaluation.passingGrade }}</p>
-              </div>
-            </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Текущий диапазон оценки</p>
-              </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.evaluation.currentRange.min }}–{{ stabStages.stageSecond.evaluation.currentRange.max }}</p>
+              <div class="name">
+                <p>{{ stabStages.stageSecond.name }}</p>
               </div>
             </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Оценки стуктуры и логики</p>
+            <IconButton
+              class="button-icon__color-green-transparent"
+              icon="edit"
+            />
+          </div>
+          <div class="info-stage">
+            <div class="info-stage__item">
+              <div class="title-block">
+                <div>
+                  <img :src="meeting" alt="">
+                </div>
+                <div>
+                  <p>Даты и дедлайны</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.evaluation.structureLogic.min }}–{{ stabStages.stageSecond.evaluation.structureLogic.max }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дата начала этапа</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дедлайн возможности начать этап</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Дедлайн отправки всех заданий</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.deadlines.deadlineAll.stringDate }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Время на выполнение задания</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.deadlines.timeComplete }}</p>
+                </div>
               </div>
             </div>
-            <div class="item-block">
-              <div class="item-block__name">
-                <p>Оценки мотивации</p>
+            <div class="info-stage__item">
+              <div class="title-block">
+                <div>
+                  <img :src="one" alt="">
+                </div>
+                <div>
+                  <p>Оценка</p>
+                </div>
               </div>
-              <div class="item-block__text">
-                <p>{{ stabStages.stageSecond.evaluation.motivation.min }}–{{ stabStages.stageSecond.evaluation.motivation.max }}</p>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Проходной балл</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.evaluation.passingGrade }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Текущий диапазон оценки</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.evaluation.currentRange.min }}–{{ stabStages.stageSecond.evaluation.currentRange.max }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оценки стуктуры и логики</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.evaluation.structureLogic.min }}–{{ stabStages.stageSecond.evaluation.structureLogic.max }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оценки мотивации</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages.stageSecond.evaluation.motivation.min }}–{{ stabStages.stageSecond.evaluation.motivation.max }}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </WrapperBlock>
+        </WrapperBlock>
+      </div>
       <WrapperBlock>
         <div class="header-stage">
           <div class="header-stage__title">
@@ -363,21 +380,22 @@ const updateDeadlineDate = (val: string) => {
   gap: 24px;
 }
 
+.wrap-editable {
+  display: flex;
+  gap: 24px;
+}
+
 .header-stage {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.header-stage__stage-button {
-  width: 145px;
-}
-
 .counter {
   font-weight: 400;
   font-size: 16px;
   line-height: 25px;
-  color: #333333;
+  color: color.$colorTextSecondary;
   margin-bottom: 8px;
 }
 
@@ -390,6 +408,7 @@ const updateDeadlineDate = (val: string) => {
 
 .info-stage {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -404,10 +423,12 @@ const updateDeadlineDate = (val: string) => {
 }
 
 .title-block {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 25px;
-  color: #333333;
+  display: flex;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 20px;
+  color: color.$colorTextPrimary;
 }
 
 .item-block {
