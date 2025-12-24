@@ -20,10 +20,10 @@ const route = useRoute();
       path="/stages"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/content'"
       icon="content"
       text="Контент"
-      path="/"
+      path="/content"
     />
     <PanelItem
       :is-active="false"
