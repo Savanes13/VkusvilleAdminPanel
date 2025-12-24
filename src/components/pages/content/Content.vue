@@ -42,7 +42,7 @@ const stabContent = [
         </div>
 
         <TableContent
-        
+          :data="stabContent"
         />
         
 

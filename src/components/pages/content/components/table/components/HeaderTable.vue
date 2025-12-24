@@ -41,7 +41,7 @@
   display: flex;
   align-items: center;
   height: 44px;
-  padding-left: 12px;
+  padding: 12px;
   border-right: 1px solid #DDE0E8;
   font-weight: 500;
   font-size: 16px;

@@ -40,4 +40,10 @@ const {
 .button-icon__color-green-transparent:hover {
   background: color.$colorBackgroundAccentAlternative_Hover;
 }
+
+.button-icon span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

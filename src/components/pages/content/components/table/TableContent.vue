@@ -1,7 +1,20 @@
 <script lang="ts" setup>
 import HeaderTable from './components/HeaderTable.vue';
+import LineTable from './components/LineTable.vue';
 
+interface ITableLine {
+  id: number;
+  text: string;
+  key: string;
+}
 
+interface ITableContentProps {
+  data: ITableLine[]
+}
+
+const {
+  data
+} = defineProps<ITableContentProps>();
 </script>
 
 <template>
@@ -11,9 +24,16 @@ import HeaderTable from './components/HeaderTable.vue';
     
     />
 
-    <div class="table__body">
+    <LineTable
+      v-for="item in data"
+      :key-line="item.key"
+      :text="item.text"
+      :key="item.id"
+    />
 
-    </div>
+    <!-- <div class="table__body">
+
+    </div> -->
 
   </div>
 </template>
