@@ -13,6 +13,7 @@ const {
 } = defineProps<ICalendarBlockProps>();
 
 const dateValue = ref<Date>(new Date(date));
+const calendarIsOpen = ref<boolean>(false);
 
 const emit = defineEmits<{
   (e: 'update:date', value: string): void;
@@ -25,14 +26,27 @@ watch(() => date, (newVal) => {
 watch(dateValue, (val) => {
   emit('update:date', val.toISOString()); 
 });
+
+const openCalendar = () => {
+  calendarIsOpen.value = true;
+};
+
+const closeCalendar = () => {
+  
+  calendarIsOpen.value = false;
+};
 </script>
 
 <template>
   <div class="calendar-block">
+
     <div class="calendar-block__label">
       <p>{{ label }}</p>
     </div>
-    <div class="calendar-block__content">
+    <div 
+      class="calendar-block__content"
+      @click="openCalendar"
+    >
       <div>
         <p>{{ date }}</p>
       </div>
@@ -41,7 +55,14 @@ watch(dateValue, (val) => {
       </div>
     </div>
 
-    <VDatePicker v-model="dateValue" />
+    <div  
+      class="calendar"
+      v-if="calendarIsOpen" 
+      v-clickOutside="closeCalendar"
+    >
+      <VDatePicker v-model="dateValue" />
+    </div>
+
   </div>
 </template> 
 
@@ -72,5 +93,9 @@ watch(dateValue, (val) => {
   font-size: 16px;
   line-height: 24px;
   cursor: pointer;
+}
+
+.calendar {
+  position: absolute;
 }
 </style>

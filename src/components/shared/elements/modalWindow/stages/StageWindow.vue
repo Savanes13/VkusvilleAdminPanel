@@ -4,6 +4,7 @@ import ModalWindow from '../../ModalWindow.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
 import CalendarBlock from './components/CalendarBlock.vue';
+import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 
 interface IStageWindowProps {
   startDate: string;
@@ -41,14 +42,15 @@ const updateDate = (date: string, type: string) => {
   <BackgroundModal>
     <div 
       class="stage-window"
+      v-clickOutside="closeWindow"
     > 
       <ModalWindow
         :name="`Настройка ${numberSelectedStage} этапа`"
         @close="closeWindow"
       >
 
-        <div class="dates-deadlines">
-          <div class="dates-deadlines__title-block">
+        <div class="dates-deadlines wrap-block">
+          <div class="dates-deadlines__title-block wrap-block__title">
             <div>
               <img :src="meeting" alt="">
             </div>
@@ -75,9 +77,41 @@ const updateDate = (date: string, type: string) => {
           </div>
         </div>
 
-        {{ startDate }}
+        <div class="estimation wrap-block">
+          <div class="estimation__title-block wrap-block__title">
+            <div>
+              <img :src="one" alt="">
+            </div>
+            <div>
+              <p>Оценка</p>
+            </div>
+          </div>
+
+          <div class="range-estimates">
+            <p>Текущий диапазон оценки — от 0 до 6</p>
+          </div>
+
+          <div>
+
+          </div>
+        </div>
+
+        <div class="buttons-block">
+          <DefaultButton
+             class="default-button__size--large default-button__color-gray"
+          >
+            Отменить
+          </DefaultButton>
+          <DefaultButton
+            class="default-button__size--large default-button__color-green"
+          >
+            Сохранить
+          </DefaultButton>
+        </div>
+
+        <!-- {{ startDate }}
         {{ opportunityDate }}
-        {{ deadlineAllDate }}
+        {{ deadlineAllDate }} -->
 
         <!-- <VDatePicker v-model="startDateValue" />
         <VDatePicker v-model="opportunityDateValue" />
@@ -94,17 +128,15 @@ const updateDate = (date: string, type: string) => {
   width: 668px;
 }
 
-.dates-deadlines {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.wrap-block {
   width: 100%;
   border-radius: 16px;
   border: 1px solid #D0D7E5;
   padding: 20px;
+  margin-bottom: 24px;
 }
 
-.dates-deadlines__title-block {
+.wrap-block__title {
   display: flex;
   gap: 4px;
   font-weight: 500;
@@ -112,5 +144,28 @@ const updateDate = (date: string, type: string) => {
   line-height: 20px;
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.estimation__title-block {
+  margin-bottom: 8px;
+}
+
+.dates-deadlines__content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.buttons-block {
+  display: flex;
+  gap: 16px;
+}
+
+.range-estimates {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextSecondary;
+  margin-bottom: 20px
 }
 </style>
