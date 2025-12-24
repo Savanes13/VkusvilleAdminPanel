@@ -8,9 +8,10 @@ import one from '@/assets/images/mainIcons/one.svg';
 import { reactive, ref } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 
-const stageWindowVisibility = ref<boolean>(true);
+const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 
+// TODO: СТРУКТУРА И ЛОГИ И МОТИВАЦИЯ МОГУТ ИМЕТЬ НЕОДНОРОДНЫЙ ПОРЯДОК НАПРИМЕР 0 2 4
 const stabStages = reactive({
   stageFirst: {
     name: "Эссе и кружок",
@@ -43,6 +44,8 @@ const stabStages = reactive({
         min: 0,
         max: 3
       }
+      // structureLogic: [ 0, 1, 2, 3, 4, 5 ],
+      // motivation: [ 0, 1, 2, 3, 4, 2 ],
     }
   },
   stageSecond: {
@@ -76,6 +79,8 @@ const stabStages = reactive({
         min: 0,
         max: 3
       }
+      // structureLogic: [ 0, 1, 2, 3, 4, 5 ],
+      // motivation: [ 0, 1, 2, 3, 4 ],
     }
   },
   stageThird: {
