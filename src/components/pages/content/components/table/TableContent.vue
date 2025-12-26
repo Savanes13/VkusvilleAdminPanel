@@ -27,6 +27,7 @@ const {
     <HeaderTable/>
     <LineTable
       v-for="(item, index) in data"
+      :requiredKeys="item.required_keys"
       :key-line="item.key"
       :text="item.value"
       :key="item.key"
@@ -35,6 +36,7 @@ const {
     <LineTable
       v-for="(line, index) in missingLines"
       :empty="true"
+      :requiredKeys="[]"
       key-line=""
       text=""
       :key="index"

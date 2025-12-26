@@ -1,9 +1,14 @@
 <script lang="ts" setup>
+import ContentWindow from '@/components/shared/elements/modalWindow/content/ContentWindow.vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import { ref } from 'vue';
+
+const editModalVisibility = ref<boolean>(false);
 
 interface ILineTableProps {
   text: string;
   keyLine: string;
+  requiredKeys: string[];
   lastLine: boolean;
   empty?: boolean;
 }
@@ -11,9 +16,18 @@ interface ILineTableProps {
 const {
   text,
   keyLine,
+  requiredKeys,
   lastLine = false,
   empty
 } = defineProps<ILineTableProps>();
+
+const openWindow = () => {
+  editModalVisibility.value = true;
+};
+
+const closeWindow = () => {
+  editModalVisibility.value = false;
+};
 </script>
 
 <template>
@@ -29,15 +43,22 @@ const {
     </div>
     <div class="line-table__item empty-item">
       <IconButton
+        @click="openWindow"
         class="button-icon__color-green-transparent"
         icon="edit"
         color-icon="transparent"
         v-if="!empty"
       />
     </div>
-
-    <!-- Тут модалка -->
-
+    <transition name="fadeFast" mode="out-in">
+      <ContentWindow
+        v-if="editModalVisibility"
+        :key-line="keyLine"
+        :text="text"
+        :required-keys="requiredKeys"
+        @close="closeWindow"
+      />
+    </transition>
   </div>
 </template>
 
