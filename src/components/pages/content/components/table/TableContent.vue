@@ -3,9 +3,9 @@ import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 
 interface ITableLine {
-  id: number;
-  text: string;
   key: string;
+  value: string;
+  required_keys: string[]
 }
 
 interface ITableContentProps {
@@ -20,6 +20,8 @@ const {
 <template>
   <div class="table">
 
+    <!-- TODO: сюда поиск -->
+
     <HeaderTable
     
     />
@@ -27,8 +29,8 @@ const {
     <LineTable
       v-for="item in data"
       :key-line="item.key"
-      :text="item.text"
-      :key="item.id"
+      :text="item.value"
+      :key="item.key"
     />
 
     <!-- <div class="table__body">

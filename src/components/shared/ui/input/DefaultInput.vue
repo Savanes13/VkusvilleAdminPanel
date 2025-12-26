@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { inputIcons } from '../../icons/input/icons';
 
 interface IDefaultInputProps {
   value: string;
   label: string;
   placeholder?: string;
   error: {
-    show: boolean,
-    text: string
+    show: boolean;
+    text: string;
   }
+  isSearch?: boolean;
 };
 
 let {
@@ -19,6 +21,7 @@ let {
     show: false,
     text: ''
   },
+  isSearch
 } = defineProps<IDefaultInputProps>();
 
 const emit = defineEmits<{
@@ -37,14 +40,21 @@ const inputValue = computed({
   <div class="input-container">
     <div 
       class="input-container__label"
+      v-if="!isSearch"
     >
       <p>{{ label }}</p>
     </div>
     <div class="input-container__wrap">
+      <div class="search-svg">
+        <span
+          v-html="inputIcons['search']"
+        ></span>
+      </div>
       <input
         class="input"
         :class="{ 
           'input--error': error.show,
+          'input--search': isSearch
         }"
         :placeholder="placeholder"
         v-model="inputValue"
@@ -65,4 +75,13 @@ const inputValue = computed({
 <style lang="scss" scoped>
 @use "./style.scss";
 
+.search-svg {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.input--search {
+  padding-left: 36px;
+}
 </style>
