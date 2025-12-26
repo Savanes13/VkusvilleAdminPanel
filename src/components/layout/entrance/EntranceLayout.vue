@@ -25,4 +25,10 @@
   width: 438px;
   margin-top: 104px;
 }
+
+@media (max-width: 500px) {
+  .entrance__block  {
+    width: 100%;
+  }
+}
 </style>

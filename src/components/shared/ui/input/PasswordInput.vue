@@ -106,4 +106,10 @@ const changeVisibilityPassword = () => {
   //   }
   // }
 }
+
+@media (max-width: 425px) {
+  .eye-svg {
+    top: 6px;
+  }
+}
 </style>

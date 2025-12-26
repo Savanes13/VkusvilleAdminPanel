@@ -45,3 +45,9 @@
 .input--error {
   border-color: red;
 }
+
+@media (max-width: 425px) {
+  .input {
+    height: 36px;
+  }
+}

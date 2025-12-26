@@ -7,6 +7,7 @@ import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import { entranceIcons } from '@/components/shared/icons/entrance/icons';
 import type { IInputPasswordProps } from '@/types/inputs/types';
 import logo from '@/assets/images/logo/logo.svg';
+import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import { reactive, ref } from 'vue';
 
 const rememberUser = ref<boolean>(false);
@@ -37,7 +38,14 @@ const passwordInputObj = reactive<IInputPasswordProps>({
     <div class="authorization">
       <div class="authorization__wrap">
         <div class="authorization__logo">
-          <img :src="logo" alt="logo"/>
+          <img 
+            :src="logo" alt="logo"
+            class="desktop-logo"
+          />
+          <img 
+            :src="smallLogo" alt="logo"
+            class="mobile-logo"
+          >
         </div>
         <div class="authorization__info">
           <div class="title">
@@ -187,5 +195,72 @@ const passwordInputObj = reactive<IInputPasswordProps>({
   font-size: 16px;
   line-height: 20px;
   color: #333333;
+}
+
+.mobile-logo {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .authorization__register {
+    padding: 10px 24px;
+  }
+}
+
+@media (max-width: 425px) {
+  .authorization__wrap {
+    padding: 24px;
+  }
+
+  .desktop-logo {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+
+  .authorization__logo {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 12px;
+  }
+
+  .text {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+
+  .authorization__inputs {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .checkbox-block {
+    margin-top: 8px;
+    gap: 10px;
+  }
+
+  .authorization__register {
+    margin-top: 20px;
+  }
+
+  .no-account {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .register {
+    font-size: 14px;
+    line-height: 16px;
+    gap: 4px;
+  }
 }
 </style>

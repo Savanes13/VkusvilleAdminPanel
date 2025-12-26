@@ -5,7 +5,8 @@ import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import { entranceIcons } from '@/components/shared/icons/entrance/icons';
-import logo from '@/assets/images/logo/logo.svg'
+import logo from '@/assets/images/logo/logo.svg';
+import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/types';
 import { reactive, ref } from 'vue';
 
@@ -57,7 +58,14 @@ const tokenInputObj = reactive<IInputDefaultProps>({
     <div class="registration">
       <div class="registration__wrap">
         <div class="registration__logo">
-          <img :src="logo" alt="logo"/>
+          <img 
+            :src="logo" alt="logo"
+            class="desktop-logo"
+          />
+          <img 
+            :src="smallLogo" alt="logo"
+            class="mobile-logo"
+          >
         </div>
         <div class="registration__info">
           <div class="title">
@@ -205,6 +213,7 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 .have-account,
 .auth {
   line-height: 24px;
+  align-items: center;
 }
 
 .auth span {
@@ -214,5 +223,71 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 
 .auth svg {
   display: block;
+}
+
+.mobile-logo {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .register__authorization {
+    padding: 10px 24px;
+  }
+}
+
+@media (max-width: 425px) {
+  .registration__wrap {
+    padding: 24px;
+  }
+
+  .desktop-logo {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .registration__logo {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 12px;
+  }
+
+  .text {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+
+  .registration__inputs {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .checkbox-block {
+    margin-top: 8px;
+    gap: 10px;
+  }
+
+  .register__authorization {
+    margin-top: 20px;
+  }
+
+  .have-account {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .auth {
+    font-size: 14px;
+    line-height: 16px;
+    gap: 4px;
+  }
 }
 </style>

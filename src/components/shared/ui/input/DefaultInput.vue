@@ -21,7 +21,7 @@ let {
     show: false,
     text: ''
   },
-  isSearch
+  isSearch = false
 } = defineProps<IDefaultInputProps>();
 
 const emit = defineEmits<{
@@ -45,7 +45,10 @@ const inputValue = computed({
       <p>{{ label }}</p>
     </div>
     <div class="input-container__wrap">
-      <div class="search-svg">
+      <div 
+        class="search-svg"
+        v-if="isSearch"
+      >
         <span
           v-html="inputIcons['search']"
         ></span>
