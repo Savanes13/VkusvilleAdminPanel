@@ -24,11 +24,12 @@ const {
       <IconButton
         class="button-icon__color-green-transparent"
         icon="edit"
+        color-icon="transparent"
       />
     </div>
 
     <!-- Тут модалка -->
-     
+
   </div>
 </template>
 
