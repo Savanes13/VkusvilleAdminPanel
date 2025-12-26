@@ -6,6 +6,9 @@ import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
 import { computed, reactive, ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
+
+type TBotsType = "technical" | "applicants"
 
 interface ITableLineItem {
   key: string;
@@ -16,16 +19,28 @@ interface ITableLineItem {
 const contentPageData = ref<ITableLineItem[] | null>(null);
 const currentPage = ref<number>(1);
 const pageSize = 8;
+const selectedBot = ref<TBotsType>('technical');
 
 const searchInputObj = reactive<IInputDefaultProps>({
   value: '',
-  label: 'Почта',
-  placeholder: 'Почта',
+  label: 'Поиск',
+  placeholder: 'Поиск',
   error: {
     show: false,
     text: ''
   },
 });
+
+const dataSwitch = [
+  {
+    name: "technical",
+    text: "Технический бот"
+  },
+  {
+    name: "applicants",
+    text: "Абитуриентский бот"
+  }
+];
 
 // сервер всегда отдает валидные данные где есть все ключи, надо сделать ситуацию где юзер ключ удаляет
 const stabContent = [
@@ -118,6 +133,7 @@ const goToPage = (page: number) => {
 const getPageData = async () => {
   try {
     //TODO: сюда запрос к api
+    // ВЗАВИСИМОСТИ ОТ ТИПА БОТА
     contentPageData.value = stabContent;
   } catch (error) {
     console.error("ошибка загрузки данных страницы")
@@ -140,64 +156,61 @@ getPageData();
     <PageHeader>
       Контент
     </PageHeader>
-
-
     <div class="content__switch">
-      
+      <DefaultSwitch
+        v-model:value="selectedBot"
+        :data="dataSwitch"
+      />
     </div>
-
-    <div class="content__content">
-
-      <WrapperBlock>
-        <div class="search">
-          <DefaultInput
-            :is-search="true"
-            v-model:value="searchInputObj.value"
-            :label="searchInputObj.label"
-            :placeholder="searchInputObj.placeholder"
-            :error="searchInputObj.error"
+    <WrapperBlock
+      class="content__content"
+    >
+      <div class="search">
+        <DefaultInput
+          :is-search="true"
+          v-model:value="searchInputObj.value"
+          :label="searchInputObj.label"
+          :placeholder="searchInputObj.placeholder"
+          :error="searchInputObj.error"
+        />
+      </div>
+      <TableContent
+        :data="paginatedContent"
+        :missing-lines="missingLines"
+      />
+      
+      <!-- Можно вынести в комопнет -->
+      <div
+        class="pagination" 
+        v-if="totalPages > 1"
+      >
+        <div class="pagination__info">
+          <div class="text-pagination">
+            <p>Стр</p>
+          </div>
+          <div class="currentPage text-pagination">
+            <p>{{ currentPage }}</p>
+          </div>
+          <div class="text-pagination">
+            <p>из {{ totalPages }}</p>
+          </div>
+        </div>
+        <div class="pagination__buttons">
+          <IconButton
+            class="button-icon__color-gray"
+            icon="chevronLeft"
+            :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)"
+          />
+          <IconButton
+            class="button-icon__color-gray"
+            icon="chevronRight"
+            :disabled="currentPage === totalPages"
+            @click="goToPage(currentPage + 1)"
           />
         </div>
-        <TableContent
-          :data="paginatedContent"
-          :missing-lines="missingLines"
-        />
-        
-        <!-- Можно вынести в комопнет -->
-        <div
-          class="pagination" 
-          v-if="totalPages > 1"
-        >
-          <div class="pagination__info">
-            <div class="text-pagination">
-              <p>Стр</p>
-            </div>
-            <div class="currentPage text-pagination">
-              <p>{{ currentPage }}</p>
-            </div>
-            <div class="text-pagination">
-              <p>из {{ totalPages }}</p>
-            </div>
-          </div>
-          <div class="pagination__buttons">
-            <IconButton
-              class="button-icon__color-gray"
-              icon="chevronLeft"
-              :disabled="currentPage === 1"
-              @click="goToPage(currentPage - 1)"
-            />
-            <IconButton
-              class="button-icon__color-gray"
-              icon="chevronRight"
-              :disabled="currentPage === totalPages"
-              @click="goToPage(currentPage + 1)"
-            />
-          </div>
-        </div>
-      </WrapperBlock>
-
-    </div>
-
+      </div>
+    </WrapperBlock>
   </div>
 </template>
 
@@ -244,5 +257,9 @@ getPageData();
   border-radius: 8px;
   border: 1px solid #DDE0E8;
   font-weight: 500;
+}
+
+.content__switch {
+  margin-bottom: 24px;
 }
 </style>

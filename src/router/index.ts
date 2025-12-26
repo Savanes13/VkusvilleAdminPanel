@@ -5,6 +5,7 @@ import Main from '@/components/pages/main/Main.vue'
 import Dashboard from '@/components/pages/dashboard/Dashboard.vue'
 import Stages from '@/components/pages/stages/Stages.vue'
 import Content from '@/components/pages/content/Content.vue'
+import Experts from '@/components/pages/experts/Experts.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -18,7 +19,8 @@ const router = createRouter({
         { path: "", component: Main },
         { path: "dashboard", component: Dashboard },
         { path: "stages", component: Stages },
-        { path: "content", component: Content }
+        { path: "content", component: Content },
+        { path: "experts", component: Experts }
       ],
       props: true,
     },

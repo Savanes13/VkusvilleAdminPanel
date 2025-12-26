@@ -32,10 +32,10 @@ const route = useRoute();
       path="/"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/experts'"
       icon="expert"
       text="Эксперты"
-      path="/"
+      path="/experts"
     />
     <PanelItem
       :is-active="false"
