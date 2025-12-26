@@ -4,18 +4,23 @@ import IconButton from '@/components/shared/ui/button/IconButton.vue';
 interface ILineTableProps {
   text: string;
   keyLine: string;
+  lastLine: boolean;
   empty?: boolean;
 }
 
 const {
   text,
   keyLine,
+  lastLine = false,
   empty
 } = defineProps<ILineTableProps>();
 </script>
 
 <template>
-  <div class="line-table">
+  <div 
+    class="line-table"
+    :class="{'line-table--last' : lastLine}"
+  >
     <div class="line-table__item text-item">
       <p>{{ text }}</p>
     </div>
@@ -44,6 +49,11 @@ const {
   border-bottom: 1px solid #DDE0E8;
   border-left: 1px solid #DDE0E8;
   border-right: 1px solid #DDE0E8;
+}
+
+.line-table--last {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 .line-table__item {
