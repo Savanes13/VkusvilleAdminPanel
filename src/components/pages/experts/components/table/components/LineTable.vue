@@ -11,6 +11,7 @@ interface ILineTableProps {
   untested: IExpertStats;
   overdue: IExpertStats;
   deadline: IExpertStats;
+  lastLine: boolean;
 };
 
 const {
@@ -19,12 +20,16 @@ const {
   isAuth,
   untested,
   overdue,
-  deadline
+  deadline,
+  lastLine
 } = defineProps<ILineTableProps>();
 </script>
 
 <template>
-  <div class="line-table">
+  <div 
+    class="line-table"
+    :class="{'line-table--last' : lastLine}"
+  >
     <div class="line-table__name">
       <p>{{ name }}</p>
     </div>
@@ -80,6 +85,11 @@ const {
   border-left: 1px solid #DDE0E8;
   border-right: 1px solid #DDE0E8;
   height: 72px;
+}
+
+.line-table--last {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 .line-table__name {

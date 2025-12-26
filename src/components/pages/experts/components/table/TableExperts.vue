@@ -27,17 +27,19 @@ const {
 
 <template>
   <div class="table-experts">
-    <HeaderTable/>
 
+    <HeaderTable/>
     <LineTable
-      v-for="item in data"
+      v-for="(item, index) in data"
       :id="item.id"
       :name="item.name"
       :is-auth="item.isAuth"
       :untested="item.untested"
       :overdue="item.overdue"
       :deadline="item.deadline"
+      :last-line="index === data.length - 1"
     />
+    
   </div>
 </template>
 
