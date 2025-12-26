@@ -21,9 +21,93 @@ const searchInputObj = reactive<IInputDefaultProps>({
   },
 });
 
-// const stabExperts = [
-  
-// ]
+const stabExperts = [
+  {
+    id: 2123,
+    name: "Байнов Руслан Сергеевич",
+    isAuth: true,
+    untested: {
+      first: 0,
+      second: 2
+    },
+    overdue: {
+      first: 1,
+      second: 0
+    },
+    deadline: {
+      first: 1,
+      second: 4
+    },
+  },
+  {
+    id: 2124,
+    name: "Иванова Мария Алексеевна",
+    isAuth: true,
+    untested: {
+      first: 3,
+      second: 1
+    },
+    overdue: {
+      first: 0,
+      second: 2
+    },
+    deadline: {
+      first: 2,
+      second: 1
+    },
+  },
+  {
+    id: 2125,
+    name: "Петров Андрей Николаевич",
+    isAuth: false,
+    untested: {
+      first: 1,
+      second: 0
+    },
+    overdue: {
+      first: 2,
+      second: 1
+    },
+    deadline: {
+      first: 0,
+      second: 3
+    },
+  },
+  {
+    id: 2126,
+    name: "Смирнова Ольга Викторовна",
+    isAuth: true,
+    untested: {
+      first: 4,
+      second: 2
+    },
+    overdue: {
+      first: 0,
+      second: 0
+    },
+    deadline: {
+      first: 3,
+      second: 1
+    },
+  },
+  {
+    id: 2127,
+    name: "Кузнецов Дмитрий Игоревич",
+    isAuth: true,
+    untested: {
+      first: 0,
+      second: 1
+    },
+    overdue: {
+      first: 1,
+      second: 1
+    },
+    deadline: {
+      first: 2,
+      second: 2
+    },
+  }
+];
 
 const getPageData = async () => {
   try {
@@ -62,7 +146,9 @@ getPageData();
         </div>
       </div>
 
-      <TableExperts/>
+      <TableExperts
+        :data="stabExperts"
+      />
     </WrapperBlock>
 
   </div>
