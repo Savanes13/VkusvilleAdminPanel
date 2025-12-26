@@ -2,13 +2,15 @@
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 
 interface ILineTableProps {
-  text: string
-  keyLine: string
+  text: string;
+  keyLine: string;
+  empty?: boolean;
 }
 
 const {
   text,
-  keyLine
+  keyLine,
+  empty
 } = defineProps<ILineTableProps>();
 </script>
 
@@ -25,6 +27,7 @@ const {
         class="button-icon__color-green-transparent"
         icon="edit"
         color-icon="transparent"
+        v-if="!empty"
       />
     </div>
 

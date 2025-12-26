@@ -14,7 +14,7 @@ interface ITableLineItem {
 }
 
 const contentPageData = ref<ITableLineItem[] | null>(null);
-const currentPage = ref(1);
+const currentPage = ref<number>(1);
 const pageSize = 8;
 
 const searchInputObj = reactive<IInputDefaultProps>({
@@ -100,6 +100,12 @@ const filteredContent = computed<ITableLineItem[]>(() => {
   );
 });
 
+const missingLines = computed(() => {
+  const pageData = paginatedContent.value;
+  const missingRows = pageSize - pageData.length;
+  return missingRows;
+});
+
 watch(() => searchInputObj.value, () => {
   currentPage.value = 1;
 });
@@ -135,6 +141,7 @@ getPageData();
       Контент
     </PageHeader>
 
+
     <div class="content__switch">
       
     </div>
@@ -142,7 +149,6 @@ getPageData();
     <div class="content__content">
 
       <WrapperBlock>
-
         <div class="search">
           <DefaultInput
             :is-search="true"
@@ -152,12 +158,11 @@ getPageData();
             :error="searchInputObj.error"
           />
         </div>
-
         <TableContent
           :data="paginatedContent"
+          :missing-lines="missingLines"
         />
         
-
         <!-- Можно вынести в комопнет -->
         <div
           class="pagination" 
@@ -189,8 +194,8 @@ getPageData();
             />
           </div>
         </div>
-
       </WrapperBlock>
+
     </div>
 
   </div>
@@ -208,6 +213,7 @@ getPageData();
   align-items: center;
   justify-content: end;
   gap: 24px;
+  margin-top: 16px;
 }
 
 .pagination__info {
