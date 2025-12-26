@@ -26,9 +26,16 @@
   margin-top: 104px;
 }
 
+@media (max-width: 768px) {
+  .entrance__block {
+    margin-top: 54px;
+  }
+}
+
 @media (max-width: 500px) {
   .entrance__block  {
     width: 100%;
+    margin-top: 20px;
   }
 }
 </style>
