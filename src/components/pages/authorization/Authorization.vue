@@ -9,6 +9,8 @@ import type { IInputPasswordProps } from '@/types/inputs/types';
 import logo from '@/assets/images/logo/logo.svg';
 import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import { reactive, ref } from 'vue';
+import { auth } from '@/api/user/apiUser';
+
 
 const rememberUser = ref<boolean>(false);
 
@@ -31,6 +33,15 @@ const passwordInputObj = reactive<IInputPasswordProps>({
     text: ''
   },
 });
+
+const authUser = async () => {
+  try {
+    const response = await auth(emailInputObj.value, passwordInputObj.value);
+    console.log(response)
+  } catch (error) {
+    
+  }
+}
 </script>
 
 <template>
@@ -71,6 +82,7 @@ const passwordInputObj = reactive<IInputPasswordProps>({
         </div>
         <DefaultButton
           class="default-button__size--large default-button__color-green"
+          @click="authUser"
         >
           Войти
         </DefaultButton>
