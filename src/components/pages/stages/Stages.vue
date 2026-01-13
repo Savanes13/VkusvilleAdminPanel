@@ -371,7 +371,7 @@ const updateDeadlineDate = (val: string) => {
       </WrapperBlock>
     </div>
 
-    {{ stabStages.stageFirst.deadlines.startDate.date }}
+    <!-- {{ stabStages.stageFirst.deadlines.startDate.date }} -->
 
     <transition name="fadeFast" mode="out-in">
       <StageWindow
