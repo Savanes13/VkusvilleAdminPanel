@@ -10,9 +10,11 @@ import logo from '@/assets/images/logo/logo.svg';
 import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import { reactive, ref } from 'vue';
 import { auth } from '@/api/user/apiUser';
+import { useUserStore } from '@/store/user/userStore';
 
 
 const rememberUser = ref<boolean>(false);
+const userStore = useUserStore();
 
 const emailInputObj = reactive<IInputPasswordProps>({
   value: '',
@@ -37,11 +39,16 @@ const passwordInputObj = reactive<IInputPasswordProps>({
 const authUser = async () => {
   try {
     const response = await auth(emailInputObj.value, passwordInputObj.value);
+
+    userStore.setAccessToken(response.access_token);
+
+    localStorage.setItem('refresh_token', response.refresh_token);
+
     console.log(response)
   } catch (error) {
-    
-  }
-}
+    console.error("ошибка при авторизации");
+  };
+};
 </script>
 
 <template>
