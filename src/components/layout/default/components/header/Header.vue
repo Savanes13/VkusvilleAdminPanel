@@ -37,7 +37,6 @@ const dataSwitch = [
         />
       </div>
     </div>
-    {{ userStore.accessToken }}
     <div class="header__right">
       
     </div>

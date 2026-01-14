@@ -3,15 +3,12 @@ import { useUserStore } from '@/store/user/userStore'
 import { refreshAccessToken } from './user/apiUser'
 
 const api = axios.create({
-  baseURL: 'https://ajasdc-test.vv-rea.management'
+  baseURL: 'https://ajasdc-test.vv-rea.management',
+  withCredentials: true 
 })
 
 api.interceptors.request.use(config => {
   const userStore = useUserStore()
-
-  console.log(userStore.accessToken)
-
-  // if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   return config
 })
@@ -39,33 +36,21 @@ api.interceptors.response.use(
 
       isRefreshing = true
 
-      const refreshToken = localStorage.getItem('refresh_token');
-
-      if (!refreshToken) {
-        // разлогинить
-         isRefreshing = false
-        // logout пользователя
-        return Promise.reject(error)
-      } 
-
-      // решить с токеном
-      const response = await refreshAccessToken(refreshToken);
-      const newToken = response.access_token;
-      userStore.setAccessToken(newToken);
-
-
-      // разобраться в интерсепторе
-      isRefreshing = false
-
-      if (!newToken) {
-        return Promise.reject(error)
+      try {
+        const response = await refreshAccessToken()
+        const newToken = response.access_token
+        userStore.setAccessToken(newToken)
+        queue.forEach(cb => cb(newToken))
+        queue = []
+        originalRequest.headers.Authorization = `Bearer ${newToken}`
+        return api(originalRequest)
+      } catch (e) {
+        // выход сделать
+        // userStore.logout()
+        return Promise.reject(e)
+      } finally {
+        isRefreshing = false
       }
-
-      queue.forEach(cb => cb(newToken))
-      queue = []
-
-      originalRequest.headers.Authorization = `Bearer ${newToken}`
-      return api(originalRequest)
     }
 
     return Promise.reject(error)
