@@ -38,8 +38,34 @@ const passwordInputObj = reactive<IInputPasswordProps>({
   },
 });
 
+//валидация полей
+const checkingEmailValidity = () => {
+  if (!emailInputObj.value) {
+    emailInputObj.error.show = true;
+    emailInputObj.error.text = 'Поле не заполнено';
+    return;
+  }
+  return true;
+};
+
+const checkingPasswordValidity = () => {
+ if (!passwordInputObj.value) {
+    passwordInputObj.error.show = true;
+    passwordInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingFormValidity = () => {
+  const isEmailValid = checkingEmailValidity();
+  const isPasswordValid = checkingPasswordValidity();
+  return isEmailValid && isPasswordValid;
+};
+
 const authUser = async () => {
   try {
+    if(!checkingFormValidity()) return
     const response = await auth(emailInputObj.value, passwordInputObj.value);
     userStore.setAccessToken(response.access_token);
     router.push('/');
