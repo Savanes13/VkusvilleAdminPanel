@@ -8,7 +8,8 @@ import { entranceIcons } from '@/components/shared/icons/entrance/icons';
 import logo from '@/assets/images/logo/logo.svg';
 import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/types';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import { register } from '@/api/user/apiUser';
 
 const rememberUser = ref<boolean>(false);
 
@@ -51,6 +52,83 @@ const tokenInputObj = reactive<IInputDefaultProps>({
     text: ''
   },
 });
+
+watch(() => emailInputObj.value, () => {
+  emailInputObj.error.show = false;
+});
+
+watch(() => passwordInputObj.value, () => {
+  passwordInputObj.error.show = false;
+});
+
+watch(() => repeatPasswordInputObj.value, () => {
+  repeatPasswordInputObj.error.show = false;
+});
+
+watch(() => tokenInputObj.value, () => {
+  tokenInputObj.error.show = false;
+});
+
+const checkingEmailValidity = () => {
+  if (!emailInputObj.value) {
+    emailInputObj.error.show = true;
+    emailInputObj.error.text = 'Поле не заполнено';
+    return;
+  }
+  return true;
+};
+
+const checkingPasswordValidity = () => {
+ if (!passwordInputObj.value) {
+    passwordInputObj.error.show = true;
+    passwordInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingRepeatPasswordValidity = () => {
+ if (!repeatPasswordInputObj.value) {
+    repeatPasswordInputObj.error.show = true;
+    repeatPasswordInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  if (passwordInputObj.value !== repeatPasswordInputObj.value) {
+    passwordInputObj.error.show = true;
+    passwordInputObj.error.text = '';
+    repeatPasswordInputObj.error.show = true;
+    repeatPasswordInputObj.error.text = 'Пароли не совпадают';
+    return false;
+  };
+  return true;
+};
+
+const checkingTokenValidity = () => {
+ if (!tokenInputObj.value) {
+    tokenInputObj.error.show = true;
+    tokenInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingFormValidity = () => {
+  const isEmailValid = checkingEmailValidity();
+  const isPasswordValid = checkingPasswordValidity();
+  const isRepeatPasswordValid = checkingRepeatPasswordValidity();
+  const isTokenValid = checkingTokenValidity();
+  return isEmailValid && isPasswordValid && isRepeatPasswordValid && isTokenValid;
+};
+
+const registerUser = async () => {
+  try {
+    if(!checkingFormValidity()) return;
+    await register(emailInputObj.value, passwordInputObj.value, tokenInputObj.value);
+    // TODO: сюда установку токена
+  } catch (error) {
+    console.error('ошибка при авторизации пользователя')
+  };
+};
 </script>
 
 <template>
@@ -103,6 +181,7 @@ const tokenInputObj = reactive<IInputDefaultProps>({
         </div>
         <DefaultButton
           class="default-button__size--large default-button__color-green"
+          @click="registerUser"
         >
           Зарегистрировать аккаунт
         </DefaultButton>

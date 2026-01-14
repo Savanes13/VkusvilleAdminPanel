@@ -8,11 +8,10 @@ import { entranceIcons } from '@/components/shared/icons/entrance/icons';
 import type { IInputPasswordProps } from '@/types/inputs/types';
 import logo from '@/assets/images/logo/logo.svg';
 import smallLogo from '@/assets/images/logo/smallLogo.svg';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { auth } from '@/api/user/apiUser';
 import { useUserStore } from '@/store/user/userStore';
 import { useRouter } from 'vue-router';
-
 
 const rememberUser = ref<boolean>(false);
 const router = useRouter();
@@ -38,7 +37,14 @@ const passwordInputObj = reactive<IInputPasswordProps>({
   },
 });
 
-//валидация полей
+watch(() => emailInputObj.value, () => {
+  emailInputObj.error.show = false;
+});
+
+watch(() => passwordInputObj.value, () => {
+  passwordInputObj.error.show = false;
+});
+
 const checkingEmailValidity = () => {
   if (!emailInputObj.value) {
     emailInputObj.error.show = true;
@@ -71,7 +77,7 @@ const authUser = async () => {
     router.push('/');
     console.log(response)
   } catch (error) {
-    console.error("ошибка при авторизации");
+    console.error("ошибка при авторизации пользователя");
   };
 };
 </script>
