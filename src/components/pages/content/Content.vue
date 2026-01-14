@@ -7,7 +7,7 @@ import type { IInputDefaultProps } from '@/types/inputs/types';
 import { computed, reactive, ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
-import { changeTextContent, getContent } from '@/api/pages/content/apiContent';
+import { changeTextContentAbit, changeTextContentAdmin, getContentAbit, getContentAdmin } from '@/api/pages/content/apiContent';
 import { checkAuth } from '@/api/user/apiUser';
 import { useUserStore } from '@/store/user/userStore';
 
@@ -74,6 +74,11 @@ watch(() => searchInputObj.value, () => {
   currentPage.value = 1;
 });
 
+watch(selectedBot, () => {
+  currentPage.value = 1;
+  getPageData();
+});
+
 const goToPage = (page: number) => {
   if (page < 1 || page > totalPages.value) return;
   currentPage.value = page;
@@ -81,37 +86,22 @@ const goToPage = (page: number) => {
 
 const getPageData = async () => {
   try {
-
-    const response = await getContent();
-    //TODO: сюда запрос к api
-    // ВЗАВИСИМОСТИ ОТ ТИПА БОТА
-    contentPageData.value = response.items;
+    if (selectedBot.value === 'technical') {
+      const response = await getContentAdmin();
+      contentPageData.value = response.items;
+    } else {
+      const response = await getContentAbit();
+      contentPageData.value = response.items;
+    };
   } catch (error) {
     console.error("ошибка загрузки данных страницы")
   };
 };
 getPageData();
 
-// [{key:"one", value: "текст сообщения с аргументом {one} 1 и аргументом {two} 2", required_keys:["one", "two"]},..]
-// Так понял, и в такой ситуации я крашу оба ключа в зеленый так как они есть в required_keys? Да
-
-// [{key:"one", value: "текст сообщения с аргументом {one} 1 и аргументом {two} 2", required_keys:["one"]},..]
-// а так бы two красил в красный? Да
-
-
-
-const getPageInfo = async () => {
-  try {
-    await getContent();
-  } catch (error) {
-
-  }
-}
-getPageInfo();
-
 const changeTextLineTable = async (text: string, key: string) => {
   try {
-    await changeTextContent(text, key);
+    await changeTextContentAbit(text, key);
     if (contentPageData.value) {
       const changeItem = contentPageData.value.find(item => item.key === key);
       if (changeItem) changeItem.value = text;
