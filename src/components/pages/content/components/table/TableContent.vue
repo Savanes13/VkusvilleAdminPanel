@@ -5,7 +5,7 @@ import LineTable from './components/LineTable.vue';
 interface ITableLine {
   key: string;
   value: string;
-  required_keys: string[];
+  format_keys: string[];
 }
 
 interface ITableContentProps {
@@ -17,6 +17,14 @@ const {
   data,
   missingLines
 } = defineProps<ITableContentProps>();
+
+const emit = defineEmits<{
+  (e: 'changeTextLine', value: string, key: string): void;
+}>();
+
+const changeText = (text: string, key: string) => {
+  emit('changeTextLine', text, key);
+}
 </script>
 
 <template>
@@ -27,16 +35,17 @@ const {
     <HeaderTable/>
     <LineTable
       v-for="(item, index) in data"
-      :requiredKeys="item.required_keys"
+      :format_keys="item.format_keys"
       :key-line="item.key"
       :text="item.value"
       :key="item.key"
       :last-line="missingLines === 0 && index === data.length - 1"
+      @change-text="changeText"
     />
     <LineTable
       v-for="(line, index) in missingLines"
       :empty="true"
-      :requiredKeys="[]"
+      :format_keys="[]"
       key-line=""
       text=""
       :key="index"

@@ -8,7 +8,7 @@ const editModalVisibility = ref<boolean>(false);
 interface ILineTableProps {
   text: string;
   keyLine: string;
-  requiredKeys: string[];
+  format_keys: string[];
   lastLine: boolean;
   empty?: boolean;
 }
@@ -16,10 +16,18 @@ interface ILineTableProps {
 const {
   text,
   keyLine,
-  requiredKeys,
+  format_keys,
   lastLine = false,
   empty
 } = defineProps<ILineTableProps>();
+
+const emit = defineEmits<{
+  (e: 'changeText', value: string, key: string): void;
+}>();
+
+const changeText = (text: string) => {
+  emit('changeText', text, keyLine);
+}
 
 const openWindow = () => {
   editModalVisibility.value = true;
@@ -55,8 +63,9 @@ const closeWindow = () => {
         v-if="editModalVisibility"
         :key-line="keyLine"
         :text="text"
-        :required-keys="requiredKeys"
+        :required-keys="format_keys"
         @close="closeWindow"
+        @change-text="changeText"
       />
     </transition>
   </div>
@@ -91,7 +100,25 @@ const closeWindow = () => {
 
 .text-item {
   flex: 560;
+  overflow: hidden;  
+
+  // text-overflow: ellipsis; 
 }
+
+// .text-item p {
+//   flex: 1;                // занимает всю ширину родителя
+//   margin: 0;              // убираем дефолтные отступы
+//   white-space: nowrap;    // запрет переноса
+//   overflow: hidden;       // скрыть лишнее
+//   text-overflow: ellipsis; // добавить троеточие
+// }
+
+
+
+// .text-item p {
+//   display: flex;
+//   flex-wrap: nowrap;
+// }
 
 .key-item {
   flex: 330;

@@ -3,7 +3,7 @@ import BackgroundModal from '@/components/layout/background/BackgroundModal.vue'
 import ModalWindow from '../../ModalWindow.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import TextArea from '@/components/shared/ui/textArea/TextArea.vue';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 interface IContentWindowProps {
   text: string;
@@ -18,17 +18,31 @@ const {
 } = defineProps<IContentWindowProps>();
 
 const textWindowValue = ref<string>(text);
+const showHint = ref<boolean>(false);
 
-// TODO: тут надо будет делаать проверки на ключи и так далее
+watch(() => textWindowValue.value, () => {
+  showHint.value = false;
+});
 
-// TODO: надо будет сделать эмиты которые буду отправлять наверх данные о сохранении
+const allMissingKeysText = computed(() => {
+  return requiredKeys.filter(key => {
+    const wrappedKey = `{${key}}`;
+    return !textWindowValue.value.includes(wrappedKey);
+  });
+});
 
-const saveNewData = () => {
-  // сохранить измененные данные
+const changeText = () => {
+  if (allMissingKeysText.value.length > 0) {
+    showHint.value = true;
+    return;
+  };
+  emit('changeText', textWindowValue.value);
+  emit('close');
 };
 
 const emit = defineEmits<{
   (e: 'close'): void;
+  (e: 'changeText', value: string): void;
 }>();
 
 const closeWindow = () => {
@@ -63,6 +77,32 @@ const closeWindow = () => {
           :height="136"
           label="Текст"
         />
+        <div 
+          class="content-window__required-keys"
+          v-if="requiredKeys.length > 0"
+        >
+          <div 
+            class="key-item"
+            :class="{'key-item--missing' : allMissingKeysText.includes(item)}"
+            v-for="(item, index) in requiredKeys"
+            :key="index"
+          >
+            <p>{{ item }}</p>
+          </div>
+        </div>
+        <transition :name="'fade-slide'" mode="out-in">
+          <div 
+            class="hint-key"
+            v-if="showHint"
+          > 
+            <div class="hint-key__title">
+              <p>Некорректный ключ</p>
+            </div>
+            <div class="hint-key__text">
+              <p>Исправьте ключ, выделенный красным, или отмените редактирование текста ниже</p>
+            </div>
+          </div>
+        </transition>
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
@@ -71,7 +111,7 @@ const closeWindow = () => {
           </DefaultButton>
           <DefaultButton
             class="default-button__size--large default-button__color-green"
-            @click="saveNewData"
+            @click="changeText"
           >
             Сохранить
           </DefaultButton>
@@ -118,11 +158,50 @@ const closeWindow = () => {
 }
 
 .buttons-block {
+  margin-top: 24px;
   display: flex;
   gap: 16px;
 }
 
-.content-window__text-area {
-  margin-bottom: 24px;
+.content-window__required-keys {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.key-item {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: color.$colorTextAcccent;
+}
+
+.key-item--missing {
+  color: color.$colorTextNegative;
+}
+
+.hint-key {
+  padding: 20px;
+  border-radius: 16px;
+  background: color.$colorBackgroundWarning;
+  margin-top: 24px;
+}
+
+.hint-key__title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #A15F01;
+  margin-bottom: 8px;
+}
+
+.hint-key__text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #A15F01;
 }
 </style>

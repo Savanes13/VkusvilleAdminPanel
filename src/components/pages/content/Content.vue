@@ -7,7 +7,7 @@ import type { IInputDefaultProps } from '@/types/inputs/types';
 import { computed, reactive, ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
-import { getContent } from '@/api/pages/content/apiContent';
+import { changeTextContent, getContent } from '@/api/pages/content/apiContent';
 import { checkAuth } from '@/api/user/apiUser';
 import { useUserStore } from '@/store/user/userStore';
 
@@ -16,10 +16,11 @@ type TBotsType = "technical" | "applicants"
 interface ITableLineItem {
   key: string;
   value: string;
-  required_keys: string[];
+  format_keys: string[];
 }
 
 const contentPageData = ref<ITableLineItem[] | null>(null);
+
 const currentPage = ref<number>(1);
 const pageSize = 8;
 const selectedBot = ref<TBotsType>('technical');
@@ -48,58 +49,58 @@ const dataSwitch = [
 ];
 
 // сервер всегда отдает валидные данные где есть все ключи, надо сделать ситуацию где юзер ключ удаляет
-const stabContent = [
-  {
-    key: "application_start",
-    value: "Для подачи заявления в магистратуру необходимо {application_start} заполнить основные данные {data_check}",
-    required_keys: ["application_start", "data_check"]
-  },
-  {
-    key: "personal_info_verification",
-    value: "Перед началом обучения требуется {personal_info_verification} подтвердить личную информацию {info_check}",
-    required_keys: ["personal_info_verification", "info_check"]
-  },
-  {
-    key: "profile_creation_step",
-    value: "Регистрация в программе магистратуры начинается с {profile_creation_step} создания профиля",
-    required_keys: ["profile_creation_step"]
-  },
-  {
-    key: "contact_details_entry",
-    value: "Чтобы продолжить процесс поступления, нужно {contact_details_entry} указать контактные данные {contact_check}",
-    required_keys: ["contact_details_entry", "contact_check"]
-  },
-  {
-    key: "documents_upload",
-    value: "Следующим шагом является {documents_upload} загрузка необходимых документов",
-    required_keys: ["documents_upload"]
-  },
-  {
-    key: "review_information",
-    value: "Для завершения регистрации необходимо {review_information} проверить введённые сведения {review_check}",
-    required_keys: ["review_information", "review_check"]
-  },
-  {
-    key: "account_confirmation",
-    value: "Подтверждение аккаунта {account_confirmation} требуется для доступа к системе поступления",
-    required_keys: ["account_confirmation"]
-  },
-  {
-    key: "application_accuracy_check",
-    value: "Перед отправкой заявки {application_accuracy_check} убедитесь в корректности данных",
-    required_keys: ["application_accuracy_check"]
-  },
-  {
-    key: "program_selection",
-    value: "После заполнения формы можно {program_selection} перейти к выбору программы {selection_check}",
-    required_keys: ["program_selection", "selection_check"]
-  },
-  {
-    key: "application_submission",
-    value: "Финальным этапом является {application_submission} отправка заявки на рассмотрение",
-    required_keys: ["application_submission"]
-  }
-];
+// const stabContent = [
+//   {
+//     key: "application_start",
+//     value: "Для подачи заявления в магистратуру необходимо {application_start} заполнить основные данные {data_check}",
+//     required_keys: ["application_start", "data_check"]
+//   },
+//   {
+//     key: "personal_info_verification",
+//     value: "Перед началом обучения требуется {personal_info_verification} подтвердить личную информацию {info_check}",
+//     required_keys: ["personal_info_verification", "info_check"]
+//   },
+//   {
+//     key: "profile_creation_step",
+//     value: "Регистрация в программе магистратуры начинается с {profile_creation_step} создания профиля",
+//     required_keys: ["profile_creation_step"]
+//   },
+//   {
+//     key: "contact_details_entry",
+//     value: "Чтобы продолжить процесс поступления, нужно {contact_details_entry} указать контактные данные {contact_check}",
+//     required_keys: ["contact_details_entry", "contact_check"]
+//   },
+//   {
+//     key: "documents_upload",
+//     value: "Следующим шагом является {documents_upload} загрузка необходимых документов",
+//     required_keys: ["documents_upload"]
+//   },
+//   {
+//     key: "review_information",
+//     value: "Для завершения регистрации необходимо {review_information} проверить введённые сведения {review_check}",
+//     required_keys: ["review_information", "review_check"]
+//   },
+//   {
+//     key: "account_confirmation",
+//     value: "Подтверждение аккаунта {account_confirmation} требуется для доступа к системе поступления",
+//     required_keys: ["account_confirmation"]
+//   },
+//   {
+//     key: "application_accuracy_check",
+//     value: "Перед отправкой заявки {application_accuracy_check} убедитесь в корректности данных",
+//     required_keys: ["application_accuracy_check"]
+//   },
+//   {
+//     key: "program_selection",
+//     value: "После заполнения формы можно {program_selection} перейти к выбору программы {selection_check}",
+//     required_keys: ["program_selection", "selection_check"]
+//   },
+//   {
+//     key: "application_submission",
+//     value: "Финальным этапом является {application_submission} отправка заявки на рассмотрение",
+//     required_keys: ["application_submission"]
+//   }
+// ];
 
 const totalPages = computed(() => {
   return Math.ceil(filteredContent.value.length / pageSize);
@@ -137,9 +138,11 @@ const goToPage = (page: number) => {
 
 const getPageData = async () => {
   try {
+
+    const response = await getContent();
     //TODO: сюда запрос к api
     // ВЗАВИСИМОСТИ ОТ ТИПА БОТА
-    contentPageData.value = stabContent;
+    contentPageData.value = response.items;
   } catch (error) {
     console.error("ошибка загрузки данных страницы")
   };
@@ -172,6 +175,16 @@ getPageInfo();
 //   }
 // }
 // checkAuthUser();
+
+
+const changeTextLineTable = async (text: string, key: string) => {
+  try {
+    const response = await changeTextContent(text, key);
+    console.log(response)
+  } catch (error) {
+
+  }
+}
 </script>
 
 <template>
@@ -203,6 +216,7 @@ getPageInfo();
       <TableContent
         :data="paginatedContent"
         :missing-lines="missingLines"
+        @change-text-line="changeTextLineTable"
       />
       
       <!-- Можно вынести в комопнет -->
@@ -236,13 +250,6 @@ getPageInfo();
           />
         </div>
       </div>
-
-      <!-- {{ userStore.accessToken }} -->
-
-      <div>
-        получить инфу
-      </div>
-
     </WrapperBlock>
   </div>
 </template>
