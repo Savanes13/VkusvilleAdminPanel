@@ -7,6 +7,9 @@ import type { IInputDefaultProps } from '@/types/inputs/types';
 import { computed, reactive, ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
+import { getContent } from '@/api/pages/content/apiContent';
+import { checkAuth } from '@/api/user/apiUser';
+import { useUserStore } from '@/store/user/userStore';
 
 type TBotsType = "technical" | "applicants"
 
@@ -20,6 +23,8 @@ const contentPageData = ref<ITableLineItem[] | null>(null);
 const currentPage = ref<number>(1);
 const pageSize = 8;
 const selectedBot = ref<TBotsType>('technical');
+
+const userStore = useUserStore();
 
 const searchInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -146,6 +151,30 @@ getPageData();
 
 // [{key:"one", value: "текст сообщения с аргументом {one} 1 и аргументом {two} 2", required_keys:["one"]},..]
 // а так бы two красил в красный? Да
+
+
+
+
+
+
+const getPageInfo = async () => {
+  try {
+    await getContent();
+  } catch (error) {
+
+  }
+}
+getPageInfo();
+
+
+const checkAuthUser = async () => {
+  try {
+    await checkAuth();
+  } catch (error) {
+
+  }
+}
+checkAuthUser();
 </script>
 
 <template>
@@ -210,6 +239,13 @@ getPageData();
           />
         </div>
       </div>
+
+      <!-- {{ userStore.accessToken }} -->
+
+      <div>
+        получить инфу
+      </div>
+
     </WrapperBlock>
   </div>
 </template>

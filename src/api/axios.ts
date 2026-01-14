@@ -3,11 +3,15 @@ import { useUserStore } from '@/store/user/userStore'
 import { refreshAccessToken } from './user/apiUser'
 
 const api = axios.create({
-  baseURL: 'https://api.example.com'
+  baseURL: 'https://ajasdc-test.vv-rea.management'
 })
 
 api.interceptors.request.use(config => {
   const userStore = useUserStore()
+
+  console.log(userStore.accessToken)
+
+  // if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   return config
 })
@@ -39,12 +43,18 @@ api.interceptors.response.use(
 
       if (!refreshToken) {
         // разлогинить
+         isRefreshing = false
+        // logout пользователя
+        return Promise.reject(error)
       } 
 
+      // решить с токеном
       const response = await refreshAccessToken(refreshToken);
       const newToken = response.access_token;
+      userStore.setAccessToken(newToken);
 
 
+      // разобраться в интерсепторе
       isRefreshing = false
 
       if (!newToken) {

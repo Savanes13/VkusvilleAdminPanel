@@ -1,8 +1,9 @@
 import axios, { AxiosError, type AxiosResponse } from "axios";
+import api from "@/api/axios";
 
-export const getContext = async (): Promise<any> => {
+export const getContent = async (): Promise<any> => {
   try {
-    const response: AxiosResponse = await axios.get("https://ajasdc-test.vv-rea.management/api/context");
+    const response = await api.get('/api/bot-texts/abit?limit=100&offset=0')
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) {

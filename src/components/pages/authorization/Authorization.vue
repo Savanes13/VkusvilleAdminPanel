@@ -54,6 +54,9 @@ const authUser = async () => {
 <template>
   <EntranceLayout>
     <div class="authorization">
+
+      {{ userStore.accessToken }}
+
       <div class="authorization__wrap">
         <div class="authorization__logo">
           <img 

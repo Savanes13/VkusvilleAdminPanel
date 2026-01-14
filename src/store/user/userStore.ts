@@ -3,7 +3,10 @@ import { ref } from 'vue';
 import type { TAccessToken } from './types';
 
 export const useUserStore = defineStore('UserStore', () => {
-  const accessToken = ref<TAccessToken>(null);
+  // const accessToken = ref<TAccessToken>(null);
+  const accessToken = ref<TAccessToken>('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY4MzgxMDE1LCJ0eXBlIjoiYWNjZXNzIiwicm9sZSI6IlNVUEVSX0FETUlOIn0.abJP25PEuLpnKYVbi-VIP4HHejHIp8I_0sduh_NqiEs');
+  
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY4MzgxMDE1LCJ0eXBlIjoiYWNjZXNzIiwicm9sZSI6IlNVUEVSX0FETUlOIn0.abJP25PEuLpnKYVbi-VIP4HHejHIp8I_0sduh_NqiEs
 
   const setAccessToken = (token: string) => {
     accessToken.value = token;
