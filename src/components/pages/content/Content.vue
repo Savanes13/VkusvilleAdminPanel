@@ -101,7 +101,11 @@ getPageData();
 
 const changeTextLineTable = async (text: string, key: string) => {
   try {
-    await changeTextContentAbit(text, key);
+    if (selectedBot.value === 'technical') {
+      await changeTextContentAdmin(text, key);
+    } else {
+      await changeTextContentAbit(text, key);
+    };
     if (contentPageData.value) {
       const changeItem = contentPageData.value.find(item => item.key === key);
       if (changeItem) changeItem.value = text;

@@ -43,7 +43,7 @@ export const changeTextContentAbit = async (text: string, key: string): Promise<
 export const changeTextContentAdmin = async (text: string, key: string): Promise<any> => {
   try {
     const request  = { value: text };
-    const response: AxiosResponse = await api.patch(`/api/bot-texts/abit/${key}`, request);
+    const response: AxiosResponse = await api.patch(`/api/bot-texts/admin/${key}`, request);
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) throw error.response;
