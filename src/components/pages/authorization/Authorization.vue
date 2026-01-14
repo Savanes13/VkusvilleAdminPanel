@@ -11,9 +11,11 @@ import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import { reactive, ref } from 'vue';
 import { auth } from '@/api/user/apiUser';
 import { useUserStore } from '@/store/user/userStore';
+import { useRouter } from 'vue-router';
 
 
 const rememberUser = ref<boolean>(false);
+const router = useRouter();
 const userStore = useUserStore();
 
 const emailInputObj = reactive<IInputPasswordProps>({
@@ -40,6 +42,7 @@ const authUser = async () => {
   try {
     const response = await auth(emailInputObj.value, passwordInputObj.value);
     userStore.setAccessToken(response.access_token);
+    router.push('/');
     console.log(response)
   } catch (error) {
     console.error("ошибка при авторизации");
@@ -50,9 +53,6 @@ const authUser = async () => {
 <template>
   <EntranceLayout>
     <div class="authorization">
-
-      {{ userStore.accessToken }}
-
       <div class="authorization__wrap">
         <div class="authorization__logo">
           <img 

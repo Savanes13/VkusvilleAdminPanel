@@ -154,9 +154,6 @@ getPageData();
 
 
 
-
-
-
 const getPageInfo = async () => {
   try {
     await getContent();
@@ -167,14 +164,14 @@ const getPageInfo = async () => {
 getPageInfo();
 
 
-const checkAuthUser = async () => {
-  try {
-    await checkAuth();
-  } catch (error) {
+// const checkAuthUser = async () => {
+//   try {
+//     await checkAuth();
+//   } catch (error) {
 
-  }
-}
-checkAuthUser();
+//   }
+// }
+// checkAuthUser();
 </script>
 
 <template>
