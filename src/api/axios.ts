@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useUserStore } from '@/store/user/userStore'
 import { refreshAccessToken } from './user/apiUser'
+import router from '@/router';
 
 const api = axios.create({
   baseURL: 'https://ajasdc-test.vv-rea.management',
@@ -47,6 +48,7 @@ api.interceptors.response.use(
       } catch (e) {
         // выход сделать
         // userStore.logout()
+        router.replace({ name: 'authorization' });
         return Promise.reject(e)
       } finally {
         isRefreshing = false
