@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import PhoneInput from '@/components/shared/ui/input/PhoneInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
+import type { IInputDefaultProps } from '@/types/inputs/types';
+import { ref } from 'vue';
 
 
 interface IAccessBotProps {
@@ -20,11 +23,20 @@ const emit = defineEmits<{
 const setNewSelectValue = (id: number) => {
   emit('changeValueSelect', id);
 };
+
+const phoneInputObj = ref<IInputDefaultProps>({
+  value: '',
+  label: 'Номер телефона',
+  placeholder: '+ 7',
+  error: {
+    show: false,
+    text: 'phoneNumber'
+  },
+});
 </script>
 
 <template>
   <div class="access-bot">
-
     <WrapperBlock
       class="granting-access"
     >
@@ -36,25 +48,26 @@ const setNewSelectValue = (id: number) => {
           <!-- TODO: сюда подсказку -->
         </div>
       </div>
-
       <div class="granting-access__content">
-
         <DefaultSelect
           :data="data.select"
           :active-item="activeSelect"
           label="Роль"
           @change-value="setNewSelectValue"
         />
-
+        <PhoneInput
+          v-model:value="phoneInputObj.value"
+          :label="phoneInputObj.label"
+          :placeholder="phoneInputObj.placeholder"
+          :error="phoneInputObj.error"
+        />
         <DefaultButton
           class="default-button__size--large default-button__color-green button-access"
         >
           Выдать доступ
         </DefaultButton>
-
       </div>
     </WrapperBlock>
-
   </div>
 </template>
 
