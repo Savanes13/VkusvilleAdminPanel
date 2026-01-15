@@ -1,0 +1,152 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { selectIcons } from '../../icons/select/icons';
+
+interface ISelectItem {
+  id: number;
+  value: string;
+};
+
+interface IDefaultSelectProps {
+  data: ISelectItem[];
+  activeItem: number;
+  label: string
+};
+
+const {
+  data,
+  activeItem,
+  label
+} = defineProps<IDefaultSelectProps>();
+
+const emit = defineEmits<{
+  (e: 'changeValue', id: number): void;
+}>();
+
+const selectIsOpen = ref<boolean>(false);
+
+const toggleSelect = () => {
+  if (selectIsOpen.value === true) {
+    selectIsOpen.value = false;
+  } else {
+    selectIsOpen.value = true;
+  }
+}
+
+const setNewSelectValue = (id: number) => {
+  emit('changeValue', id);
+  selectIsOpen.value = false;
+};
+</script>
+
+<template>
+  <div class="default-select">
+    <div class="default-select__label">
+      <p>{{ label }}</p>
+    </div>
+    <div 
+      class="default-select__selected-item"
+      @click="toggleSelect"
+    >
+      <div>
+        <p>{{ data.find(item => item.id === activeItem)?.value || 'Выберите' }}</p>
+      </div>
+      <div
+        class="svg"
+        :class="{'svg--reverse' : selectIsOpen}"
+      >
+        <span
+          v-html="selectIcons['chevronDown']"
+        ></span>
+      </div>
+    </div>
+    <div 
+      class="default-select__hide-block"
+      v-if="selectIsOpen"
+    >
+      <div
+        class="hide-item"
+        v-for="(item, index) in data"
+        :key="index"
+        @click="setNewSelectValue(item.id)"
+      >
+        <p>{{ item.value }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
+
+.default-select {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+.default-select__selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 26px 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #DDE0E8;
+  width: 100%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+}
+
+.svg span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg svg {
+  display: block;
+}
+
+.svg--reverse {
+  transform: rotate(180deg);
+}
+
+.default-select__label {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: color.$colorTextSecondary;
+  margin-bottom: 4px;
+}
+
+.default-select__hide-block {
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  background: color.$colorTextWhite;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 6px 0px #00103D0F;
+  box-shadow: 0px 6px 12px 0px #00103D0F;
+  box-shadow: 0px 6px 20px 0px #00103D0F;
+  box-shadow: 0px 10px 36px 0px #00103D14;
+}
+
+.hide-item {
+  padding: 14px 26px 14px 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  border-radius: 12px;
+  color: color.$colorTextPrimary;
+  cursor: pointer;
+  transition: background-color transition.$medium;
+}
+
+.hide-item:hover {
+  background: color.$colorBackgroundWhite_Hover;
+}
+</style>
