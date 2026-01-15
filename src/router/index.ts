@@ -7,6 +7,7 @@ import Stages from '@/components/pages/stages/Stages.vue'
 import Content from '@/components/pages/content/Content.vue'
 import Experts from '@/components/pages/experts/Experts.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import Access from '@/components/pages/access/Access.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,7 +21,8 @@ const router = createRouter({
         { path: "dashboard", component: Dashboard },
         { path: "stages", component: Stages },
         { path: "content", component: Content },
-        { path: "experts", component: Experts }
+        { path: "experts", component: Experts },
+        { path: "access", component: Access }
       ],
       props: true,
     },

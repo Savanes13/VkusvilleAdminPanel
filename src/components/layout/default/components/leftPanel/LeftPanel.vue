@@ -38,10 +38,10 @@ const route = useRoute();
       path="/experts"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/access'"
       icon="lock"
       text="Доступы"
-      path="/"
+      path="/access"
     />
     <PanelItem
       :is-active="false"
