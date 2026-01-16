@@ -7,6 +7,7 @@ import type { IInputDefaultProps } from '@/types/inputs/types';
 import { reactive, ref, watch } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
+import { createAccessAdmin } from '@/api/pages/access/apiAccess';
 
 
 interface IAccessBotProps {
@@ -69,6 +70,10 @@ watch(() => fioInputObj.value, () => {
   fioInputObj.error.show = false;
 });
 
+const numberNormalize = () => {
+  return phoneInputObj.value.replace(/\D/g, '');
+};
+
 const checkingPhoneValidity = () => {
   if (!phoneInputObj.value) {
     phoneInputObj.error.show = true;
@@ -98,10 +103,17 @@ const checkingFormValidity = () => {
   return isPhoneValid && isFioValid;
 };
 
+const selectRole = () => {
+  if (selectedItemBot.value === 1) return "expert1"
+  if (selectedItemBot.value === 2) return "expert2"
+  if (selectedItemBot.value === 3) return "manager"
+  return ""
+};
+
 const createNewAdmin = async () => {
   try {
     if(!checkingFormValidity()) return;
-
+    await createAccessAdmin(fioInputObj.value, numberNormalize(), selectRole());
   } catch (error) {
     console.error("ошибка создания пользователя");
   };
