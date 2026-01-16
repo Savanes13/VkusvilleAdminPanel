@@ -5,6 +5,7 @@ import PhoneInput from '@/components/shared/ui/input/PhoneInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
 import { ref } from 'vue';
+import TableExperts from './components/table/TableExperts.vue';
 
 
 interface IAccessBotProps {
@@ -68,11 +69,27 @@ const phoneInputObj = ref<IInputDefaultProps>({
         </DefaultButton>
       </div>
     </WrapperBlock>
+
+    <WrapperBlock class="table-bot">
+      <div class="table-bot__title-block">
+        <div>
+          <p>Роли экспертов</p>
+        </div>
+        <div>
+          <!-- TODO: подсказка -->
+        </div>
+      </div>
+      <TableExperts/>
+    </WrapperBlock>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+
+.granting-access {
+  margin-bottom: 24px;
+}
 
 .granting-access__title {
   font-weight: 500;
@@ -90,5 +107,13 @@ const phoneInputObj = ref<IInputDefaultProps>({
 
 .button-access {
   margin-top: 20px;
+}
+
+.table-bot__title-block {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 20px;
 }
 </style>
