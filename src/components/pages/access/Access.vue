@@ -24,37 +24,37 @@ const dataSwitch = [
   }
 ];
 
-const accessStab = {
-  bot: {
-    select: [
-      {
-        id: 1,
-        value: "Эксперт 1 уровня"
-      },
-      {
-        id: 2,
-        value: "Эксперт 2 уровня"
-      },
-      {
-        id: 3,
-        value: "Менеджер продвижения"
-      }
-    ]
-  },
-  admin: {
+// const accessStab = {
+//   bot: {
+//     select: [
+//       {
+//         id: 1,
+//         value: "Эксперт 1 уровня"
+//       },
+//       {
+//         id: 2,
+//         value: "Эксперт 2 уровня"
+//       },
+//       {
+//         id: 3,
+//         value: "Менеджер продвижения"
+//       }
+//     ]
+//   },
+//   admin: {
 
-  }
-}
+//   }
+// }
 
 
-const getPageData = async () => {
-  try {
-    await getContentAccessAdmins();
-  } catch (error) {
+// const getPageData = async () => {
+//   try {
+//     await getContentAccessAdmins();
+//   } catch (error) {
     
-  }
-}
-getPageData()
+//   }
+// }
+// getPageData()
 </script>
 
 <template>
@@ -76,7 +76,6 @@ getPageData()
       <AccessBot
         v-if="selectedBot === 'bot'"
         key="access-bot"
-        :data="accessStab.bot"
       />
       <AccessAdmin
         v-else

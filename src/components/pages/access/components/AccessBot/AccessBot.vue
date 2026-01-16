@@ -7,20 +7,14 @@ import type { IInputDefaultProps } from '@/types/inputs/types';
 import { reactive, ref, watch } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
-import { createAccessAdmin } from '@/api/pages/access/apiAccess';
-
-
-interface IAccessBotProps {
-  data: any;
-}
-const {
-  data
-} = defineProps<IAccessBotProps>();
+import { createAccessAdmin, getContentAccessAdmins } from '@/api/pages/access/apiAccess';
+import type { TDataAdmins } from '@/types/pages/access/accessTypes';
 
 const emit = defineEmits<{
   (e: 'changeValueSelect', id: number): void;
 }>();
 
+const pageDataArr = ref<null | TDataAdmins>(null);
 const selectedItemBot = ref<number>(1);
 
 const setNewSelectValue = (id: number) => {
@@ -114,14 +108,29 @@ const createNewAdmin = async () => {
   try {
     if(!checkingFormValidity()) return;
     await createAccessAdmin(fioInputObj.value, numberNormalize(), selectRole());
+    phoneInputObj.value = '';
+    fioInputObj.value = '';
   } catch (error) {
     console.error("ошибка создания пользователя");
   };
 };
+
+const getPageData = async () => {
+  try {
+    const response = await getContentAccessAdmins();
+    pageDataArr.value = response.admins;
+  } catch (error) {
+    
+  }
+}
+getPageData()
 </script>
 
 <template>
-  <div class="access-bot">
+  <div 
+    class="access-bot"
+    v-if="pageDataArr"
+  >
     <WrapperBlock
       class="granting-access"
     >
@@ -170,7 +179,9 @@ const createNewAdmin = async () => {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <TableExperts/>
+      <TableExperts
+        :data="pageDataArr"
+      />
     </WrapperBlock>
   </div>
 </template>
