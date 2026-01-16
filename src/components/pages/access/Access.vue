@@ -4,12 +4,13 @@ import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { ref } from 'vue';
 import AccessBot from './components/AccessBot/AccessBot.vue';
 import AccessAdmin from './components/AccessAdmin/AccessAdmin.vue';
+import { getContentAccessAdmins } from '@/api/pages/access/apiAccess';
 
 type TSelectType = "bot" | "admin";
 
 const selectedBot = ref<TSelectType>('bot');
 
-const selectedItemBot = ref<number>(1);
+// const selectedItemBot = ref<number>(1);
 const selectedItemAdmin = ref<number>(0);
 
 const dataSwitch = [
@@ -46,9 +47,14 @@ const accessStab = {
 }
 
 
-const setNewSelectValue = (id: number) => {
-  selectedItemBot.value = id;
-};
+const getPageData = async () => {
+  try {
+    await getContentAccessAdmins();
+  } catch (error) {
+    
+  }
+}
+getPageData()
 </script>
 
 <template>
@@ -71,8 +77,6 @@ const setNewSelectValue = (id: number) => {
         v-if="selectedBot === 'bot'"
         key="access-bot"
         :data="accessStab.bot"
-        :active-select="selectedItemBot"
-        @change-value-select="setNewSelectValue"
       />
       <AccessAdmin
         v-else

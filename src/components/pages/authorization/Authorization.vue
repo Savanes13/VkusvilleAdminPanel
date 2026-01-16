@@ -49,7 +49,7 @@ const checkingEmailValidity = () => {
   if (!emailInputObj.value) {
     emailInputObj.error.show = true;
     emailInputObj.error.text = 'Поле не заполнено';
-    return;
+    return false; 
   }
   return true;
 };

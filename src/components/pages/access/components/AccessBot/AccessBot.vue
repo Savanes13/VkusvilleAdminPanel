@@ -4,28 +4,29 @@ import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import PhoneInput from '@/components/shared/ui/input/PhoneInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
+import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 
 
 interface IAccessBotProps {
   data: any;
-  activeSelect: number;
 }
 const {
-  data,
-  activeSelect
+  data
 } = defineProps<IAccessBotProps>();
 
 const emit = defineEmits<{
   (e: 'changeValueSelect', id: number): void;
 }>();
 
+const selectedItemBot = ref<number>(1);
+
 const setNewSelectValue = (id: number) => {
-  emit('changeValueSelect', id);
+  selectedItemBot.value = id;
 };
 
-const phoneInputObj = ref<IInputDefaultProps>({
+const phoneInputObj = reactive<IInputDefaultProps>({
   value: '',
   label: 'Номер телефона',
   placeholder: '+ 7',
@@ -34,6 +35,77 @@ const phoneInputObj = ref<IInputDefaultProps>({
     text: 'phoneNumber'
   },
 });
+
+const fioInputObj = reactive<IInputDefaultProps>({
+  value: '',
+  label: 'ФИО*',
+  placeholder: 'Введите ФИО',
+  error: {
+    show: false,
+    text: ''
+  },
+});
+
+const selectArr = [
+  {
+    id: 1,
+    value: "Эксперт 1 уровня"
+  },
+  {
+    id: 2,
+    value: "Эксперт 2 уровня"
+  },
+  {
+    id: 3,
+    value: "Менеджер продвижения"
+  }
+];
+
+watch(() => phoneInputObj.value, () => {
+  phoneInputObj.error.show = false;
+});
+
+watch(() => fioInputObj.value, () => {
+  fioInputObj.error.show = false;
+});
+
+const checkingPhoneValidity = () => {
+  if (!phoneInputObj.value) {
+    phoneInputObj.error.show = true;
+    phoneInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  }
+  if (phoneInputObj.value.length < 16) {
+    phoneInputObj.error.show = true;
+    phoneInputObj.error.text = 'Введите номер полностью';
+    return false; 
+  }
+  return true;
+};
+
+const checkingFioValidity = () => {
+ if (!fioInputObj.value) {
+    fioInputObj.error.show = true;
+    fioInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingFormValidity = () => {
+  const isPhoneValid = checkingPhoneValidity();
+  const isFioValid = checkingFioValidity();
+  return isPhoneValid && isFioValid;
+};
+
+const createNewAdmin = async () => {
+  try {
+    if(!checkingFormValidity()) return;
+
+  } catch (error) {
+    console.error("ошибка создания пользователя");
+  };
+};
 </script>
 
 <template>
@@ -51,8 +123,8 @@ const phoneInputObj = ref<IInputDefaultProps>({
       </div>
       <div class="granting-access__content">
         <DefaultSelect
-          :data="data.select"
-          :active-item="activeSelect"
+          :data="selectArr"
+          :active-item="selectedItemBot"
           label="Роль"
           @change-value="setNewSelectValue"
         />
@@ -62,8 +134,15 @@ const phoneInputObj = ref<IInputDefaultProps>({
           :placeholder="phoneInputObj.placeholder"
           :error="phoneInputObj.error"
         />
+        <DefaultInput
+          v-model:value="fioInputObj.value"
+          :label="fioInputObj.label"
+          :placeholder="fioInputObj.placeholder"
+          :error="fioInputObj.error"
+        />  
         <DefaultButton
           class="default-button__size--large default-button__color-green button-access"
+          @click="createNewAdmin"
         >
           Выдать доступ
         </DefaultButton>
@@ -101,11 +180,12 @@ const phoneInputObj = ref<IInputDefaultProps>({
 
 .granting-access__content {
   display: flex;
-  align-items: center;
+  // align-items: center;
   gap: 24px;
 }
 
 .button-access {
+  // width: 147px;
   margin-top: 20px;
 }
 
