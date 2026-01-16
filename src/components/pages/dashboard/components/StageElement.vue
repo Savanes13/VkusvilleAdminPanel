@@ -1,38 +1,40 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 interface IStageElementProps {
-  full: number; 
-  current: number; 
   title: string;
-  totalpParticipants: number;
-  passed: number;
-  noPassed: number;
+  totalParticipants: number;
+  passedCount: number;
+  noPassedCount: number;
 }
 
 const {
-  full,
-  current,
   title,
-  totalpParticipants,
-  passed,
-  noPassed
+  totalParticipants,
+  passedCount,
+  noPassedCount
 } = defineProps<IStageElementProps>();
+
+const percent = computed(() => {
+  if (!totalParticipants) return 0;
+  return Math.round(
+    (passedCount / totalParticipants) * 100
+  );
+});
 </script>
 
 <template>
   <div class="stage-element">
     <div class="stage-element__grapf">
-      <div 
-        class="bar-total" 
-        :style="{ height: full + 'px' }"
-      ></div>
+      <div class="bar-total"></div>
       <div 
         class="bar-current" 
-        :style="{ height: current + 'px' }"
+        :style="{ height: percent + '%' }"
       ></div>
     </div>
     <div class="stage-element__percent">
       <div class="percent-elem">
-        <p>{{ current }} %</p>
+        <p>{{ percent }} %</p>
       </div>
       <div class="title-elem">
         <p>{{ title }}</p>
@@ -44,7 +46,7 @@ const {
           <p>Всего</p>
         </div>
         <div class="info-item__value item-black">
-          <p>{{ totalpParticipants }}</p>
+          <p>{{ totalParticipants }}</p>
         </div>
       </div>
       <div class="info-item">
@@ -52,7 +54,7 @@ const {
           <p>Прошли</p>
         </div>
         <div class="info-item__value item-green">
-          <p>{{ passed }}</p>
+          <p>{{ passedCount }}</p>
         </div>
       </div>
       <div class="info-item">
@@ -60,7 +62,7 @@ const {
           <p>Не прошли</p>
         </div>
         <div class="info-item__value item-red">
-          <p>{{ noPassed }}</p>
+          <p>{{ noPassedCount }}</p>
         </div>
       </div>
     </div>
@@ -78,10 +80,12 @@ const {
   align-items: flex-end;
   justify-content: center;
   margin-bottom: 8px;
+  height: 120px;
 }
 
 .bar-total {
   width: 100%;
+  height: 100%;
   background-color: color.$colorBackgroundAccentAlternative;
   border-radius: 16px;
 }

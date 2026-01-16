@@ -10,7 +10,7 @@ const route = useRoute();
     <PanelItem
       :is-active="route.path === '/dashboard' || route.path === '/'"
       icon="star"
-      text="Главные KPI"
+      text="Дашборд"
       path="/dashboard"
     />
     <PanelItem
