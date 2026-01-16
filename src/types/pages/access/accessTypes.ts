@@ -1,9 +1,9 @@
-type Role = "expert1" | "expert2" | "manager";
+export type TAdminRole = "expert1" | "expert2" | "manager";
 
 type Admin = {
   name: string;
   phone: string;
-  role: Role;
+  role: TAdminRole;
 };
 
 export type TDataAdmins = Admin[];

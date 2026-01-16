@@ -8,7 +8,7 @@ import { reactive, ref, watch } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import { createAccessAdmin, getContentAccessAdmins } from '@/api/pages/access/apiAccess';
-import type { TDataAdmins } from '@/types/pages/access/accessTypes';
+import type { TAdminRole, TDataAdmins } from '@/types/pages/access/accessTypes';
 
 const emit = defineEmits<{
   (e: 'changeValueSelect', id: number): void;
@@ -97,17 +97,23 @@ const checkingFormValidity = () => {
   return isPhoneValid && isFioValid;
 };
 
-const selectRole = () => {
-  if (selectedItemBot.value === 1) return "expert1"
-  if (selectedItemBot.value === 2) return "expert2"
-  if (selectedItemBot.value === 3) return "manager"
-  return ""
+const selectRole = (): TAdminRole => {
+  if (selectedItemBot.value === 1) return "expert1";
+  if (selectedItemBot.value === 2) return "expert2";
+  if (selectedItemBot.value === 3) return "manager";
+  return "expert1";
 };
 
 const createNewAdmin = async () => {
   try {
     if(!checkingFormValidity()) return;
+    if(!pageDataArr.value) return
     await createAccessAdmin(fioInputObj.value, numberNormalize(), selectRole());
+    pageDataArr.value.push({
+      name: fioInputObj.value,
+      phone: numberNormalize(),
+      role: selectRole()
+    });
     phoneInputObj.value = '';
     fioInputObj.value = '';
   } catch (error) {
@@ -120,9 +126,9 @@ const getPageData = async () => {
     const response = await getContentAccessAdmins();
     pageDataArr.value = response.admins;
   } catch (error) {
-    
-  }
-}
+    console.error("ошибка при получении данных")
+  };
+};
 getPageData()
 </script>
 
