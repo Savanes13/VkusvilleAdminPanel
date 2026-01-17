@@ -4,7 +4,10 @@ import DefaultLayout from '@/components/layout/default/DefaultLayout.vue'
 import Main from '@/components/pages/main/Main.vue'
 import Dashboard from '@/components/pages/dashboard/Dashboard.vue'
 import Stages from '@/components/pages/stages/Stages.vue'
+import Content from '@/components/pages/content/Content.vue'
+import Experts from '@/components/pages/experts/Experts.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import Access from '@/components/pages/access/Access.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +19,10 @@ const router = createRouter({
       children: [
         { path: "", component: Main },
         { path: "dashboard", component: Dashboard },
-        { path: "stages", component: Stages }
+        { path: "stages", component: Stages },
+        { path: "content", component: Content },
+        { path: "experts", component: Experts },
+        { path: "access", component: Access }
       ],
       props: true,
     },

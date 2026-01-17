@@ -117,9 +117,9 @@ const {
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 500px) {
   .default-button__size--large {
-    height: 48px;
+    height: 42px;
     font-size: 14px;
     line-height: 16px;
   }

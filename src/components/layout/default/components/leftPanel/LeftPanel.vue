@@ -10,7 +10,7 @@ const route = useRoute();
     <PanelItem
       :is-active="route.path === '/dashboard' || route.path === '/'"
       icon="star"
-      text="Главные KPI"
+      text="Дашборд"
       path="/dashboard"
     />
     <PanelItem
@@ -20,10 +20,10 @@ const route = useRoute();
       path="/stages"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/content'"
       icon="content"
       text="Контент"
-      path="/"
+      path="/content"
     />
     <PanelItem
       :is-active="false"
@@ -32,16 +32,16 @@ const route = useRoute();
       path="/"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/experts'"
       icon="expert"
       text="Эксперты"
-      path="/"
+      path="/experts"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/access'"
       icon="lock"
       text="Доступы"
-      path="/"
+      path="/access"
     />
     <PanelItem
       :is-active="false"

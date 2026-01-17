@@ -2,72 +2,28 @@
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 import StageElement from './components/StageElement.vue';
+import { getDashboard } from '@/api/pages/dashboard/apiDashboard';
+import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
+import { ref } from 'vue';
 
-const stabDashboard = {
-  charts: [
-    {
-      full: 100,
-      current: 100,
-      title: "Вход в бота",
-      totalpParticipants: 65967,
-      passed: 65967,
-      noPassed: 0
-    },
-    {
-      full: 100,
-      current: 83,
-      title: "Вход в бота",
-      totalpParticipants: 65967,
-      passed: 54343,
-      noPassed: 11043
-    },
-    {
-      full: 100,
-      current: 67,
-      title: "Вход в бота",
-      totalpParticipants: 65967,
-      passed: 47902,
-      noPassed: 17234
-    },
-    {
-      full: 100,
-      current: 42,
-      title: "Вход в бота",
-      totalpParticipants: 65967,
-      passed: 26311,
-      noPassed: 34923
-    }
-  ],
-  totalRegistrations: {
-    all: 68971,
-    forWeak: 1344
-  },
-  averageScore: [
-    {
-      id: 1,
-      current: 3.35,
-      max: 4
-    },
-    {
-      id: 2,
-      current: 3.35,
-      max: 4
-    },
-    {
-      id: 3,
-      current: 4,
-      max: 4
-    }
-  ],
-  deadlineTasks: {
-    applicants: 10000,
-    experts: 5
+const padeDataArr = ref<null | IDashboardData>(null);
+
+const getPageData = async () => {
+  try {
+    const response = await getDashboard();
+    padeDataArr.value = response;
+  } catch (error) {
+    console.error("ошибка при получении данных страницы дашборд")
   }
 }
+getPageData();
 </script>
 
 <template>
-  <div class="dashboard">
+  <div 
+    class="dashboard"
+    v-if="padeDataArr"
+  >
     <PageHeader>
       Дашборд
     </PageHeader>
@@ -78,15 +34,13 @@ const stabDashboard = {
         </div>
         <div class="stages-charts__elements">
           <StageElement
-            v-for="(item, index) in stabDashboard.charts"
+            v-for="(item, index) in padeDataArr.charts"
             class="graf-elem"
-            :full = "item.full"
-            :current = "item.current"
-            :title = "item.title"
-            :totalpParticipants = "item.totalpParticipants"
-            :passed = "item.passed"
-            :noPassed = "item.noPassed"
-            :key='`${index} + ${item.title}`'
+            :title = "item.titleKey"
+            :totalParticipants="item.totalParticipants"
+            :passedCount="item.passedCount"
+            :noPassedCount="item.noPassedCount"
+            :key='`${index} + ${item.titleKey}`'
           />
         </div>
       </WrapperBlock>
@@ -98,10 +52,10 @@ const stabDashboard = {
         </div>
         <div class="number-registrations__value">
           <div>
-            <p>{{ stabDashboard.totalRegistrations.all }}</p>
+            <p>{{ padeDataArr.totalRegistrations.all }}</p>
           </div>
           <div class="registrations-weak">
-            <p><span>+{{ stabDashboard.totalRegistrations.forWeak }}</span> за неделю</p>
+            <p><span>+{{ padeDataArr.totalRegistrations.forWeek }}</span> за неделю</p>
           </div>
         </div>
       </WrapperBlock>
@@ -117,7 +71,7 @@ const stabDashboard = {
         <div class="average-score__info">
           <div 
             class="border-wrap"
-            v-for="item in stabDashboard.averageScore"
+            v-for="item in padeDataArr.averageScore"
             :key="item.id"
           >
             <div class="border-wrap__name">
@@ -141,7 +95,7 @@ const stabDashboard = {
               <p>Абитуриенты, пропустившие дедлайн</p>
             </div>
             <div class="deadline-item__value">
-              <p>{{ stabDashboard.deadlineTasks.applicants }}</p>
+              <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
             </div>
           </div>
           <div class="deadline-item border-wrap">
@@ -149,7 +103,7 @@ const stabDashboard = {
               <p>Зависшие эксперты</p>
             </div>
             <div class="deadline-item__value">
-              <p>{{ stabDashboard.deadlineTasks.experts }}</p>
+              <p>{{ padeDataArr.deadlineTasks.experts }}</p>
             </div>
           </div>
         </div>

@@ -5,9 +5,11 @@ import PasswordInput from '@/components/shared/ui/input/PasswordInput.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import { entranceIcons } from '@/components/shared/icons/entrance/icons';
-import logo from '@/assets/images/logo/logo.svg'
+import logo from '@/assets/images/logo/logo.svg';
+import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/types';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import { register } from '@/api/user/apiUser';
 
 const rememberUser = ref<boolean>(false);
 
@@ -50,6 +52,83 @@ const tokenInputObj = reactive<IInputDefaultProps>({
     text: ''
   },
 });
+
+watch(() => emailInputObj.value, () => {
+  emailInputObj.error.show = false;
+});
+
+watch(() => passwordInputObj.value, () => {
+  passwordInputObj.error.show = false;
+});
+
+watch(() => repeatPasswordInputObj.value, () => {
+  repeatPasswordInputObj.error.show = false;
+});
+
+watch(() => tokenInputObj.value, () => {
+  tokenInputObj.error.show = false;
+});
+
+const checkingEmailValidity = () => {
+  if (!emailInputObj.value) {
+    emailInputObj.error.show = true;
+    emailInputObj.error.text = 'Поле не заполнено';
+    return;
+  }
+  return true;
+};
+
+const checkingPasswordValidity = () => {
+ if (!passwordInputObj.value) {
+    passwordInputObj.error.show = true;
+    passwordInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingRepeatPasswordValidity = () => {
+ if (!repeatPasswordInputObj.value) {
+    repeatPasswordInputObj.error.show = true;
+    repeatPasswordInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  if (passwordInputObj.value !== repeatPasswordInputObj.value) {
+    passwordInputObj.error.show = true;
+    passwordInputObj.error.text = '';
+    repeatPasswordInputObj.error.show = true;
+    repeatPasswordInputObj.error.text = 'Пароли не совпадают';
+    return false;
+  };
+  return true;
+};
+
+const checkingTokenValidity = () => {
+ if (!tokenInputObj.value) {
+    tokenInputObj.error.show = true;
+    tokenInputObj.error.text = 'Поле не заполнено';
+    return false; 
+  };
+  return true;
+};
+
+const checkingFormValidity = () => {
+  const isEmailValid = checkingEmailValidity();
+  const isPasswordValid = checkingPasswordValidity();
+  const isRepeatPasswordValid = checkingRepeatPasswordValidity();
+  const isTokenValid = checkingTokenValidity();
+  return isEmailValid && isPasswordValid && isRepeatPasswordValid && isTokenValid;
+};
+
+const registerUser = async () => {
+  try {
+    if(!checkingFormValidity()) return;
+    await register(emailInputObj.value, passwordInputObj.value, tokenInputObj.value);
+    // TODO: сюда установку токена
+  } catch (error) {
+    console.error('ошибка при авторизации пользователя')
+  };
+};
 </script>
 
 <template>
@@ -57,7 +136,14 @@ const tokenInputObj = reactive<IInputDefaultProps>({
     <div class="registration">
       <div class="registration__wrap">
         <div class="registration__logo">
-          <img :src="logo" alt="logo"/>
+          <img 
+            :src="logo" alt="logo"
+            class="desktop-logo"
+          />
+          <img 
+            :src="smallLogo" alt="logo"
+            class="mobile-logo"
+          >
         </div>
         <div class="registration__info">
           <div class="title">
@@ -95,6 +181,7 @@ const tokenInputObj = reactive<IInputDefaultProps>({
         </div>
         <DefaultButton
           class="default-button__size--large default-button__color-green"
+          @click="registerUser"
         >
           Зарегистрировать аккаунт
         </DefaultButton>
@@ -205,6 +292,7 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 .have-account,
 .auth {
   line-height: 24px;
+  align-items: center;
 }
 
 .auth span {
@@ -214,5 +302,71 @@ const tokenInputObj = reactive<IInputDefaultProps>({
 
 .auth svg {
   display: block;
+}
+
+.mobile-logo {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .register__authorization {
+    padding: 10px 24px;
+  }
+}
+
+@media (max-width: 425px) {
+  .registration__wrap {
+    padding: 24px;
+  }
+
+  .desktop-logo {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .registration__logo {
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 12px;
+  }
+
+  .text {
+    font-size: 14px;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+
+  .registration__inputs {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .checkbox-block {
+    margin-top: 8px;
+    gap: 10px;
+  }
+
+  .register__authorization {
+    margin-top: 20px;
+  }
+
+  .have-account {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .auth {
+    font-size: 14px;
+    line-height: 16px;
+    gap: 4px;
+  }
 }
 </style>

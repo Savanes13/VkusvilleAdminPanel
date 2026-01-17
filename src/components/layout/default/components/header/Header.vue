@@ -4,8 +4,11 @@ import { useCompanyStore } from '@/store/company/companyStore';
 import logo from '@/assets/images/logo/logo.svg'
 import { storeToRefs } from 'pinia';
 
+import { useUserStore } from '@/store/user/userStore';
+
 const companyStore = useCompanyStore();
 const { selectedCompany } = storeToRefs(companyStore);
+const userStore = useUserStore();
 
 const dataSwitch = [
   {

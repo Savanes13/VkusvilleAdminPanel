@@ -144,6 +144,7 @@ const updateDeadlineDate = (val: string) => {
             <IconButton
               class="button-icon__color-green-transparent"
               icon="edit"
+              color-icon="transparent"
               @click="openStageWindow(1)"
             />
           </div>
@@ -250,6 +251,7 @@ const updateDeadlineDate = (val: string) => {
             <IconButton
               class="button-icon__color-green-transparent"
               icon="edit"
+              color-icon="transparent"
               @click="openStageWindow(2)"
             />
           </div>
@@ -369,7 +371,7 @@ const updateDeadlineDate = (val: string) => {
       </WrapperBlock>
     </div>
 
-    {{ stabStages.stageFirst.deadlines.startDate.date }}
+    <!-- {{ stabStages.stageFirst.deadlines.startDate.date }} -->
 
     <transition name="fadeFast" mode="out-in">
       <StageWindow
