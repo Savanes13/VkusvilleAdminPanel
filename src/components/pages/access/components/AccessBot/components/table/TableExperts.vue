@@ -9,6 +9,14 @@ interface ITableExpertsProps {
 const {
   data
 } = defineProps<ITableExpertsProps>();
+
+const emit = defineEmits<{
+  (e: 'close', number: string): void
+}>();
+
+const deleteAdmin = (phone: string) => {
+  emit('close', phone);
+};
 </script>
 
 <template>
@@ -21,6 +29,7 @@ const {
       :role="item.role"
       :key="index"
       :last-line="index === data.length - 1"
+      @close="deleteAdmin"
     />
   </div>
 </template>

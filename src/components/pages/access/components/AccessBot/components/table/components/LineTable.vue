@@ -14,6 +14,14 @@ const {
   role,
   lastLine = false
 } = defineProps<ILineTableProps>();
+
+const emit = defineEmits<{
+  (e: 'close', number: string): void
+}>();
+
+const deleteAdmin = () => {
+  emit('close', phone);
+};
 </script>
 
 <template>
@@ -37,7 +45,10 @@ const {
       </div>
     </div>
     <div class="line-table__item button-line">
-      <div class="delete-button">
+      <div 
+        class="delete-button"
+        @click="deleteAdmin"
+      >
         <div>
           <span
             v-html="mainIcons['basket']"

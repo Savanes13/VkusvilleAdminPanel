@@ -25,3 +25,16 @@ export const createAccessAdmin = async (name: string, phone: string, role: strin
     throw new Error('An unknown error');
   }
 };
+
+// удалить админа
+export const deleteContentAccessAdmin = async (number: string): Promise<any> => {
+  try {
+    const response = await api.delete(`/api/bot-admins/admin/${number}`)
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response;
+    }
+    throw new Error("An unknown error");
+  }
+};
