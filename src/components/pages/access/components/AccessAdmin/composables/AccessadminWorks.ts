@@ -1,9 +1,10 @@
-import { getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
+import { createAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { reactive, ref } from "vue";
 
 export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
+
 
   const fioInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -30,33 +31,35 @@ export default function AccessadminWorks () {
     selectedItemAdmin.value = id;
   };
 
+  const createToken = async () => {
+    try {
+      const response  = await createAccessToken('Admin')
+    } catch (error) {
+      console.error("ошибка при созданрии токена");
+    }
+  };
+
   const getPageData = async () => {
     try {
-      // const response = await getAccessAdminsAdminPanel();
-      await getAccessTokens();
-      // pageDataArr.value = response.admins;
+      // const [tokensResponse, adminsResponse] = await Promise.all([
+      const [tokensResponse] = await Promise.all([
+        getAccessTokens(),
+        // getAccessAdminsAdminPanel()
+      ]);
+      // tokens.value = tokensResponse;
+      // pageDataArr.value = adminsResponse.admins;
     } catch (error) {
-      console.error("ошибка при получении данных")
-    };
+      console.error("ошибка при получении данных");
+    }
   };
   getPageData();
-
-
-  const stabAdminsArr = [
-    { id: 1, email: 'MamutRahal', display_name: 'Mamut Rahal', role: 'Guest' },
-    { id: 2, email: 'IvanPetrov', display_name: 'Иван Петров', role: 'User' },
-    { id: 3, email: 'AnnaSmirnova', display_name: 'Анна Смирнова', role: 'Admin' },
-    { id: 4, email: 'JohnDoe', display_name: 'John Doe', role: 'Guest' }
-  ]
-
 
   return {
     selectedItemAdmin,
     fioInputObj,
     selectArr,
 
-    stabAdminsArr,
-
-    setNewSelectValue
+    setNewSelectValue,
+    createToken
   }
 }

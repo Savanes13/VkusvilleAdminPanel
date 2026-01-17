@@ -11,9 +11,8 @@ const {
   fioInputObj,
   selectArr,
 
-  stabAdminsArr,
-
-  setNewSelectValue
+  setNewSelectValue,
+  createToken
 } = AccessadminWorks();
 </script>
 
@@ -45,6 +44,7 @@ const {
         />  
         <DefaultButton
           class="default-button__size--large default-button__color-green button-access"
+          @click="createToken"
         >
           Получить токен
         </DefaultButton>

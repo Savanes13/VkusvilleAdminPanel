@@ -64,3 +64,15 @@ export const getAccessTokens = async (): Promise<any> => {
     throw new Error("An unknown error");
   }
 };
+
+// создать токен
+export const createAccessToken = async (role: string): Promise<any> => {
+  try {
+    const request  = { role_name: role };
+    const response: AxiosResponse = await api.post('/api/token/token', request);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) throw error.response;
+    throw new Error('An unknown error');
+  }
+};
