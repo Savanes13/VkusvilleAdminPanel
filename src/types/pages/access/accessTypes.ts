@@ -8,3 +8,10 @@ type Admin = {
 
 export type TDataAdmins = Admin[];
 
+type AdminAccess = {
+  name: string;
+  email: string;
+  role: TAdminRole;
+};
+
+export type TDataAdminsAccess = AdminAccess[];

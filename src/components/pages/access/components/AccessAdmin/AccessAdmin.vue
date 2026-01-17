@@ -4,11 +4,15 @@ import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import AccessadminWorks from './composables/AccessadminWorks';
+import TableAdmin from './components/TableAdmin/TableAdmin.vue';
 
 const {
   selectedItemAdmin,
   fioInputObj,
   selectArr,
+
+  stabAdminsArr,
+
   setNewSelectValue
 } = AccessadminWorks();
 </script>
@@ -45,6 +49,16 @@ const {
           Получить токен
         </DefaultButton>
       </div>
+    </WrapperBlock>
+
+    <WrapperBlock class="table-admins">
+      <!-- <TableAdmin
+        :data="stabAdminsArr"
+      /> -->
+    </WrapperBlock>
+
+    <WrapperBlock class="table-tokens">
+
     </WrapperBlock>
   </div>
 </template>
