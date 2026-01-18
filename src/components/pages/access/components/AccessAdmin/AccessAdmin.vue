@@ -13,7 +13,8 @@ const {
   tokenTableArr,
 
   setNewSelectValue,
-  createToken
+  createToken,
+  deleteToken
 } = AccessadminWorks();
 </script>
 
@@ -74,7 +75,7 @@ const {
       </div>
       <TableToken
         :data="tokenTableArr"
-        @delete=""
+        @delete="deleteToken"
       />
     </WrapperBlock>
   </div>

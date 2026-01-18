@@ -14,11 +14,11 @@ const {
 } = defineProps<ILineTableProps>();
 
 const emit = defineEmits<{
-  (e: 'delete', number: string): void
+  (e: 'delete'): void
 }>();
 
 const deleteAdmin = () => {
-  emit('delete', token);
+  emit('delete');
 };
 </script>
 
@@ -34,7 +34,7 @@ const deleteAdmin = () => {
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ role }}</p>
+        <p>{{ role === "Admin" ? "Админ" : "Менеджер" }}</p>
       </div>
     </div>
     <div class="line-table__item button-line">

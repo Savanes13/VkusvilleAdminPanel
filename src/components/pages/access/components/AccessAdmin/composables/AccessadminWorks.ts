@@ -1,4 +1,4 @@
-import { createAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
+import { createAccessToken, deleteAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TDataTokenAccess } from "@/types/pages/access/accessTypes";
 import { reactive, ref } from "vue";
@@ -23,8 +23,20 @@ export default function AccessadminWorks () {
   };
 
   const createToken = async () => {
+    const selectedRole = selectedItemAdmin.value === 1 ? "Admin" : "Guest";
     try {
-      const response  = await createAccessToken('Admin')
+      const response  = await createAccessToken(selectedRole);
+      if(!tokenTableArr.value) return;
+      tokenTableArr.value.push(response);
+    } catch (error) {
+      console.error("ошибка при созданрии токена");
+    }
+  };
+
+  const deleteToken = async (id: number) => {
+    try {
+      const response  = await deleteAccessToken(id);
+      if(!tokenTableArr.value) return;
     } catch (error) {
       console.error("ошибка при созданрии токена");
     }
@@ -50,6 +62,7 @@ export default function AccessadminWorks () {
     tokenTableArr,
 
     setNewSelectValue,
-    createToken
+    createToken,
+    deleteToken
   }
 }

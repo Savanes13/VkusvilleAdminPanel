@@ -76,3 +76,16 @@ export const createAccessToken = async (role: string): Promise<any> => {
     throw new Error('An unknown error');
   }
 };
+
+// удалить токен
+export const deleteAccessToken = async (token_id: number): Promise<any> => {
+  try {
+    const response = await api.get(`/api/token/token/${token_id}`)
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response;
+    }
+    throw new Error("An unknown error");
+  }
+};

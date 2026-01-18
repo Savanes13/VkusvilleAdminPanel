@@ -22,6 +22,20 @@ const emit = defineEmits<{
 const deleteAdmin = () => {
   emit('delete', phone);
 };
+
+const readableRole = () => {
+  if (role === 'expert1') return 'Эксперт 1 уровня';
+  if (role === 'expert2') return 'Эксперт 2 уровня';
+  if (role === 'manager') return 'Менеджер';
+  return 'Не объявленная роль';
+};
+
+const formatPhone = () => {
+  return phone.replace(
+    /^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/,
+    '+$1 $2 $3 $4 $5'
+  );
+};
 </script>
 
 <template>
@@ -36,12 +50,12 @@ const deleteAdmin = () => {
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ phone }}</p>
+        <p>{{ formatPhone() }}</p>
       </div>
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ role }}</p>
+        <p>{{ readableRole() }}</p>
       </div>
     </div>
     <div class="line-table__item button-line">
