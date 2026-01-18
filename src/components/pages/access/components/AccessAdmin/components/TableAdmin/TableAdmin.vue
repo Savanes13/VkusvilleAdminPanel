@@ -11,11 +11,11 @@ const {
 } = defineProps<ITableExpertsProps>();
 
 const emit = defineEmits<{
-  (e: 'close', number: string): void
+  (e: 'delete', number: string): void
 }>();
 
 const deleteAdmin = (phone: string) => {
-  emit('close', phone);
+  emit('delete', phone);
 };
 </script>
 
@@ -29,7 +29,7 @@ const deleteAdmin = (phone: string) => {
       :role="item.role"
       :key="index"
       :last-line="index === data.length - 1"
-      @close="deleteAdmin"
+      @delete="deleteAdmin"
     />
   </div>
 </template>

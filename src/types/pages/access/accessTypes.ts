@@ -15,3 +15,13 @@ type AdminAccess = {
 };
 
 export type TDataAdminsAccess = AdminAccess[];
+
+type TokenItem = {
+  id: number;
+  token: string;
+  is_used: boolean;
+  created_at: string;
+  role: string;
+};
+
+export type TDataTokenAccess = TokenItem[];

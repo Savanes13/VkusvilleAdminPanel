@@ -5,11 +5,12 @@ import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import AccessadminWorks from './composables/AccessadminWorks';
 import TableAdmin from './components/TableAdmin/TableAdmin.vue';
+import TableToken from './components/TableToken/TableToken.vue';
 
 const {
   selectedItemAdmin,
-  fioInputObj,
   selectArr,
+  tokenTableArr,
 
   setNewSelectValue,
   createToken
@@ -17,7 +18,10 @@ const {
 </script>
 
 <template>
-  <div class="access-admin">
+  <div 
+    class="access-admin"
+    v-if="tokenTableArr"
+  >
     <WrapperBlock
       class="granting-access"
     >
@@ -36,12 +40,6 @@ const {
           label="Роль"
           @change-value="setNewSelectValue"
         />
-        <DefaultInput
-          v-model:value="fioInputObj.value"
-          :label="fioInputObj.label"
-          :placeholder="fioInputObj.placeholder"
-          :error="fioInputObj.error"
-        />  
         <DefaultButton
           class="default-button__size--large default-button__color-green button-access"
           @click="createToken"
@@ -52,13 +50,32 @@ const {
     </WrapperBlock>
 
     <WrapperBlock class="table-admins">
+      <div class="table-admins__title-block table-title">
+        <div>
+          <p>Админы</p>
+        </div>
+        <div>
+          <!-- TODO: подсказка -->
+        </div>
+      </div>
       <!-- <TableAdmin
         :data="stabAdminsArr"
       /> -->
     </WrapperBlock>
 
     <WrapperBlock class="table-tokens">
-
+      <div class="table-tokens__title-block table-title">
+        <div>
+          <p>Неиспользованные токены</p>
+        </div>
+        <div>
+          <!-- TODO: подсказка -->
+        </div>
+      </div>
+      <TableToken
+        :data="tokenTableArr"
+        @delete=""
+      />
     </WrapperBlock>
   </div>
 </template>
@@ -68,6 +85,9 @@ const {
 
 .granting-access {
   margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .granting-access__title {
@@ -75,11 +95,12 @@ const {
   font-size: 24px;
   line-height: 24px;
   color: color.$colorTextPrimary;
-  margin-bottom: 20px;
+  margin-right: 50px;
 }
 
 .granting-access__content {
   display: flex;
+  flex: 1;
   // align-items: center;
   gap: 24px;
 }
@@ -90,6 +111,18 @@ const {
 }
 
 .table-bot__title-block {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 20px;
+}
+
+.table-admins {
+  margin-bottom: 24px;
+}
+
+.table-title {
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;

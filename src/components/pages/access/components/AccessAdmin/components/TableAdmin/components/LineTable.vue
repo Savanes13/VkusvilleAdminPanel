@@ -16,11 +16,11 @@ const {
 } = defineProps<ILineTableProps>();
 
 const emit = defineEmits<{
-  (e: 'close', number: string): void
+  (e: 'delete', number: string): void
 }>();
 
 const deleteAdmin = () => {
-  emit('close', email);
+  emit('delete', email);
 };
 </script>
 

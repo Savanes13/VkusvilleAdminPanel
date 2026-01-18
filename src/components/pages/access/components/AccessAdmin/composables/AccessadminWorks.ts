@@ -1,20 +1,11 @@
 import { createAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
 import type { IInputDefaultProps } from "@/types/inputs/types";
+import type { TDataTokenAccess } from "@/types/pages/access/accessTypes";
 import { reactive, ref } from "vue";
 
 export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
-
-
-  const fioInputObj = reactive<IInputDefaultProps>({
-    value: '',
-    label: 'ФИО*',
-    placeholder: 'Введите ФИО',
-    error: {
-      show: false,
-      text: ''
-    },
-  });
+  const tokenTableArr = ref<null | TDataTokenAccess>(null);
   
   const selectArr = [
     {
@@ -46,8 +37,7 @@ export default function AccessadminWorks () {
         getAccessTokens(),
         // getAccessAdminsAdminPanel()
       ]);
-      // tokens.value = tokensResponse;
-      // pageDataArr.value = adminsResponse.admins;
+      tokenTableArr.value = tokensResponse.items;
     } catch (error) {
       console.error("ошибка при получении данных");
     }
@@ -56,8 +46,8 @@ export default function AccessadminWorks () {
 
   return {
     selectedItemAdmin,
-    fioInputObj,
     selectArr,
+    tokenTableArr,
 
     setNewSelectValue,
     createToken

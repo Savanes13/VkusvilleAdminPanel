@@ -2,15 +2,13 @@
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 
 interface ILineTableProps {
-  name: string;
-  phone: string;
+  token: string;
   role: string;
   lastLine: boolean;
 }
 
 const {
-  name,
-  phone,
+  token,
   role,
   lastLine = false
 } = defineProps<ILineTableProps>();
@@ -20,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const deleteAdmin = () => {
-  emit('delete', phone);
+  emit('delete', token);
 };
 </script>
 
@@ -31,12 +29,7 @@ const deleteAdmin = () => {
   >
     <div class="line-table__item">
       <div>
-        <p>{{ name }}</p>
-      </div>
-    </div>
-    <div class="line-table__item">
-      <div>
-        <p>{{ phone }}</p>
+        <p>{{ token }}</p>
       </div>
     </div>
     <div class="line-table__item">
