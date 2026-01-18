@@ -78,9 +78,9 @@ export const createAccessToken = async (role: string): Promise<any> => {
 };
 
 // удалить токен
-export const deleteAccessToken = async (token_id: number): Promise<any> => {
+export const deleteAccessToken = async (uuid: string): Promise<any> => {
   try {
-    const response = await api.get(`/api/token/token/${token_id}`)
+    const response = await api.delete(`/api/token/token/${uuid}`)
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) {

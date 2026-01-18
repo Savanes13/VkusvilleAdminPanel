@@ -11,11 +11,11 @@ const {
 } = defineProps<ITableExpertsProps>();
 
 const emit = defineEmits<{
-  (e: 'delete', id: number): void
+  (e: 'delete', uuid: string): void
 }>();
 
-const deleteToken = (id: number) => {
-  emit('delete', id);
+const deleteToken = (uuid: string) => {
+  emit('delete', uuid);
 };
 </script>
 
@@ -26,7 +26,7 @@ const deleteToken = (id: number) => {
       v-for="(item, index) in data"
       :token="item.token"
       :role="item.role"
-      @delete="() => deleteToken(item.id)"
+      @delete="() => deleteToken(item.token)"
       :last-line="index === data.length - 1"
     />
   </div>

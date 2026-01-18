@@ -33,12 +33,16 @@ export default function AccessadminWorks () {
     }
   };
 
-  const deleteToken = async (id: number) => {
+  const deleteToken = async (uuid: string) => {
     try {
-      const response  = await deleteAccessToken(id);
+      await deleteAccessToken(uuid);
+      if (!tokenTableArr.value) return;
+      tokenTableArr.value = tokenTableArr.value.filter(
+        item => item.token !== uuid
+      );
       if(!tokenTableArr.value) return;
     } catch (error) {
-      console.error("ошибка при созданрии токена");
+      console.error("ошибка при создании токена");
     }
   };
 
