@@ -59,4 +59,15 @@ const dataSwitch = [
   align-items: center;
   gap: 24px;
 }
+
+@media (max-width: 768px) {
+  .header {
+    border-radius: 0px;
+    border-bottom: 1px solid color.$colorSeparator;
+  }
+
+  .logo {
+    display: none;
+  }
+}
 </style>

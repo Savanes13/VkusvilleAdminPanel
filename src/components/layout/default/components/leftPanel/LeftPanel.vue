@@ -61,4 +61,10 @@ const route = useRoute();
   flex-shrink: 0;
   margin-right: 24px;
 }
+
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
+}
 </style>
