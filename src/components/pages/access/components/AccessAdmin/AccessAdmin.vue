@@ -11,17 +11,18 @@ const {
   selectedItemAdmin,
   selectArr,
   tokenTableArr,
-
+  adminTableArr,
   setNewSelectValue,
   createToken,
-  deleteToken
+  deleteToken,
+  deleteAdmin
 } = AccessadminWorks();
 </script>
 
 <template>
   <div 
     class="access-admin"
-    v-if="tokenTableArr"
+    v-if="tokenTableArr && adminTableArr"
   >
     <WrapperBlock
       class="granting-access"
@@ -59,9 +60,10 @@ const {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <!-- <TableAdmin
-        :data="stabAdminsArr"
-      /> -->
+      <TableAdmin
+        :data="adminTableArr"
+        @delete="deleteAdmin"
+      />
     </WrapperBlock>
 
     <WrapperBlock class="table-tokens">

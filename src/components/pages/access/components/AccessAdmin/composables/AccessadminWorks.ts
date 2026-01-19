@@ -1,11 +1,12 @@
-import { createAccessToken, deleteAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
+import { createAccessToken, deleteAccessAdminsAdminPanel, deleteAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
 import type { IInputDefaultProps } from "@/types/inputs/types";
-import type { TDataTokenAccess } from "@/types/pages/access/accessTypes";
+import type { TDataAdminAdminsAccess, TDataTokenAccess } from "@/types/pages/access/accessTypes";
 import { reactive, ref } from "vue";
 
 export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
   const tokenTableArr = ref<null | TDataTokenAccess>(null);
+  const adminTableArr = ref<null | TDataAdminAdminsAccess>(null);
   
   const selectArr = [
     {
@@ -40,7 +41,18 @@ export default function AccessadminWorks () {
       tokenTableArr.value = tokenTableArr.value.filter(
         item => item.token !== uuid
       );
-      if(!tokenTableArr.value) return;
+    } catch (error) {
+      console.error("ошибка при создании токена");
+    }
+  };
+
+  const deleteAdmin = async (id: number) => {
+    try {
+      await deleteAccessAdminsAdminPanel(id);
+      if (!adminTableArr.value) return;
+      adminTableArr.value = adminTableArr.value.filter(
+        item => item.id !== id
+      );
     } catch (error) {
       console.error("ошибка при создании токена");
     }
@@ -48,12 +60,12 @@ export default function AccessadminWorks () {
 
   const getPageData = async () => {
     try {
-      // const [tokensResponse, adminsResponse] = await Promise.all([
-      const [tokensResponse] = await Promise.all([
+      const [tokensResponse, adminsResponse] = await Promise.all([
         getAccessTokens(),
-        // getAccessAdminsAdminPanel()
+        getAccessAdminsAdminPanel()
       ]);
       tokenTableArr.value = tokensResponse.items;
+      adminTableArr.value = adminsResponse.admins;
     } catch (error) {
       console.error("ошибка при получении данных");
     }
@@ -64,9 +76,10 @@ export default function AccessadminWorks () {
     selectedItemAdmin,
     selectArr,
     tokenTableArr,
-
+    adminTableArr,
     setNewSelectValue,
     createToken,
-    deleteToken
+    deleteToken,
+    deleteAdmin
   }
 }

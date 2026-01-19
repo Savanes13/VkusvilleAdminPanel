@@ -52,6 +52,19 @@ export const getAccessAdminsAdminPanel = async (): Promise<any> => {
   }
 };
 
+// удалить админа админки
+export const deleteAccessAdminsAdminPanel = async (id: number): Promise<any> => {
+  try {
+    const response = await api.delete(`/api/admin-users/admin/${id}`)
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response;
+    }
+    throw new Error("An unknown error");
+  }
+};
+
 // получить все токены 
 export const getAccessTokens = async (): Promise<any> => {
   try {

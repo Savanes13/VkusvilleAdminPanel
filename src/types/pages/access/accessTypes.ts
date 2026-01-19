@@ -25,3 +25,12 @@ type TokenItem = {
 };
 
 export type TDataTokenAccess = TokenItem[];
+
+type AdminAdminsAccess = {
+  id: number;
+  email: string;
+  role: string;
+  display_name: string;
+};
+
+export type TDataAdminAdminsAccess = AdminAdminsAccess[];

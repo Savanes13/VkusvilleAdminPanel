@@ -1,21 +1,21 @@
 <script lang="ts" setup>
-import type { TDataAdminsAccess } from '@/types/pages/access/accessTypes';
+import type { TDataAdminAdminsAccess } from '@/types/pages/access/accessTypes';
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 
 interface ITableExpertsProps {
-  data: TDataAdminsAccess;
+  data: TDataAdminAdminsAccess;
 }
 const {
   data
 } = defineProps<ITableExpertsProps>();
 
 const emit = defineEmits<{
-  (e: 'delete', number: string): void
+  (e: 'delete', id: number): void
 }>();
 
-const deleteAdmin = (phone: string) => {
-  emit('delete', phone);
+const deleteAdmin = (id: number) => {
+  emit('delete', id);
 };
 </script>
 
@@ -24,12 +24,12 @@ const deleteAdmin = (phone: string) => {
     <HeaderTable/>
     <LineTable
       v-for="(item, index) in data"
-      :name="item.name"
+      :name="item.display_name"
       :email="item.email"
       :role="item.role"
       :key="index"
       :last-line="index === data.length - 1"
-      @delete="deleteAdmin"
+      @delete="() => deleteAdmin(item.id)"
     />
   </div>
 </template>

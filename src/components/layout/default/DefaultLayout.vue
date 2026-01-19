@@ -16,7 +16,6 @@ const route = useRoute();
         <router-view />
       </div>
     </div>
-
     <div class="default-layout__mobile-panel">
       <MobileItem
         :is-active="route.path === '/dashboard' || route.path === '/'"
@@ -36,8 +35,8 @@ const route = useRoute();
         text="Контент"
         path="/content"
       />
+      <!-- еще -->
     </div>
-
   </div>
 </template>
 
