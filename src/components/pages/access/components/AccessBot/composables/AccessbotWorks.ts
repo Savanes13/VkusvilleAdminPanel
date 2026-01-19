@@ -19,7 +19,7 @@ export default function AccessbotWorks () {
   
   const fioInputObj = reactive<IInputDefaultProps>({
     value: '',
-    label: 'ФИО*',
+    label: 'ФИО',
     placeholder: 'Введите ФИО',
     error: {
       show: false,

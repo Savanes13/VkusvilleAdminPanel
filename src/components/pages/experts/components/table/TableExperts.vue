@@ -2,19 +2,20 @@
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 
-type IExpertStats = {
-  first: number;
-  second: number;
-};
+interface StageTask {
+  stage_id: number;
+  value: number;
+}
 
 interface IStabExpert {
   id: number;
-  name: string;
-  isAuth: boolean;
-  untested: IExpertStats;
-  overdue: IExpertStats;
-  deadline: IExpertStats;
-};
+  display_name: string;
+  level: number;
+  is_auth: boolean;
+  unreviewed_tasks: StageTask[];
+  review_timeout_tasks: StageTask[];
+  deadline_tasks: StageTask[];
+}
 
 interface ITableExpertsProps {
   data: IStabExpert[]
@@ -32,11 +33,12 @@ const {
     <LineTable
       v-for="(item, index) in data"
       :id="item.id"
-      :name="item.name"
-      :is-auth="item.isAuth"
-      :untested="item.untested"
-      :overdue="item.overdue"
-      :deadline="item.deadline"
+      :display_name="item.display_name"
+      :level="item.level"
+      :is_auth="item.is_auth"
+      :unreviewed_tasks="item.unreviewed_tasks"
+      :review_timeout_tasks="item.review_timeout_tasks"
+      :deadline_tasks="item.deadline_tasks"
       :last-line="index === data.length - 1"
     />
     

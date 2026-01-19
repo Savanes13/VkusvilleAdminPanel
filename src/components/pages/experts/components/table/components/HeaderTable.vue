@@ -30,7 +30,7 @@
     <div class="table-header__double-cell">
       <div class="title">
         <div>
-          <p>Непровереннные работы</p>
+          <p>Просроченные проверки</p>
         </div>
         <div>
           <!-- подсказка -->
@@ -49,7 +49,7 @@
     <div class="table-header__double-cell">
       <div class="title">
         <div>
-          <p>Непровереннные работы</p>
+          <p>На грани дедлайна</p>
         </div>
         <div>
           <!-- подсказка -->
