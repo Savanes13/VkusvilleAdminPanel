@@ -3,7 +3,7 @@ interface StageTask {
   value: number;
 }
 
-interface Expert {
+export interface IExpertPage {
   id: number;
   display_name: string;
   level: number;
@@ -13,4 +13,4 @@ interface Expert {
   deadline_tasks: StageTask[];
 }
 
-export type TExpertsPageData = Expert[];
+export type TExpertsPageData = IExpertPage[];

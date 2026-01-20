@@ -4,10 +4,10 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
 import { getContentExpertsPage } from '@/api/pages/experts/apiExperts';
-import type { TExpertsPageData } from '@/types/pages/experts/typesExperts';
+import type { IExpertPage, TExpertsPageData } from '@/types/pages/experts/typesExperts';
 
 const haveWorkDeadline = ref<boolean>(false);
 const expertsPageData = ref<null | TExpertsPageData>(null);
@@ -20,6 +20,22 @@ const searchInputObj = reactive<IInputDefaultProps>({
     show: false,
     text: ''
   },
+});
+
+const filteredContent = computed<IExpertPage[]>(() => {
+  const search = searchInputObj.value.trim().toLowerCase();
+    if (!expertsPageData.value) return [];
+    if (!search) return expertsPageData.value;
+    return expertsPageData.value.filter(item =>
+    item.display_name.toLowerCase().includes(search) 
+  );
+});
+
+const sortingContent = computed<IExpertPage[]>(() => {
+  if (!haveWorkDeadline.value) return filteredContent.value;
+  return filteredContent.value.filter(item =>
+    (item.deadline_tasks?.[0]?.value ?? 0) > 0 || (item.deadline_tasks?.[1]?.value ?? 0) > 0
+  );
 });
 
 const getPageData = async () => {
@@ -41,7 +57,6 @@ getPageData();
     <PageHeader>
       Эксперты
     </PageHeader>
-
     <WrapperBlock>
       <div class="search">
         <DefaultInput
@@ -52,7 +67,6 @@ getPageData();
           :error="searchInputObj.error"
         />
       </div>
-
       <div class="checkbox-block">
         <CheckMark
           v-model:state="haveWorkDeadline"
@@ -61,12 +75,17 @@ getPageData();
           <p>Есть хотя бы 1 работа на грани дедлайна</p>
         </div>
       </div>
-
       <TableExperts
-        :data="expertsPageData"
+        :data="sortingContent"
+        v-if="sortingContent.length > 0"
       />
+      <div
+        class="no-found"
+        v-else
+      >
+        <p>По вашему запросу ничего не найдено</p>
+      </div>
     </WrapperBlock>
-
   </div>
 </template>
 
@@ -87,5 +106,12 @@ getPageData();
   line-height: 24px;  
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.no-found {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;  
+  color: color.$colorTextPrimary;
 }
 </style>
