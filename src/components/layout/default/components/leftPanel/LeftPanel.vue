@@ -26,10 +26,10 @@ const route = useRoute();
       path="/content"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/applicants'"
       icon="enrolle"
       text="Абитуриенты"
-      path="/"
+      path="/applicants"
     />
     <PanelItem
       :is-active="route.path === '/experts'"

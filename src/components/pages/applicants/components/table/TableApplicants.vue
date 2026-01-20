@@ -3,12 +3,15 @@ import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 
 interface ITableLine {
-  key: string;
-  value: string;
-  format_keys: string[];
+  id: number;
+  fio: string;
+  telegram_id: string;
+  stage: number;
+  scores: number;
+  deadline: boolean;
 }
 
-interface ITableContentProps {
+interface ITableCApplicantsProps {
   data: ITableLine[];
   missingLines: number;
 }
@@ -16,35 +19,31 @@ interface ITableContentProps {
 const {
   data,
   missingLines
-} = defineProps<ITableContentProps>();
-
-const emit = defineEmits<{
-  (e: 'changeTextLine', value: string, key: string): void;
-}>();
-
-const changeText = (text: string, key: string) => {
-  emit('changeTextLine', text, key);
-}
+} = defineProps<ITableCApplicantsProps>();
 </script>
 
 <template>
   <div class="table">
     <HeaderTable/>
+
     <LineTable
       v-for="(item, index) in data"
-      :format_keys="item.format_keys"
-      :key-line="item.key"
-      :text="item.value"
-      :key="item.key"
+      :fio="item.fio"
+      :telegram_id="item.telegram_id"
+      :stage="item.stage"
+      :scores="item.scores"
+      :deadline="item.deadline"
+      :key="`${index} + ${item.telegram_id}`"
       :last-line="missingLines === 0 && index === data.length - 1"
-      @change-text="changeText"
     />
     <LineTable
       v-for="(line, index) in missingLines"
       :empty="true"
-      :format_keys="[]"
-      key-line=""
-      text=""
+      fio=""
+      telegram_id=""
+      :stage="1"
+      :scores="1"
+      :deadline="false"
       :key="index"
       :last-line="index === missingLines - 1"
     />
@@ -52,6 +51,5 @@ const changeText = (text: string, key: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use "@/style/variables/color.scss" as color;
 
 </style>
