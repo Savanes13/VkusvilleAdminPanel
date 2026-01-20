@@ -28,7 +28,6 @@ const {
 
 <template>
   <div class="table-experts">
-
     <HeaderTable/>
     <LineTable
       v-for="(item, index) in data"
@@ -41,7 +40,6 @@ const {
       :deadline_tasks="item.deadline_tasks"
       :last-line="index === data.length - 1"
     />
-    
   </div>
 </template>
 

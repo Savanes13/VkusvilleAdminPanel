@@ -21,17 +21,32 @@ const deleteToken = (uuid: string) => {
 
 <template>
   <div class="table">
-    <HeaderTable/>
-    <LineTable
-      v-for="(item, index) in data"
-      :token="item.token"
-      :role="item.role"
-      @delete="() => deleteToken(item.token)"
-      :last-line="index === data.length - 1"
-    />
+    <div v-if="data.length > 0">
+      <HeaderTable/>
+      <LineTable
+        v-for="(item, index) in data"
+        :token="item.token"
+        :role="item.role"
+        @delete="() => deleteToken(item.token)"
+        :last-line="index === data.length - 1"
+      />
+    </div>
+    <div 
+      class="empty-tokens"
+      v-else
+    >
+      <p>Здесь будут отображаться неиспользованные токены</p>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  
+@use "@/style/variables/color.scss" as color;
+
+.empty-tokens {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;  
+  color: color.$colorTextPrimary;
+}
 </style>
