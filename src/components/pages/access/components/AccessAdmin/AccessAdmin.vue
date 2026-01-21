@@ -1,21 +1,24 @@
 <script lang="ts" setup>
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import AccessadminWorks from './composables/AccessadminWorks';
 import TableAdmin from './components/TableAdmin/TableAdmin.vue';
 import TableToken from './components/TableToken/TableToken.vue';
+import TokenWindow from '@/components/shared/elements/modalWindow/access/TokenWindow.vue';
 
 const {
   selectedItemAdmin,
   selectArr,
   tokenTableArr,
   adminTableArr,
+  showTokenWindow,
+  createdToken,
   setNewSelectValue,
   createToken,
   deleteToken,
-  deleteAdmin
+  deleteAdmin,
+  closeWindow
 } = AccessadminWorks();
 </script>
 
@@ -50,7 +53,6 @@ const {
         </DefaultButton>
       </div>
     </WrapperBlock>
-
     <WrapperBlock class="table-admins">
       <div class="table-admins__title-block table-title">
         <div>
@@ -65,7 +67,6 @@ const {
         @delete="deleteAdmin"
       />
     </WrapperBlock>
-
     <WrapperBlock class="table-tokens">
       <div class="table-tokens__title-block table-title">
         <div>
@@ -80,6 +81,13 @@ const {
         @delete="deleteToken"
       />
     </WrapperBlock>
+    <transition name="fadeFast" mode="out-in">
+      <TokenWindow
+        v-if="showTokenWindow"
+        :token="createdToken"
+        @close="closeWindow"
+      />
+    </transition>
   </div>
 </template>
 

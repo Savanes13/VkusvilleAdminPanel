@@ -7,6 +7,8 @@ export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
   const tokenTableArr = ref<null | TDataTokenAccess>(null);
   const adminTableArr = ref<null | TDataAdminAdminsAccess>(null);
+  const showTokenWindow = ref<boolean>(false);
+  const createdToken = ref<string>('');
   
   const selectArr = [
     {
@@ -23,10 +25,17 @@ export default function AccessadminWorks () {
     selectedItemAdmin.value = id;
   };
 
+  const closeWindow = () => {
+    showTokenWindow.value = false;
+  };
+
   const createToken = async () => {
     const selectedRole = selectedItemAdmin.value === 1 ? "Admin" : "Guest";
     try {
       const response  = await createAccessToken(selectedRole);
+      createdToken.value = '';
+      showTokenWindow.value = true;
+      createdToken.value = response.token;
       if(!tokenTableArr.value) return;
       tokenTableArr.value.push(response);
     } catch (error) {
@@ -77,9 +86,12 @@ export default function AccessadminWorks () {
     selectArr,
     tokenTableArr,
     adminTableArr,
+    showTokenWindow,
+    createdToken,
     setNewSelectValue,
     createToken,
     deleteToken,
-    deleteAdmin
+    deleteAdmin,
+    closeWindow
   }
 }
