@@ -1,5 +1,5 @@
 import type { IInputDefaultProps } from "@/types/inputs/types";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 
 export default function applicantsWorks () {
   interface IUser {
@@ -127,12 +127,23 @@ export default function applicantsWorks () {
   });
 
   const filteredContent = computed<IUser[]>(() => {
+    if (!contentPageData.value) return [];
     const search = searchInputObj.value.trim().toLowerCase();
-      if (!contentPageData.value) return [];
-      if (!search) return contentPageData.value;
-      return contentPageData.value.filter(item =>
-      item.fio.toLowerCase().includes(search) || item.telegram_id.toLowerCase().includes(search)
-    );
+    let result = contentPageData.value;
+    if (search) {
+      result = result.filter(item =>
+        item.fio.toLowerCase().includes(search) ||
+        item.telegram_id.toLowerCase().includes(search)
+      );
+    }
+    if (overdueDeadlineSortActivity.value) {
+      result = result.filter(item => item.deadline === false);
+    }
+    return result;
+  });
+
+  watch(() => searchInputObj.value, () => {
+    currentPage.value = 1;
   });
 
   const goToPage = (page: number) => {
