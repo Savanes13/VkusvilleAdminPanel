@@ -26,7 +26,7 @@ const route = useRoute();
       path="/content"
     />
     <PanelItem
-      :is-active="route.path === '/applicants'"
+      :is-active="route.path.includes('applicant')"
       icon="enrolle"
       text="Абитуриенты"
       path="/applicants"
