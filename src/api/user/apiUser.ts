@@ -14,9 +14,9 @@ export const auth = async (username: string, password: string): Promise<any> => 
 };
 
 // регистрация
-export const register = async (username: string, password: string, token: string): Promise<any> => {
+export const register = async (display_name: string, email: string, password: string, invite_token: string): Promise<any> => {
   try {
-    const request  = { username, password, token };
+    const request  = { display_name, email, password, invite_token };
     const response: AxiosResponse = await api.post('/api/auth/register', request);
     return response.data;
   } catch (error: unknown) {

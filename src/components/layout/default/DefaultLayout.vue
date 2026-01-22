@@ -1,6 +1,10 @@
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
 import Header from './components/header/Header.vue';
 import LeftPanel from './components/leftPanel/LeftPanel.vue';
+import MobileItem from './components/mobileItem/MobileItem.vue';
+
+const route = useRoute();
 </script>
 
 <template>
@@ -11,6 +15,27 @@ import LeftPanel from './components/leftPanel/LeftPanel.vue';
       <div class="admin-page">
         <router-view />
       </div>
+    </div>
+    <div class="default-layout__mobile-panel">
+      <MobileItem
+        :is-active="route.path === '/dashboard' || route.path === '/'"
+        icon="star"
+        text="Дашборд"
+        path="/dashboard"
+      />
+      <MobileItem
+        :is-active="route.path === '/stages'"
+        icon="stages"
+        text="Этапы"
+        path="/stages"
+      />
+      <MobileItem
+        :is-active="route.path === '/content'"
+        icon="content"
+        text="Контент"
+        path="/content"
+      />
+      <!-- еще -->
     </div>
   </div>
 </template>
@@ -27,8 +52,32 @@ import LeftPanel from './components/leftPanel/LeftPanel.vue';
   display: flex;
 }
 
+.default-layout__mobile-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  height: 50px;
+  background: color.$colorTextWhite;
+  border-top: 1px solid color.$colorSeparator;
+  display: none;
+}
+
 .admin-page {
   width: 100%;
   background: #F5F5F5;
+}
+
+@media (max-width: 768px) {
+  .default-layout {
+    padding: 0px;
+  }
+
+  .default-layout__mobile-panel {
+    display: flex;
+  }
 }
 </style>

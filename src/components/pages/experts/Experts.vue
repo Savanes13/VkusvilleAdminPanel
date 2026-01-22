@@ -4,12 +4,13 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
+import { getContentExpertsPage } from '@/api/pages/experts/apiExperts';
+import type { IExpertPage, TExpertsPageData } from '@/types/pages/experts/typesExperts';
 
 const haveWorkDeadline = ref<boolean>(false);
-// TODO: типизирвоать
-const expertsPageData = ref<any | null>(null);
+const expertsPageData = ref<null | TExpertsPageData>(null);
 
 const searchInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -21,98 +22,26 @@ const searchInputObj = reactive<IInputDefaultProps>({
   },
 });
 
-const stabExperts = [
-  {
-    id: 2123,
-    name: "Байнов Руслан Сергеевич",
-    isAuth: true,
-    untested: {
-      first: 0,
-      second: 2
-    },
-    overdue: {
-      first: 1,
-      second: 0
-    },
-    deadline: {
-      first: 1,
-      second: 4
-    },
-  },
-  {
-    id: 2124,
-    name: "Иванова Мария Алексеевна",
-    isAuth: true,
-    untested: {
-      first: 3,
-      second: 1
-    },
-    overdue: {
-      first: 0,
-      second: 2
-    },
-    deadline: {
-      first: 2,
-      second: 1
-    },
-  },
-  {
-    id: 2125,
-    name: "Петров Андрей Николаевич",
-    isAuth: false,
-    untested: {
-      first: 1,
-      second: 0
-    },
-    overdue: {
-      first: 2,
-      second: 1
-    },
-    deadline: {
-      first: 0,
-      second: 3
-    },
-  },
-  {
-    id: 2126,
-    name: "Смирнова Ольга Викторовна",
-    isAuth: true,
-    untested: {
-      first: 4,
-      second: 2
-    },
-    overdue: {
-      first: 0,
-      second: 0
-    },
-    deadline: {
-      first: 3,
-      second: 1
-    },
-  },
-  {
-    id: 2127,
-    name: "Кузнецов Дмитрий Игоревич",
-    isAuth: true,
-    untested: {
-      first: 0,
-      second: 1
-    },
-    overdue: {
-      first: 1,
-      second: 1
-    },
-    deadline: {
-      first: 2,
-      second: 2
-    },
-  }
-];
+const filteredContent = computed<IExpertPage[]>(() => {
+  const search = searchInputObj.value.trim().toLowerCase();
+    if (!expertsPageData.value) return [];
+    if (!search) return expertsPageData.value;
+    return expertsPageData.value.filter(item =>
+    item.display_name.toLowerCase().includes(search) 
+  );
+});
+
+const sortingContent = computed<IExpertPage[]>(() => {
+  if (!haveWorkDeadline.value) return filteredContent.value;
+  return filteredContent.value.filter(item =>
+    (item.deadline_tasks?.[0]?.value ?? 0) > 0 || (item.deadline_tasks?.[1]?.value ?? 0) > 0
+  );
+});
 
 const getPageData = async () => {
   try {
-    //TODO: сюда запрос к api
-    // expertsPageData.value = stabExperts;
+    const response = await getContentExpertsPage();
+    expertsPageData.value = response.items;
   } catch (error) {
     console.error("ошибка загрузки данных страницы")
   };
@@ -121,11 +50,13 @@ getPageData();
 </script>
 
 <template>
-  <div class="experts">
+  <div 
+    class="experts"
+    v-if="expertsPageData" 
+  >
     <PageHeader>
       Эксперты
     </PageHeader>
-
     <WrapperBlock>
       <div class="search">
         <DefaultInput
@@ -136,7 +67,6 @@ getPageData();
           :error="searchInputObj.error"
         />
       </div>
-
       <div class="checkbox-block">
         <CheckMark
           v-model:state="haveWorkDeadline"
@@ -145,12 +75,17 @@ getPageData();
           <p>Есть хотя бы 1 работа на грани дедлайна</p>
         </div>
       </div>
-
       <TableExperts
-        :data="stabExperts"
+        :data="sortingContent"
+        v-if="sortingContent.length > 0"
       />
+      <div
+        class="no-found"
+        v-else
+      >
+        <p>По вашему запросу ничего не найдено</p>
+      </div>
     </WrapperBlock>
-
   </div>
 </template>
 
@@ -171,5 +106,12 @@ getPageData();
   line-height: 24px;  
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.no-found {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;  
+  color: color.$colorTextPrimary;
 }
 </style>

@@ -13,6 +13,16 @@ import { register } from '@/api/user/apiUser';
 
 const rememberUser = ref<boolean>(false);
 
+const fioInputObj = reactive<IInputDefaultProps>({
+  value: '',
+  label: 'ФИО',
+  placeholder: 'Введите ФИО',
+  error: {
+    show: false,
+    text: ''
+  },
+});
+
 const emailInputObj = reactive<IInputDefaultProps>({
   value: '',
   label: 'Почта',
@@ -53,6 +63,10 @@ const tokenInputObj = reactive<IInputDefaultProps>({
   },
 });
 
+watch(() => fioInputObj.value, () => {
+  fioInputObj.error.show = false;
+});
+
 watch(() => emailInputObj.value, () => {
   emailInputObj.error.show = false;
 });
@@ -68,6 +82,15 @@ watch(() => repeatPasswordInputObj.value, () => {
 watch(() => tokenInputObj.value, () => {
   tokenInputObj.error.show = false;
 });
+
+const checkingFioValidity = () => {
+  if (!fioInputObj.value) {
+    fioInputObj.error.show = true;
+    fioInputObj.error.text = 'Поле не заполнено';
+    return;
+  }
+  return true;
+};
 
 const checkingEmailValidity = () => {
   if (!emailInputObj.value) {
@@ -113,17 +136,18 @@ const checkingTokenValidity = () => {
 };
 
 const checkingFormValidity = () => {
+  const isFioValid = checkingFioValidity();
   const isEmailValid = checkingEmailValidity();
   const isPasswordValid = checkingPasswordValidity();
   const isRepeatPasswordValid = checkingRepeatPasswordValidity();
   const isTokenValid = checkingTokenValidity();
-  return isEmailValid && isPasswordValid && isRepeatPasswordValid && isTokenValid;
+  return isFioValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isTokenValid;
 };
 
 const registerUser = async () => {
   try {
     if(!checkingFormValidity()) return;
-    await register(emailInputObj.value, passwordInputObj.value, tokenInputObj.value);
+    await register(fioInputObj.value, emailInputObj.value, passwordInputObj.value, tokenInputObj.value);
     // TODO: сюда установку токена
   } catch (error) {
     console.error('ошибка при авторизации пользователя')
@@ -154,6 +178,12 @@ const registerUser = async () => {
           </div>
         </div>
         <div class="registration__inputs">
+          <DefaultInput
+            class="input-item"
+            v-model:value="fioInputObj.value"
+            :label="fioInputObj.label"
+            :error="fioInputObj.error"
+          />
           <DefaultInput
             class="input-item"
             v-model:value="emailInputObj.value"

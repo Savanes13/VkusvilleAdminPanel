@@ -1,27 +1,27 @@
 <script lang="ts" setup>
-type IExpertStats = {
-  first: number;
-  second: number;
-};
+interface StageTask {
+  stage_id: number;
+  value: number;
+}
 
 interface ILineTableProps {
-  id: number;
-  name: string;
-  isAuth: boolean;
-  untested: IExpertStats;
-  overdue: IExpertStats;
-  deadline: IExpertStats;
+  display_name: string;
+  level: number;
+  is_auth: boolean;
+  unreviewed_tasks: StageTask[];
+  review_timeout_tasks: StageTask[];
+  deadline_tasks: StageTask[];
   lastLine: boolean;
-};
+}
 
 const {
-  id,
-  name,
-  isAuth,
-  untested,
-  overdue,
-  deadline,
-  lastLine
+  display_name,
+  level,
+  is_auth,
+  unreviewed_tasks,
+  review_timeout_tasks,
+  deadline_tasks,
+  lastLine = false
 } = defineProps<ILineTableProps>();
 </script>
 
@@ -31,41 +31,41 @@ const {
     :class="{'line-table--last' : lastLine}"
   >
     <div class="line-table__name">
-      <p>{{ name }}</p>
+      <p>{{ display_name }}</p>
     </div>
     <div class="line-table__item">
       <div class="quantity">
-        <p>{{ untested.first }}</p>
+        <p>{{ unreviewed_tasks[0]?.value }}</p>
       </div>
       <div class="quantity">
-        <p>{{ untested.second }}</p>
+        <p>{{ unreviewed_tasks[1]?.value }}</p>
       </div>
     </div>
     <div class="line-table__item">
       <div class="quantity">
-        <p>{{ overdue.first }}</p>
+        <p>{{ review_timeout_tasks[0]?.value }}</p>
       </div>
       <div class="quantity">
-        <p>{{ overdue.second }}</p>
+        <p>{{ review_timeout_tasks[1]?.value }}</p>
       </div>
     </div>
     <div class="line-table__item">
       <div 
         class="quantity"
-        :class="{'quantity--red' : deadline.first > 0}"
+        :class="{'quantity--red' : deadline_tasks[0]!.value > 0}"
       >
-        <p>{{ deadline.first }}</p>
+        <p>{{ deadline_tasks[0]?.value }}</p>
       </div>
       <div 
         class="quantity"
-        :class="{'quantity--red' : deadline.second > 0}"
+        :class="{'quantity--red' : deadline_tasks[0]!.value > 0}"
       >
-        <p>{{ deadline.second }}</p>
+        <p>{{ deadline_tasks[1]?.value }}</p>
       </div>
     </div>
     <div class="auth">
       <p 
-        v-if="isAuth"
+        v-if="is_auth"
         class="auth__true"
       >Да</p>
       <p 

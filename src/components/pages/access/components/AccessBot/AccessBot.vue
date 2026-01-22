@@ -74,7 +74,7 @@ const {
       </div>
       <TableExperts
         :data="pageDataArr"
-        @close="deleteAdmin"
+        @delete="deleteAdmin"
       />
     </WrapperBlock>
   </div>

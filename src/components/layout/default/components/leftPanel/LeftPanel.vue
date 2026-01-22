@@ -26,10 +26,10 @@ const route = useRoute();
       path="/content"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/applicants'"
       icon="enrolle"
       text="Абитуриенты"
-      path="/"
+      path="/applicants"
     />
     <PanelItem
       :is-active="route.path === '/experts'"
@@ -60,5 +60,11 @@ const route = useRoute();
   min-height: 100vh;
   flex-shrink: 0;
   margin-right: 24px;
+}
+
+@media (max-width: 768px) {
+  .left-panel {
+    display: none;
+  }
 }
 </style>

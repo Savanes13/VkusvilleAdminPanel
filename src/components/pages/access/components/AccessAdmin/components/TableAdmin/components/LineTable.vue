@@ -3,38 +3,24 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 
 interface ILineTableProps {
   name: string;
-  phone: string;
   role: string;
+  email: string;
   lastLine: boolean;
 }
 
 const {
   name,
-  phone,
+  email,
   role,
   lastLine = false
 } = defineProps<ILineTableProps>();
 
 const emit = defineEmits<{
-  (e: 'delete', number: string): void
+  (e: 'delete'): void
 }>();
 
 const deleteAdmin = () => {
-  emit('delete', phone);
-};
-
-const readableRole = () => {
-  if (role === 'expert1') return 'Эксперт 1 уровня';
-  if (role === 'expert2') return 'Эксперт 2 уровня';
-  if (role === 'manager') return 'Менеджер';
-  return 'Не объявленная роль';
-};
-
-const formatPhone = () => {
-  return phone.replace(
-    /^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/,
-    '+$1 $2 $3 $4 $5'
-  );
+  emit('delete');
 };
 </script>
 
@@ -50,12 +36,12 @@ const formatPhone = () => {
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ formatPhone() }}</p>
+        <p>{{ email }}</p>
       </div>
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ readableRole() }}</p>
+        <p>{{ role }}</p>
       </div>
     </div>
     <div class="line-table__item button-line">
