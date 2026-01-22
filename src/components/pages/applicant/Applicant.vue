@@ -1,30 +1,28 @@
 <script lang="ts" setup>
+import PageHeader from '@/components/shared/elements/PageHeader.vue';
+import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
+import ApplicantManagement from './components/ApplicantManagement.vue';
+import applicantWorks from './composables/applicantWorks';
+import BreadCumbs from '@/components/shared/elements/BreadCumbs.vue';
 
+const {
+  breadCrumb
+} = applicantWorks();
 </script>
 
 <template>
   <div class="applicant">
+    <BreadCumbs
+      :data="breadCrumb"
+    />
+    <PageHeader>
+      Имя Абитуриента
+    </PageHeader>
+    <WrapperBlock class="applicant__management">
+      <ApplicantManagement/>
+    </WrapperBlock>
+
     
-    <div class="applicant__management">
-      <div>
-        <p>Управление</p>
-      </div>
-
-      <div>
-        
-        <div>
-          <div>
-            <p></p>
-          </div>
-          <div>
-            <!-- hint -->
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
   </div>
 </template>
 

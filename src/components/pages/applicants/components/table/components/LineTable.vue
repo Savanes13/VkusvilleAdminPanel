@@ -4,6 +4,7 @@ import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { ref } from 'vue';
 
 interface ILineTableProps {
+  id: number;
   fio: string;
   telegram_id: string;
   stage: number;
@@ -14,6 +15,7 @@ interface ILineTableProps {
 }
 
 const {
+  id,
   fio,
   telegram_id,
   stage,
@@ -48,12 +50,14 @@ const {
       <p v-if="!empty">{{ deadline ? "Соблюден" : "Просрочен" }}</p>
     </div>
     <div class="line-table__item empty-item">
-      <IconButton
-        class="button-icon__color-green-transparent"
-        icon="eye"
-        color-icon="#179C49"
-        v-if="!empty"
-      />
+      <router-link :to="`/applicant/${id}`">
+        <IconButton
+          class="button-icon__color-green-transparent"
+          icon="eye"
+          color-icon="#179C49"
+          v-if="!empty"
+        />
+      </router-link>
     </div>
   </div>
 </template>

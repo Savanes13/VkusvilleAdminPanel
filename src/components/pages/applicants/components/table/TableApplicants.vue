@@ -28,6 +28,7 @@ const {
 
     <LineTable
       v-for="(item, index) in data"
+      :id="item.id"
       :fio="item.fio"
       :telegram_id="item.telegram_id"
       :stage="item.stage"
@@ -39,6 +40,7 @@ const {
     <LineTable
       v-for="(line, index) in missingLines"
       :empty="true"
+      :id="0"
       fio=""
       telegram_id=""
       :stage="1"
