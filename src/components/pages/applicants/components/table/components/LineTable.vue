@@ -51,7 +51,7 @@ const {
       <IconButton
         class="button-icon__color-green-transparent"
         icon="eye"
-        color-icon="transparent"
+        color-icon="#179C49"
         v-if="!empty"
       />
     </div>
