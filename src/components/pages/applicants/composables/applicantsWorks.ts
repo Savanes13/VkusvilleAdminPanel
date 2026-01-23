@@ -1,102 +1,19 @@
+import { getApplicantsPage } from "@/api/pages/applicants/apiApplicants";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive, ref, watch } from "vue";
 
 export default function applicantsWorks () {
   interface IUser {
     id: number;
-    fio: string;
+    display_name: string;
     telegram_id: string;
     stage: number;
-    scores: number;
-    deadline: boolean;
+    display_grade: number;
+    deadline_expired: boolean;
   }
 
   const contentPageData = ref<null | IUser[]>(null);
   const overdueDeadlineSortActivity = ref<boolean>(false);
-
-  const pageStab = [
-    {
-      id: 1,
-      fio: "Байнов Руслан Сергеевич",
-      telegram_id: "rusla",
-      stage: 2,
-      scores: 100,
-      deadline: true
-    },
-    {
-      id: 2,
-      fio: "Иванов Иван Петрович",
-      telegram_id: "ivanov_ip",
-      stage: 1,
-      scores: 85,
-      deadline: false
-    },
-    {
-      id: 3,
-      fio: "Смирнова Анна Андреевна",
-      telegram_id: "anna_smir",
-      stage: 3,
-      scores: 120,
-      deadline: true
-    },
-    {
-      id: 4,
-      fio: "Кузнецов Дмитрий Олегович",
-      telegram_id: "kuz_dmitry",
-      stage: 2,
-      scores: 95,
-      deadline: false
-    },
-    {
-      id: 5,
-      fio: "Павлова Екатерина Ильинична",
-      telegram_id: "katya_pav",
-      stage: 4,
-      scores: 140,
-      deadline: true
-    },
-    {
-      id: 6,
-      fio: "Орлов Максим Денисович",
-      telegram_id: "orlov_max",
-      stage: 1,
-      scores: 70,
-      deadline: false
-    },
-    {
-      id: 7,
-      fio: "Федорова Мария Алексеевна",
-      telegram_id: "maria_fed",
-      stage: 3,
-      scores: 110,
-      deadline: true
-    },
-    {
-      id: 8,
-      fio: "Захаров Артём Игоревич",
-      telegram_id: "zakharov_ai",
-      stage: 2,
-      scores: 90,
-      deadline: false
-    },
-    {
-      id: 9,
-      fio: "Волкова Елена Сергеевна",
-      telegram_id: "volkova_es",
-      stage: 4,
-      scores: 150,
-      deadline: true
-    },
-    {
-      id: 10,
-      fio: "Никитин Алексей Романович",
-      telegram_id: "nikitin_ar",
-      stage: 1,
-      scores: 60,
-      deadline: false
-    }
-  ];
-
   const currentPage = ref<number>(1);
   const pageSize = 8;
 
@@ -132,12 +49,12 @@ export default function applicantsWorks () {
     let result = contentPageData.value;
     if (search) {
       result = result.filter(item =>
-        item.fio.toLowerCase().includes(search) ||
+        item.display_name.toLowerCase().includes(search) ||
         item.telegram_id.toLowerCase().includes(search)
       );
     }
     if (overdueDeadlineSortActivity.value) {
-      result = result.filter(item => item.deadline === false);
+      result = result.filter(item => item.deadline_expired === false);
     }
     return result;
   });
@@ -153,7 +70,8 @@ export default function applicantsWorks () {
 
   const getPageData = async () => {
     try {
-      contentPageData.value = pageStab;
+      const response = await getApplicantsPage();
+      contentPageData.value = response.items;
     } catch (error) {
       console.error("ошибка загрузки данных страницы")
     };

@@ -4,11 +4,11 @@ import LineTable from './components/LineTable.vue';
 
 interface ITableLine {
   id: number;
-  fio: string;
+  display_name: string;
   telegram_id: string;
   stage: number;
-  scores: number;
-  deadline: boolean;
+  display_grade: number;
+  deadline_expired: boolean;
 }
 
 interface ITableCApplicantsProps {
@@ -29,11 +29,11 @@ const {
     <LineTable
       v-for="(item, index) in data"
       :id="item.id"
-      :fio="item.fio"
+      :fio="item.display_name"
       :telegram_id="item.telegram_id"
       :stage="item.stage"
-      :scores="item.scores"
-      :deadline="item.deadline"
+      :scores="item.display_grade"
+      :deadline="item.deadline_expired"
       :key="`${index} + ${item.telegram_id}`"
       :last-line="missingLines === 0 && index === data.length - 1"
     />
