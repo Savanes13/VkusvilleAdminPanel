@@ -7,28 +7,51 @@ import CalendarBlock from './components/CalendarBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import ScoreButton from './components/ScoreButton.vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import { computed, reactive } from 'vue';
+
+interface Deadline {
+  start_date: number;
+  start_utill: number;
+  send_until: number;
+  time_to_complete: number;
+}
+
+interface GradeCriteria {
+  criteria: string
+  grades: number[];
+}
+
+interface Stage {
+  stage_id: number;
+  stage_key: string;
+  deadlines: Deadline;
+  grades: GradeCriteria[];
+  grade_mul: number;
+  min_grade_to_pass: number;
+}
 
 interface IStageWindowProps {
-  startDate: number
-  opportunityDate: number
-  deadlineAllDate: number
-  numberSelectedStage: number
-
-  structLogic: number[];
-  contentMotivation: number[];
-  programGoals: number[];
+  data: Stage
 };
 
-const {
-  startDate,
-  opportunityDate,
-  deadlineAllDate,
-  numberSelectedStage,
+const props = defineProps<IStageWindowProps>();
 
-  structLogic,
-  contentMotivation,
-  programGoals,
-} = defineProps<IStageWindowProps>();
+const localStage = reactive<Stage>({
+  stage_id: props.data.stage_id,
+  stage_key: props.data.stage_key,
+  grade_mul: props.data.grade_mul,
+  min_grade_to_pass: props.data.min_grade_to_pass,
+  deadlines: {
+    start_date: props.data.deadlines.start_date,
+    start_utill: props.data.deadlines.start_utill,
+    send_until: props.data.deadlines.send_until,
+    time_to_complete: props.data.deadlines.time_to_complete,
+  },
+  grades: props.data.grades.map(g => ({
+    criteria: g.criteria,
+    grades: [...g.grades],
+  })),
+});
 
 const emit = defineEmits<{
   (e: 'close'): void;
@@ -50,12 +73,18 @@ const updateDate = (date: string, type: string) => {
 function timestampToDateString(timestamp: number): string {
   const date = new Date(timestamp);
   const year = date.getFullYear();
-  
   // Месяц и день делаем двухзначными
   const month = String(date.getMonth() + 1).padStart(2, '0'); // месяцы от 0 до 11
   const day = String(date.getDate()).padStart(2, '0');
-
   return `${year}-${month}-${day}`;
+};
+
+const structLogic = computed(() => localStage.grades.find(item => item.criteria === 'StructLogic')?.grades ?? []);
+const contentMotivation = computed(() => localStage.grades.find(item => item.criteria === 'ContentMotivation')?.grades ?? []);
+const programGoals = computed(() => localStage.grades.find(item => item.criteria === 'ProgramGoals')?.grades ?? []);
+
+const addNewScore = () => {
+  
 }
 </script>
 
@@ -66,7 +95,7 @@ function timestampToDateString(timestamp: number): string {
       v-clickOutside="closeWindow"
     > 
       <ModalWindow
-        :name="`Настройка ${numberSelectedStage} этапа`"
+        :name="`Настройка ${1} этапа`"
         @close="closeWindow"
       >
 
@@ -82,17 +111,17 @@ function timestampToDateString(timestamp: number): string {
           <div class="dates-deadlines__content">
             <CalendarBlock
               label="Старт этапа"
-              :date="timestampToDateString(startDate)"
+              :date="timestampToDateString(localStage.deadlines.start_date)"
               @update:date="date => updateDate(date, 'start')"
             />
             <CalendarBlock
               label="Дедлайн начала этапа"
-              :date="timestampToDateString(opportunityDate)"
+              :date="timestampToDateString(localStage.deadlines.start_utill)"
               @update:date="date => updateDate(date, 'opportunity')"
             />
             <CalendarBlock
               label="Дедлайн отправки всех заданий"
-              :date="timestampToDateString(deadlineAllDate)"
+              :date="timestampToDateString(localStage.deadlines.send_until)"
               @update:date="date => updateDate(date, 'deadline')"
             />
           </div>
@@ -122,6 +151,12 @@ function timestampToDateString(timestamp: number): string {
                 :number="item"
                 :key="item"
               />
+              <IconButton
+                v-if="structLogic?.length < 10"
+                class="button-icon__color-green-transparent"
+                icon="plus"
+                color-icon="#179C49"
+              />
             </div>
           </div>
 
@@ -131,11 +166,12 @@ function timestampToDateString(timestamp: number): string {
             </div>
             <div class="score-block__items">
               <ScoreButton
-                v-for="item in structLogic"
+                v-for="item in contentMotivation"
                 :number="item"
                 :key="item"
               />
               <IconButton
+                v-if="contentMotivation?.length < 10"
                 class="button-icon__color-green-transparent"
                 icon="plus"
                 color-icon="#179C49"
@@ -149,9 +185,15 @@ function timestampToDateString(timestamp: number): string {
             </div>
             <div class="score-block__items">
               <ScoreButton
-                v-for="item in structLogic"
+                v-for="item in programGoals"
                 :number="item"
                 :key="item"
+              />
+              <IconButton
+                v-if="programGoals?.length < 10"
+                class="button-icon__color-green-transparent"
+                icon="plus"
+                color-icon="#179C49"
               />
             </div>
           </div>
@@ -238,6 +280,7 @@ function timestampToDateString(timestamp: number): string {
 .score-block__items {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 }
 </style>

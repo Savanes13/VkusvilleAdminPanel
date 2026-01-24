@@ -26,7 +26,7 @@ const stabStages = reactive([
     [
       {
         criteria: "StructLogic",
-        grades: [0, 1, 2, 3, 4]
+        grades: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
       },
       {
         criteria: "ContentMotivation",
@@ -366,40 +366,18 @@ const updateDeadlineDate = (val: string) => {
 
     <!-- {{ stabStages.stageFirst.deadlines.startDate.date }} -->
       <FirstStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 1"
-
-        :start-date="stabStages[0]?.deadlines.start_date"
-        :opportunity-date="stabStages[0]?.deadlines.start_utill"
-        :deadline-all-date="stabStages[0]?.deadlines.send_until"
-
-        :struct-logic="stabStages[0]?.grades[0]?.grades"
-
-        :number-selected-stage="numberSelectedStage"
-
-        @update:start-date="updateStartDate"
-        @update:opportunity-date="updateOpportunityDate"
-        @update:deadline-date="updateDeadlineDate"
-
+        v-if="stageWindowVisibility && numberSelectedStage === 1 && stabStages[0]"
+        :data="stabStages[0]"
         @close="closeStageWindow"
       />
 
-      <SecondStageWindow
+      <!-- <SecondStageWindow
         v-if="stageWindowVisibility && numberSelectedStage === 2"
 
-        :start-date="stabStages[0]?.deadlines.start_date"
-        :opportunity-date="stabStages[0]?.deadlines.start_utill"
-        :deadline-all-date="stabStages[0]?.deadlines.send_until"
-
-        :struct-logic="stabStages[0]?.grades[0]?.grades"
-
-        :number-selected-stage="numberSelectedStage"
-
-        @update:start-date="updateStartDate"
-        @update:opportunity-date="updateOpportunityDate"
-        @update:deadline-date="updateDeadlineDate"
+        :data=""
 
         @close="closeStageWindow"
-      />
+      /> -->
 
   </div>
 </template>
