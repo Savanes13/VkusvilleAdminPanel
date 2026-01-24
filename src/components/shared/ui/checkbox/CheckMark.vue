@@ -52,6 +52,7 @@ const toggleCheck = () => {
   justify-content: center;
   transition: background-color transition.$fast;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .check-mark--active {

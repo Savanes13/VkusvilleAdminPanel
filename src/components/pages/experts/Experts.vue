@@ -75,7 +75,6 @@ getPageData();
           <p>Есть хотя бы 1 работа на грани дедлайна</p>
         </div>
       </div>
-
       <div
         v-if="sortingContent.length > 0"
         class="table-wrapper"
@@ -85,7 +84,6 @@ getPageData();
           class="table-expert"
         />
       </div>
-
       <div
         class="no-found"
         v-else

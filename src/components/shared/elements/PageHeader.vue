@@ -16,4 +16,12 @@
   color: #333333;
   margin-bottom: 24px
 }
+
+@media (max-width: 768px) {
+  .page-header {
+    margin-left: 24px;
+    font-size: 24px;
+    line-height: 24px;
+  }
+}
 </style>

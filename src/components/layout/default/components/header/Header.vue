@@ -64,6 +64,7 @@ const dataSwitch = [
   .header {
     border-radius: 0px;
     border-bottom: 1px solid color.$colorSeparator;
+    margin-bottom: 20px;
   }
 
   .logo {
