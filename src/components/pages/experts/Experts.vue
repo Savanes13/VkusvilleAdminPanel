@@ -123,13 +123,31 @@ getPageData();
 }
 
 .table-wrapper {
-  width: 100%; /* Занимает только доступное пространство */
-  overflow-x: auto; /* Горизонтальный скролл только здесь */
+  width: 100%;
+  overflow-x: auto;
 }
 
 .table-expert {
   width: 100%;
-  min-width: 1500px; /* Минимальная ширина таблицы */
+  min-width: 1100px; 
   border-collapse: collapse;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 </style>
