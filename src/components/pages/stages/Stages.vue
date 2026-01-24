@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import StageWindow from '@/components/shared/elements/modalWindow/stages/StageWindow.vue';
+import FirstStageWindow from '@/components/shared/elements/modalWindow/stages/firstStageWindow/FirstStageWindow.vue';
+import SecondStageWindow from '@/components/shared/elements/modalWindow/stages/secondStageWindow/SecondStageWindow.vue';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
@@ -11,83 +12,67 @@ import IconButton from '@/components/shared/ui/button/IconButton.vue';
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 
-// TODO: СТРУКТУРА И ЛОГИ И МОТИВАЦИЯ МОГУТ ИМЕТЬ НЕОДНОРОДНЫЙ ПОРЯДОК НАПРИМЕР 0 2 4
-const stabStages = reactive({
-  stageFirst: {
-    name: "Эссе и кружок",
+const stabStages = reactive([
+  {
+    stage_id: 1,
+    stage_key: "STAGE_1",
     deadlines: {
-      startDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      opportunityDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      deadlineAllDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      timeComplete: 3
+      start_date: 174720000000,
+      start_utill: 1747200000000,
+      send_until: 1747200000000,
+      time_to_complete: 3
     },
-    evaluation: {
-      passingGrade: 44,
-      currentRange: {
-        min: 0,
-        max: 6
+    grades:
+    [
+      {
+        criteria: "StructLogic",
+        grades: [0, 1, 2, 3, 4]
       },
-      structureLogic: {
-        min: 0,
-        max: 3
+      {
+        criteria: "ContentMotivation",
+        grades: [0, 1, 2, 3, 4]
       },
-      motivation: {
-        min: 0,
-        max: 3
-      }
-      // structureLogic: [ 0, 1, 2, 3, 4, 5 ],
-      // motivation: [ 0, 1, 2, 3, 4, 2 ],
-    }
+      {
+        criteria: "ProgramGoals",
+        grades: [0, 1, 2, 3, 4]
+      },
+    ],
+    grade_mul: 1.0,
+    min_grade_to_pass: 10
   },
-  stageSecond: {
-    name: "Кейс",
+  {
+    stage_id: 2,
+    stage_key: "STAGE_2",
     deadlines: {
-      startDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      opportunityDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      deadlineAllDate: {
-        date: "2025-09-11",
-        stringDate: "11 сентября 2025"
-      },
-      timeComplete: 3
+      start_date: 1747200000000,
+      start_utill: 1747200000000,
+      send_until: 1747200000000,
+      time_to_complete: 3
     },
-    evaluation: {
-      passingGrade: 44,
-      currentRange: {
-        min: 0,
-        max: 6
+    grades:
+    [
+      {
+        criteria: "Integrity",
+        grades: [0, 1, 2, 3, 4]
       },
-      structureLogic: {
-        min: 0,
-        max: 3
+      {
+        criteria: "Arguments",
+        grades: [0, 1, 2, 3, 4]
       },
-      motivation: {
-        min: 0,
-        max: 3
-      }
-      // structureLogic: [ 0, 1, 2, 3, 4, 5 ],
-      // motivation: [ 0, 1, 2, 3, 4 ],
-    }
+      {
+        criteria: "RealisticMeaningful",
+        grades: [0, 1, 2, 3, 4]
+      },
+      {
+        criteria: "Original",
+        grades: [0, 1, 2, 3, 4]
+      },
+      
+    ],
+    grade_mul: 1.0,
+    min_grade_to_pass: 10
   },
-  stageThird: {
-    name: "Собеседования"
-  }
-})
-
+])
 
 const closeStageWindow = () => {
   stageWindowVisibility.value = false;
@@ -108,19 +93,27 @@ const dateToString = (val: string) => {
   return formatted
 }
 
+
+function dateStringToTimestamp(dateStr: string): number {
+  // Создаём объект Date из строки
+  const date = new Date(dateStr);
+  return date.getTime(); // возвращаем timestamp в миллисекундах
+}
+
+
 const updateStartDate = (val: string) => {
-  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.startDate.date = dateToString(val);
-  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.startDate.date = dateToString(val);
+  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.startDate = dateStringToTimestamp(val);
+  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.startDate = dateStringToTimestamp(val);
 };
 
 const updateOpportunityDate = (val: string) => {
-  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.opportunityDate.date = dateToString(val);
-  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.opportunityDate.date = dateToString(val);
+  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.opportunityDate = dateStringToTimestamp(val);
+  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.opportunityDate = dateStringToTimestamp(val);
 };
 
 const updateDeadlineDate = (val: string) => {
-  if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.deadlineAllDate.date = dateToString(val);
-  if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.deadlineAllDate.date = dateToString(val);
+  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.deadlineAllDate = dateStringToTimestamp(val);
+  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.deadlineAllDate = dateStringToTimestamp(val);
 };
 </script>
 
@@ -138,7 +131,7 @@ const updateDeadlineDate = (val: string) => {
                 <p>Этап 1</p>
               </div>
               <div class="name">
-                <p>{{ stabStages.stageFirst.name }}</p>
+                <!-- <p>{{ stabStages }}</p> -->
               </div>
             </div>
             <IconButton
@@ -164,7 +157,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageFirst.deadlines.startDate.date }}</p>
+                  <p>{{ stabStages[0]?.deadlines.start_date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -173,7 +166,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageFirst.deadlines.opportunityDate.date }}</p>
+                  <p>{{ stabStages[0]?.deadlines.start_utill }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -182,7 +175,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageFirst.deadlines.deadlineAllDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageFirst.deadlines.deadlineAllDate.date }}</p>
+                  <p>{{ stabStages[0]?.deadlines.send_until }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -190,7 +183,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.deadlines.timeComplete }}</p>
+                  <p>{{ stabStages[0]?.deadlines.time_to_complete }}</p>
                 </div>
               </div>
             </div>
@@ -203,7 +196,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Оценка</p>
                 </div>
               </div>
-              <div class="item-block">
+              <!-- <div class="item-block">
                 <div class="item-block__name">
                   <p>Проходной балл</p>
                 </div>
@@ -234,7 +227,7 @@ const updateDeadlineDate = (val: string) => {
                 <div class="item-block__text">
                   <p>{{ stabStages.stageFirst.evaluation.motivation.min }}–{{ stabStages.stageFirst.evaluation.motivation.max }}</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </WrapperBlock>
@@ -245,7 +238,7 @@ const updateDeadlineDate = (val: string) => {
                 <p>Этап 2</p>
               </div>
               <div class="name">
-                <p>{{ stabStages.stageSecond.name }}</p>
+                <!-- <p>{{ stabStages.stageSecond.name }}</p> -->
               </div>
             </div>
             <IconButton
@@ -271,7 +264,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageSecond.deadlines.startDate.date }}</p>
+                  <p>{{ stabStages[1]?.deadlines.start_date }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -280,7 +273,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageSecond.deadlines.opportunityDate.date }}</p>
+                  <p>{{ stabStages[1]?.deadlines.start_utill }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -289,7 +282,7 @@ const updateDeadlineDate = (val: string) => {
                 </div>
                 <div class="item-block__text">
                   <!-- <p>{{ stabStages.stageSecond.deadlines.deadlineAllDate.stringDate }}</p> -->
-                  <p>{{ stabStages.stageSecond.deadlines.deadlineAllDate.date }}</p>
+                  <p>{{ stabStages[1]?.deadlines.send_until }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -297,7 +290,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.deadlines.timeComplete }}</p>
+                  <p>{{ stabStages[1]?.deadlines.time_to_complete }}</p>
                 </div>
               </div>
             </div>
@@ -310,7 +303,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Оценка</p>
                 </div>
               </div>
-              <div class="item-block">
+              <!-- <div class="item-block">
                 <div class="item-block__name">
                   <p>Проходной балл</p>
                 </div>
@@ -341,7 +334,7 @@ const updateDeadlineDate = (val: string) => {
                 <div class="item-block__text">
                   <p>{{ stabStages.stageSecond.evaluation.motivation.min }}–{{ stabStages.stageSecond.evaluation.motivation.max }}</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </WrapperBlock>
@@ -353,7 +346,7 @@ const updateDeadlineDate = (val: string) => {
               <p>Этап 3</p>
             </div>
             <div class="name">
-              <p>{{ stabStages.stageThird.name }}</p>
+              <!-- <p>{{ stabStages.stageThird.name }}</p> -->
             </div>
           </div>
         </div>
@@ -372,13 +365,14 @@ const updateDeadlineDate = (val: string) => {
     </div>
 
     <!-- {{ stabStages.stageFirst.deadlines.startDate.date }} -->
+      <FirstStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 1"
 
-    <transition name="fadeFast" mode="out-in">
-      <StageWindow
-        v-if="stageWindowVisibility"
-        :start-date="stabStages.stageFirst.deadlines.startDate.date"
-        :opportunity-date="stabStages.stageFirst.deadlines.opportunityDate.date"
-        :deadline-all-date="stabStages.stageFirst.deadlines.deadlineAllDate.date"
+        :start-date="stabStages[0]?.deadlines.start_date"
+        :opportunity-date="stabStages[0]?.deadlines.start_utill"
+        :deadline-all-date="stabStages[0]?.deadlines.send_until"
+
+        :struct-logic="stabStages[0]?.grades[0]?.grades"
 
         :number-selected-stage="numberSelectedStage"
 
@@ -387,10 +381,25 @@ const updateDeadlineDate = (val: string) => {
         @update:deadline-date="updateDeadlineDate"
 
         @close="closeStageWindow"
-      >
+      />
 
-      </StageWindow>
-    </transition>
+      <SecondStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 2"
+
+        :start-date="stabStages[0]?.deadlines.start_date"
+        :opportunity-date="stabStages[0]?.deadlines.start_utill"
+        :deadline-all-date="stabStages[0]?.deadlines.send_until"
+
+        :struct-logic="stabStages[0]?.grades[0]?.grades"
+
+        :number-selected-stage="numberSelectedStage"
+
+        @update:start-date="updateStartDate"
+        @update:opportunity-date="updateOpportunityDate"
+        @update:deadline-date="updateDeadlineDate"
+
+        @close="closeStageWindow"
+      />
 
   </div>
 </template>

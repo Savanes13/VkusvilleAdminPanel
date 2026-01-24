@@ -1,23 +1,27 @@
 <script lang="ts" setup>
 import BackgroundModal from '@/components/layout/background/BackgroundModal.vue';
-import ModalWindow from '../../ModalWindow.vue';
+import ModalWindow from '../../../ModalWindow.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
 import CalendarBlock from './components/CalendarBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 
 interface IStageWindowProps {
-  startDate: string;
-  opportunityDate: string;
-  deadlineAllDate: string;
+  startDate: number
+  opportunityDate: number
+  deadlineAllDate: number
   numberSelectedStage: number
+
+  structLogic: number[];
 };
 
 const {
   startDate,
   opportunityDate,
   deadlineAllDate,
-  numberSelectedStage
+  numberSelectedStage,
+
+  structLogic
 } = defineProps<IStageWindowProps>();
 
 const emit = defineEmits<{
@@ -35,6 +39,17 @@ const updateDate = (date: string, type: string) => {
   if (type === 'start') emit('update:start-date', date); 
   if (type === 'opportunity') emit('update:opportunity-date', date); 
   if (type === 'deadline') emit('update:deadline-date', date); 
+}
+
+function timestampToDateString(timestamp: number): string {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  
+  // Месяц и день делаем двухзначными
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // месяцы от 0 до 11
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 }
 </script>
 
@@ -61,17 +76,17 @@ const updateDate = (date: string, type: string) => {
           <div class="dates-deadlines__content">
             <CalendarBlock
               label="Старт этапа"
-              :date="startDate"
+              :date="timestampToDateString(startDate)"
               @update:date="date => updateDate(date, 'start')"
             />
             <CalendarBlock
               label="Дедлайн начала этапа"
-              :date="opportunityDate"
+              :date="timestampToDateString(opportunityDate)"
               @update:date="date => updateDate(date, 'opportunity')"
             />
             <CalendarBlock
               label="Дедлайн отправки всех заданий"
-              :date="deadlineAllDate"
+              :date="timestampToDateString(deadlineAllDate)"
               @update:date="date => updateDate(date, 'deadline')"
             />
           </div>
@@ -88,10 +103,18 @@ const updateDate = (date: string, type: string) => {
           </div>
 
           <div class="range-estimates">
-            <p>Текущий диапазон оценки — от 0 до 6</p>
+            <p>Текущий диапазон оценки — от 0 до 9</p>
           </div>
 
           <div>
+
+
+            <div 
+              v-for="item in structLogic"
+            >
+              <p>{{ item }}</p>
+            </div>
+        
 
           </div>
         </div>
