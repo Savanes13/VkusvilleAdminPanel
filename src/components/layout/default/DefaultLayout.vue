@@ -49,6 +49,7 @@ const route = useRoute();
 }
 
 .default-layout__content {
+  width: 100%;
   display: flex;
 }
 
@@ -67,7 +68,8 @@ const route = useRoute();
 }
 
 .admin-page {
-  width: 100%;
+  flex: 1;
+  overflow-x: auto;
   background: #F5F5F5;
 }
 

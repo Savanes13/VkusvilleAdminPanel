@@ -75,10 +75,17 @@ getPageData();
           <p>Есть хотя бы 1 работа на грани дедлайна</p>
         </div>
       </div>
-      <TableExperts
-        :data="sortingContent"
+
+      <div
         v-if="sortingContent.length > 0"
-      />
+        class="table-wrapper"
+      >
+        <TableExperts
+          :data="sortingContent"
+          class="table-expert"
+        />
+      </div>
+
       <div
         class="no-found"
         v-else
@@ -113,5 +120,16 @@ getPageData();
   font-size: 16px;
   line-height: 24px;  
   color: color.$colorTextPrimary;
+}
+
+.table-wrapper {
+  width: 100%; /* Занимает только доступное пространство */
+  overflow-x: auto; /* Горизонтальный скролл только здесь */
+}
+
+.table-expert {
+  width: 100%;
+  min-width: 1500px; /* Минимальная ширина таблицы */
+  border-collapse: collapse;
 }
 </style>
