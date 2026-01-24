@@ -5,6 +5,8 @@ import StageElement from './components/StageElement.vue';
 import { getDashboard } from '@/api/pages/dashboard/apiDashboard';
 import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
 import { ref } from 'vue';
+import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import { buttonIcons } from '@/components/shared/icons/button/icons';
 
 const padeDataArr = ref<null | IDashboardData>(null);
 
@@ -32,6 +34,7 @@ getPageData();
         <div class="stages-charts__title">
           <p>Конверсия движения абитуриентов</p>
         </div>
+
         <div class="stages-charts__elements">
           <StageElement
             v-for="(item, index) in padeDataArr.charts"
@@ -43,6 +46,7 @@ getPageData();
             :key='`${index} + ${item.titleKey}`'
           />
         </div>
+
       </WrapperBlock>
     </div>
     <div class="dashboard__first-section">
@@ -68,6 +72,7 @@ getPageData();
             <!-- подсказка -->
           </div>
         </div>
+
         <div class="average-score__info">
           <div 
             class="border-wrap"
@@ -82,6 +87,7 @@ getPageData();
             </div>
           </div>
         </div>
+
       </WrapperBlock> 
     </div>
     <div class="dashboard__third-section">
@@ -90,22 +96,52 @@ getPageData();
           <p>Горящие задачи</p>
         </div>
         <div class="deadline-tasks__content">
+
+
           <div class="deadline-item border-wrap">
-            <div class="deadline-item__name">
-              <p>Абитуриенты, пропустившие дедлайн</p>
+
+            <div>
+              <div class="deadline-item__name">
+                <p>Абитуриенты, пропустившие дедлайн</p>
+              </div>
+              <div class="deadline-item__value">
+                <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
+              </div>
             </div>
-            <div class="deadline-item__value">
-              <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
-            </div>
+
+            <router-link to="/applicants">
+              <div class="switch-to">
+                <span
+                  class="svg"
+                  v-html="buttonIcons['chevronRightGreen']"
+                ></span>
+              </div>
+            </router-link>
+
           </div>
+
+
           <div class="deadline-item border-wrap">
-            <div class="deadline-item__name">
-              <p>Зависшие эксперты</p>
+
+            <div>
+              <div class="deadline-item__name">
+                <p>Зависшие эксперты</p>
+              </div>
+              <div class="deadline-item__value">
+                <p>{{ padeDataArr.deadlineTasks.experts }}</p>
+              </div>
             </div>
-            <div class="deadline-item__value">
-              <p>{{ padeDataArr.deadlineTasks.experts }}</p>
-            </div>
+            <router-link to="/experts">
+              <div class="switch-to">
+                <span
+                  class="svg"
+                  v-html="buttonIcons['chevronRightGreen']"
+                ></span>
+              </div>
+            </router-link>
           </div>
+
+
         </div>
       </WrapperBlock>
     </div>
@@ -114,6 +150,7 @@ getPageData();
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
 
 .dashboard__first-section {
   display: flex;
@@ -234,11 +271,19 @@ getPageData();
   gap: 16px;
 }
 
+.deadline-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+}
+
 .deadline-item__name {
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: color.$colorTextPrimary;
+  margin-bottom: 16px;
 }
 
 .deadline-item__value {
@@ -246,5 +291,135 @@ getPageData();
   font-size: 32px;
   line-height: 40px;
   color: color.$colorTextPrimary;
+}
+
+.switch-to {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+  background: color.$colorBackgroundAccentAlternative;
+  transition: background-color transition.$medium;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.switch-to:hover {
+  background: color.$colorBackgroundAccentAlternative_Hover;
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1200px) {
+  .dashboard__first-section {
+    flex-direction: column;
+  }
+
+  .number-registrations {
+    gap: 20px;
+  }
+
+  .average-score__info {
+    display: flex;
+    gap: 16px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;   
+  }
+
+  .average-score__info .border-wrap {
+    min-width: 180px;
+    margin-bottom: 10px;
+  }
+
+  .average-score__info::-webkit-scrollbar {
+    height: 8px !important;
+    cursor: default !important;
+  }
+
+  .average-score__info::-webkit-scrollbar-track {
+    background: color.$colorBackgroundSecondary;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: default !important;
+  }
+
+  .average-score__info::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: color.$colorTextTertiary;
+    cursor: default !important;
+  }
+
+  .stages-charts__elements {
+    display: flex;
+    gap: 24px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;   
+  }
+
+  .graf-elem {
+    min-width: 175px;
+    margin-bottom: 10px;
+  }
+
+  .stages-charts__elements::-webkit-scrollbar {
+    height: 8px !important;
+    cursor: default !important;
+  }
+
+  .stages-charts__elements::-webkit-scrollbar-track {
+    background: color.$colorBackgroundSecondary;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: default !important;
+  }
+
+  .stages-charts__elements::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: color.$colorTextTertiary;
+    cursor: default !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .deadline-tasks__content {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .average-score {
+    padding: 20px 24px;
+  }
+
+  .number-registrations {
+    padding: 20px 24px;
+  }
+
+  .deadline-tasks {
+    padding: 20px 24px;
+  }
+
+  .stages-charts {
+    margin-bottom: 20px;
+  }
+
+  .dashboard__first-section {
+    gap: 20px;
+  }
+
+  .dashboard__first-section {
+    margin-bottom: 20px;
+  }
 }
 </style>
