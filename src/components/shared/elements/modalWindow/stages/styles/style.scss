@@ -1,0 +1,70 @@
+@use "@/style/variables/color.scss" as color;
+
+.stage-window {
+  width: 668px;
+}
+
+.wrap-block {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid #D0D7E5;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.wrap-block__title {
+  display: flex;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 20px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 20px;
+}
+
+.estimation__title-block {
+  margin-bottom: 8px;
+}
+
+.dates-deadlines__content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.buttons-block {
+  display: flex;
+  gap: 16px;
+}
+
+.range-estimates {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextSecondary;
+  margin-bottom: 20px
+}
+
+.score-block {
+  margin-bottom: 20px;
+}
+
+.score-block__title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+  margin-bottom: 6px;
+}
+
+.score-block__items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.block-multiplier {
+  display: flex;
+  gap: 16px;
+}

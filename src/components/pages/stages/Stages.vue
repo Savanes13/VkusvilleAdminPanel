@@ -368,13 +368,11 @@ const formatTimestamp = (ts: number) => {
         @close="closeStageWindow"
       />
 
-      <!-- <SecondStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 2"
-
-        :data=""
-
+      <SecondStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 2 && stabStages[1]"
+        :data="stabStages[1]"
         @close="closeStageWindow"
-      /> -->
+      />
 
   </div>
 </template>

@@ -3,67 +3,68 @@ import BackgroundModal from '@/components/layout/background/BackgroundModal.vue'
 import ModalWindow from '../../../ModalWindow.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
-import CalendarBlock from './components/CalendarBlock.vue';
+import CalendarBlock from '../components/CalendarBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
+import ScoreButton from '../components/ScoreButton.vue';
+import secondStageWindowWorks from './composables/secondStageWindowWorks';
 
-interface IStageWindowProps {
-  startDate: number
-  opportunityDate: number
-  deadlineAllDate: number
-  numberSelectedStage: number
+interface Deadline {
+  start_date: number;
+  start_utill: number;
+  send_until: number;
+  time_to_complete: number;
+}
 
-  structLogic: number[];
-};
+interface GradeCriteria {
+  criteria: string
+  grades: number[];
+}
 
-const {
-  startDate,
-  opportunityDate,
-  deadlineAllDate,
-  numberSelectedStage,
-
-  structLogic
-} = defineProps<IStageWindowProps>();
+export interface Stage {
+  stage_id: number;
+  stage_key: string;
+  deadlines: Deadline;
+  grades: GradeCriteria[];
+  grade_mul: number;
+  min_grade_to_pass: number;
+}
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'update:start-date', value: string): void;
-  (e: 'update:opportunity-date', value: string): void;
-  (e: 'update:deadline-date', value: string): void;
 }>();
 
-const closeWindow = () => {
-  emit("close");
-};
+const props = defineProps<{ data: Stage }>()
 
-const updateDate = (date: string, type: string) => {
-  if (type === 'start') emit('update:start-date', date); 
-  if (type === 'opportunity') emit('update:opportunity-date', date); 
-  if (type === 'deadline') emit('update:deadline-date', date); 
-}
-
-function timestampToDateString(timestamp: number): string {
-  const date = new Date(timestamp);
-  const year = date.getFullYear();
-  
-  // Месяц и день делаем двухзначными
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // месяцы от 0 до 11
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-}
+const {
+  localStage,
+  timeToCompleteStr,
+  gradeMulStr,
+  minGradePass,
+  dayToWorkInputObj,
+  multiplierInputObj,
+  passingGradeInputObj,
+  integrity,
+  argument,
+  realisticMeaningful,
+  original,
+  closeWindow,
+  timestampToDateString,
+  updateDate,
+  addNewScore
+} = secondStageWindowWorks(props, emit);
 </script>
 
 <template>
   <BackgroundModal>
     <div 
       class="stage-window"
-      v-clickOutside="closeWindow"
-    > 
+      > 
+      <!-- v-clickOutside="closeWindow" -->
       <ModalWindow
-        :name="`Настройка ${numberSelectedStage} этапа`"
+        :name="`Настройка ${2} этапа`"
         @close="closeWindow"
       >
-
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
             <div>
@@ -76,22 +77,27 @@ function timestampToDateString(timestamp: number): string {
           <div class="dates-deadlines__content">
             <CalendarBlock
               label="Старт этапа"
-              :date="timestampToDateString(startDate)"
+              :date="timestampToDateString(localStage.deadlines.start_date)"
               @update:date="date => updateDate(date, 'start')"
             />
             <CalendarBlock
               label="Дедлайн начала этапа"
-              :date="timestampToDateString(opportunityDate)"
+              :date="timestampToDateString(localStage.deadlines.start_utill)"
               @update:date="date => updateDate(date, 'opportunity')"
             />
             <CalendarBlock
               label="Дедлайн отправки всех заданий"
-              :date="timestampToDateString(deadlineAllDate)"
+              :date="timestampToDateString(localStage.deadlines.send_until)"
               @update:date="date => updateDate(date, 'deadline')"
+            />
+            <DefaultInput
+              v-model:value="timeToCompleteStr"
+              :label="dayToWorkInputObj.label"
+              :placeholder="dayToWorkInputObj.placeholder"
+              :error="dayToWorkInputObj.error"
             />
           </div>
         </div>
-
         <div class="estimation wrap-block">
           <div class="estimation__title-block wrap-block__title">
             <div>
@@ -101,24 +107,80 @@ function timestampToDateString(timestamp: number): string {
               <p>Оценка</p>
             </div>
           </div>
-
           <div class="range-estimates">
             <p>Текущий диапазон оценки — от 0 до 9</p>
           </div>
-
-          <div>
-
-
-            <div 
-              v-for="item in structLogic"
-            >
-              <p>{{ item }}</p>
+          <div class="score-block">
+            <div class="score-block__title">
+              <p>Целостность решения</p>
             </div>
-        
-
+            <div class="score-block__items">
+              <ScoreButton
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="integrity.includes(index)"
+                @click="addNewScore('Integrity', index)"
+              />
+            </div>
+          </div>
+          <div class="score-block">
+            <div class="score-block__title">
+              <p>Аргументация предложенного решения</p>
+            </div>
+            <div class="score-block__items">
+              <ScoreButton
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="argument.includes(index)"
+                @click="addNewScore('Arguments', index)"
+              />
+            </div>
+          </div>
+          <div class="score-block">
+            <div class="score-block__title">
+              <p>Реалистичность и здравый смысл</p>
+            </div>
+            <div class="score-block__items">
+              <ScoreButton
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="realisticMeaningful.includes(index)"
+                @click="addNewScore('RealisticMeaningful', index)"
+              />
+            </div>
+          </div>
+          <div class="score-block">
+            <div class="score-block__title">
+              <p>Оригинальность подхода</p>
+            </div>
+            <div class="score-block__items">
+              <ScoreButton
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="original.includes(index)"
+                @click="addNewScore('Originals', index)"
+              />
+            </div>
+          </div>
+          <div class="block-multiplier">
+            <DefaultInput
+              v-model:value="gradeMulStr"
+              :label="multiplierInputObj.label"
+              :placeholder="multiplierInputObj.placeholder"
+              :error="multiplierInputObj.error"
+            />
+            <DefaultInput
+              v-model:value="minGradePass"
+              :label="passingGradeInputObj.label"
+              :placeholder="passingGradeInputObj.placeholder"
+              :error="passingGradeInputObj.error"
+            />
           </div>
         </div>
-
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
@@ -131,64 +193,11 @@ function timestampToDateString(timestamp: number): string {
             Сохранить
           </DefaultButton>
         </div>
-
-        <!-- {{ startDate }}
-        {{ opportunityDate }}
-        {{ deadlineAllDate }} -->
-
-        <!-- <VDatePicker v-model="startDateValue" />
-        <VDatePicker v-model="opportunityDateValue" />
-        <VDatePicker v-model="deadlineAllValue" /> -->
       </ModalWindow>
     </div>
   </BackgroundModal>
 </template>
 
 <style lang="scss" scoped>
-@use "@/style/variables/color.scss" as color;
-
-.stage-window {
-  width: 668px;
-}
-
-.wrap-block {
-  width: 100%;
-  border-radius: 16px;
-  border: 1px solid #D0D7E5;
-  padding: 20px;
-  margin-bottom: 24px;
-}
-
-.wrap-block__title {
-  display: flex;
-  gap: 4px;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 20px;
-  color: color.$colorTextPrimary;
-  margin-bottom: 20px;
-}
-
-.estimation__title-block {
-  margin-bottom: 8px;
-}
-
-.dates-deadlines__content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.buttons-block {
-  display: flex;
-  gap: 16px;
-}
-
-.range-estimates {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: color.$colorTextSecondary;
-  margin-bottom: 20px
-}
+@use "./../styles/style.scss";
 </style>

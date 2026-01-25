@@ -3,12 +3,11 @@ import BackgroundModal from '@/components/layout/background/BackgroundModal.vue'
 import ModalWindow from '../../../ModalWindow.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
-import CalendarBlock from './components/CalendarBlock.vue';
+import CalendarBlock from '../components/CalendarBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import ScoreButton from './components/ScoreButton.vue';
-import { computed, reactive } from 'vue';
+import ScoreButton from '../components/ScoreButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
-import type { IInputDefaultProps } from '@/types/inputs/types';
+import firstStageWindowWorks from './composables/firstStageWindowWorks';
 
 interface Deadline {
   start_date: number;
@@ -22,7 +21,7 @@ interface GradeCriteria {
   grades: number[];
 }
 
-interface Stage {
+export interface Stage {
   stage_id: number;
   stage_key: string;
   deadlines: Deadline;
@@ -31,119 +30,28 @@ interface Stage {
   min_grade_to_pass: number;
 }
 
-interface IStageWindowProps {
-  data: Stage
-};
-
-const props = defineProps<IStageWindowProps>();
-
-const localStage = reactive<Stage>({
-  stage_id: props.data.stage_id,
-  stage_key: props.data.stage_key,
-  grade_mul: props.data.grade_mul,
-  min_grade_to_pass: props.data.min_grade_to_pass,
-  deadlines: {
-    start_date: props.data.deadlines.start_date,
-    start_utill: props.data.deadlines.start_utill,
-    send_until: props.data.deadlines.send_until,
-    time_to_complete: props.data.deadlines.time_to_complete,
-  },
-  grades: props.data.grades.map(g => ({
-    criteria: g.criteria,
-    grades: [...g.grades],
-  })),
-});
-
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const closeWindow = () => {
-  emit("close");
-};
+const props = defineProps<{ data: Stage }>()
 
-const dayToWorkInputObj = reactive<IInputDefaultProps>({
-  value: '',
-  label: 'Дней на выполнение задания',
-  placeholder: '',
-  error: {
-    show: false,
-    text: ''
-  },
-});
-
-const multiplierInputObj = reactive<IInputDefaultProps>({
-  value: '',
-  label: 'Множитель',
-  placeholder: '',
-  error: {
-    show: false,
-    text: ''
-  },
-});
-
-const passingGradeInputObj = reactive<IInputDefaultProps>({
-  value: '',
-  label: 'Проходной балл',
-  placeholder: '',
-  error: {
-    show: false,
-    text: ''
-  },
-});
-
-const timeToCompleteStr = computed({
-  get: () => String(localStage.deadlines.time_to_complete),
-  set: (val: string) => {
-    const num = Number(val);
-    localStage.deadlines.time_to_complete = isNaN(num) ? 0 : num
-  },
-})
-
-const gradeMulStr = computed({
-  get: () => String(localStage.grade_mul),
-  set: (val: string) => {
-    const num = Number(val)
-    localStage.grade_mul = isNaN(num) ? 0 : num
-  }
-})
-
-const minGradePass = computed({
-  get: () => String(localStage.min_grade_to_pass),
-  set: (val: string) => {
-    const num = Number(val)
-    localStage.min_grade_to_pass = isNaN(num) ? 0 : num
-  }
-})
-
-const updateDate = (date: string, type: string) => {
-  if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
-  if (type === 'opportunity') localStage.deadlines.start_utill = new Date(date).getTime();
-  if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
-};
-
-function timestampToDateString(timestamp: number): string {
-  const date = new Date(timestamp);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
-const structLogic = computed(() => localStage.grades.find(item => item.criteria === 'StructLogic')?.grades ?? []);
-const contentMotivation = computed(() => localStage.grades.find(item => item.criteria === 'ContentMotivation')?.grades ?? []);
-const programGoals = computed(() => localStage.grades.find(item => item.criteria === 'ProgramGoals')?.grades ?? []);
-
-const addNewScore = (nameBlock: string, id: number) => {
-  const block = localStage.grades.find(item => item.criteria === nameBlock);
-  if (!block) return
-  if (!block.grades.includes(id)) {
-    block.grades.push(id)
-  } else {
-    const index = block.grades.indexOf(id)
-    block.grades.splice(index, 1)
-  }
-}
+const {
+  localStage,
+  timeToCompleteStr,
+  gradeMulStr,
+  minGradePass,
+  dayToWorkInputObj,
+  multiplierInputObj,
+  passingGradeInputObj,
+  structLogic,
+  contentMotivation,
+  programGoals,
+  closeWindow,
+  timestampToDateString,
+  updateDate,
+  addNewScore
+} = firstStageWindowWorks(props, emit);
 </script>
 
 <template>
@@ -156,7 +64,6 @@ const addNewScore = (nameBlock: string, id: number) => {
         :name="`Настройка ${1} этапа`"
         @close="closeWindow"
       >
-
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
             <div>
@@ -190,7 +97,6 @@ const addNewScore = (nameBlock: string, id: number) => {
             />
           </div>
         </div>
-
         <div class="estimation wrap-block">
           <div class="estimation__title-block wrap-block__title">
             <div>
@@ -200,11 +106,9 @@ const addNewScore = (nameBlock: string, id: number) => {
               <p>Оценка</p>
             </div>
           </div>
-
           <div class="range-estimates">
             <p>Текущий диапазон оценки — от 0 до 9</p>
           </div>
-
           <div class="score-block">
             <div class="score-block__title">
               <p>Структура и логика</p>
@@ -219,7 +123,6 @@ const addNewScore = (nameBlock: string, id: number) => {
               />
             </div>
           </div>
-
           <div class="score-block">
             <div class="score-block__title">
               <p>Содержательность и мотивация</p>
@@ -234,7 +137,6 @@ const addNewScore = (nameBlock: string, id: number) => {
               />
             </div>
           </div>
-
           <div class="score-block">
             <div class="score-block__title">
               <p>Цели и связь с программой</p>
@@ -249,7 +151,6 @@ const addNewScore = (nameBlock: string, id: number) => {
               />
             </div>
           </div>
-
           <div class="block-multiplier">
             <DefaultInput
               v-model:value="gradeMulStr"
@@ -264,9 +165,7 @@ const addNewScore = (nameBlock: string, id: number) => {
               :error="passingGradeInputObj.error"
             />
           </div>
-
         </div>
-
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
@@ -285,74 +184,5 @@ const addNewScore = (nameBlock: string, id: number) => {
 </template>
 
 <style lang="scss" scoped>
-@use "@/style/variables/color.scss" as color;
-
-.stage-window {
-  width: 668px;
-}
-
-.wrap-block {
-  width: 100%;
-  border-radius: 16px;
-  border: 1px solid #D0D7E5;
-  padding: 20px;
-  margin-bottom: 24px;
-}
-
-.wrap-block__title {
-  display: flex;
-  gap: 4px;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 20px;
-  color: color.$colorTextPrimary;
-  margin-bottom: 20px;
-}
-
-.estimation__title-block {
-  margin-bottom: 8px;
-}
-
-.dates-deadlines__content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.buttons-block {
-  display: flex;
-  gap: 16px;
-}
-
-.range-estimates {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: color.$colorTextSecondary;
-  margin-bottom: 20px
-}
-
-.score-block {
-  margin-bottom: 20px;
-}
-
-.score-block__title {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: color.$colorTextPrimary;
-  margin-bottom: 6px;
-}
-
-.score-block__items {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.block-multiplier {
-  display: flex;
-  gap: 16px;
-}
+@use "./../styles/style.scss";
 </style>
