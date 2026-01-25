@@ -57,7 +57,7 @@ const stabStages = reactive([
       },
       {
         criteria: "Arguments",
-        grades: [0, 1, 2, 3, 4]
+        grades: [0, 1, 2, 3, 4, 6]
       },
       {
         criteria: "RealisticMeaningful",
@@ -65,12 +65,12 @@ const stabStages = reactive([
       },
       {
         criteria: "Original",
-        grades: [0, 1, 2, 3, 4]
+        grades: [0, 1, 2]
       },
       
     ],
-    grade_mul: 1.0,
-    min_grade_to_pass: 10
+    grade_mul: 2.0,
+    min_grade_to_pass: 12
   },
 ])
 
@@ -110,7 +110,7 @@ const formatTimestamp = (ts: number) => {
                 <p>Этап 1</p>
               </div>
               <div class="name">
-                <!-- <p>{{ stabStages }}</p> -->
+                <p>Эссе и кружок</p>
               </div>
             </div>
             <IconButton
@@ -172,12 +172,12 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценка</p>
                 </div>
               </div>
-              <!-- <div class="item-block">
+              <div class="item-block">
                 <div class="item-block__name">
                   <p>Проходной балл</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.evaluation.passingGrade }}</p>
+                  <p>{{ stabStages[0]?.min_grade_to_pass }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -185,7 +185,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Текущий диапазон оценки</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.evaluation.currentRange.min }}–{{ stabStages.stageFirst.evaluation.currentRange.max }}</p>
+                  <p>{{ stabStages[0]?.grade_mul }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -193,17 +193,25 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценки стуктуры и логики</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.evaluation.structureLogic.min }}–{{ stabStages.stageFirst.evaluation.structureLogic.max }}</p>
+                  <p>{{ stabStages[0]?.grades[0]?.grades.length ? Math.min(...stabStages[0].grades[0].grades) : '-' }} - {{ stabStages[0]?.grades[0]?.grades.length ? Math.max(...stabStages[0].grades[0].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Оценки мотивации</p>
+                  <p>Оценки содержательности и мотивация</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageFirst.evaluation.motivation.min }}–{{ stabStages.stageFirst.evaluation.motivation.max }}</p>
+                  <p>{{ stabStages[0]?.grades[1]?.grades.length ? Math.min(...stabStages[0].grades[1].grades) : '-' }} - {{ stabStages[0]?.grades[1]?.grades.length ? Math.max(...stabStages[0].grades[1].grades) : '-' }}</p>
                 </div>
-              </div> -->
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оценки цели и связь с программой</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages[0]?.grades[2]?.grades.length ? Math.min(...stabStages[0].grades[2].grades) : '-' }} - {{ stabStages[0]?.grades[2]?.grades.length ? Math.max(...stabStages[0].grades[2].grades) : '-' }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </WrapperBlock>
@@ -214,7 +222,7 @@ const formatTimestamp = (ts: number) => {
                 <p>Этап 2</p>
               </div>
               <div class="name">
-                <!-- <p>{{ stabStages.stageSecond.name }}</p> -->
+                <p>Кейс</p>
               </div>
             </div>
             <IconButton
@@ -276,12 +284,12 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценка</p>
                 </div>
               </div>
-              <!-- <div class="item-block">
+              <div class="item-block">
                 <div class="item-block__name">
                   <p>Проходной балл</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.evaluation.passingGrade }}</p>
+                  <p>{{ stabStages[1]?.min_grade_to_pass }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -289,25 +297,41 @@ const formatTimestamp = (ts: number) => {
                   <p>Текущий диапазон оценки</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.evaluation.currentRange.min }}–{{ stabStages.stageSecond.evaluation.currentRange.max }}</p>
+                  <p>{{ stabStages[1]?.grade_mul }}</p>
                 </div>
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Оценки стуктуры и логики</p>
+                  <p>Целостность решения</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.evaluation.structureLogic.min }}–{{ stabStages.stageSecond.evaluation.structureLogic.max }}</p>
+                  <p>{{ stabStages[1]?.grades[0]?.grades.length ? Math.min(...stabStages[1].grades[0].grades) : '-' }} - {{ stabStages[1]?.grades[0]?.grades.length ? Math.max(...stabStages[1].grades[0].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Оценки мотивации</p>
+                  <p>Аргументация предложенного решения</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages.stageSecond.evaluation.motivation.min }}–{{ stabStages.stageSecond.evaluation.motivation.max }}</p>
+                  <p>{{ stabStages[1]?.grades[1]?.grades.length ? Math.min(...stabStages[1].grades[1].grades) : '-' }} - {{ stabStages[1]?.grades[1]?.grades.length ? Math.max(...stabStages[1].grades[1].grades) : '-' }}</p>
                 </div>
-              </div> -->
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Реалистичность и здравый смысл</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages[1]?.grades[2]?.grades.length ? Math.min(...stabStages[1].grades[2].grades) : '-' }} - {{ stabStages[1]?.grades[2]?.grades.length ? Math.max(...stabStages[1].grades[2].grades) : '-' }}</p>
+                </div>
+              </div>
+              <div class="item-block">
+                <div class="item-block__name">
+                  <p>Оригинальность подхода</p>
+                </div>
+                <div class="item-block__text">
+                  <p>{{ stabStages[1]?.grades[3]?.grades.length ? Math.min(...stabStages[1].grades[3].grades) : '-' }} - {{ stabStages[1]?.grades[3]?.grades.length ? Math.max(...stabStages[1].grades[3].grades) : '-' }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </WrapperBlock>
@@ -319,7 +343,7 @@ const formatTimestamp = (ts: number) => {
               <p>Этап 3</p>
             </div>
             <div class="name">
-              <!-- <p>{{ stabStages.stageThird.name }}</p> -->
+              <p>Собеседования</p>
             </div>
           </div>
         </div>
