@@ -17,7 +17,7 @@ const stabStages = reactive([
     stage_id: 1,
     stage_key: "STAGE_1",
     deadlines: {
-      start_date: 174720000000,
+      start_date: 1747200000000,
       start_utill: 1747200000000,
       send_until: 1747200000000,
       time_to_complete: 3
@@ -84,37 +84,16 @@ const openStageWindow = (number: number) => {
   numberSelectedStage.value = number;
 }
 
-const dateToString = (val: string) => {
-  const date = new Date(val);
-  const yers = date.getFullYear();
-  const months = String(date.getMonth() + 1).padStart(2, '0'); // месяцы с 0
-  const days = String(date.getDate()).padStart(2, '0');
-  const formatted = `${yers}-${months}-${days}`;
-  return formatted
+const formatTimestamp = (ts: number) => {
+  const date = new Date(ts)
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  .format(date)
+  .replace(' г.', '')
 }
-
-
-function dateStringToTimestamp(dateStr: string): number {
-  // Создаём объект Date из строки
-  const date = new Date(dateStr);
-  return date.getTime(); // возвращаем timestamp в миллисекундах
-}
-
-
-const updateStartDate = (val: string) => {
-  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.startDate = dateStringToTimestamp(val);
-  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.startDate = dateStringToTimestamp(val);
-};
-
-const updateOpportunityDate = (val: string) => {
-  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.opportunityDate = dateStringToTimestamp(val);
-  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.opportunityDate = dateStringToTimestamp(val);
-};
-
-const updateDeadlineDate = (val: string) => {
-  // if (numberSelectedStage.value === 1) stabStages.stageFirst.deadlines.deadlineAllDate = dateStringToTimestamp(val);
-  // if (numberSelectedStage.value === 2) stabStages.stageSecond.deadlines.deadlineAllDate = dateStringToTimestamp(val);
-};
 </script>
 
 <template>
@@ -156,8 +135,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageFirst.deadlines.startDate.stringDate }}</p> -->
-                  <p>{{ stabStages[0]?.deadlines.start_date }}</p>
+                  <p>{{ stabStages[0]?.deadlines.start_date ? formatTimestamp(stabStages[0].deadlines.start_date) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -165,8 +143,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageFirst.deadlines.opportunityDate.stringDate }}</p> -->
-                  <p>{{ stabStages[0]?.deadlines.start_utill }}</p>
+                  <p>{{ stabStages[0]?.deadlines.start_utill ? formatTimestamp(stabStages[0]?.deadlines.start_utill) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -174,8 +151,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageFirst.deadlines.deadlineAllDate.stringDate }}</p> -->
-                  <p>{{ stabStages[0]?.deadlines.send_until }}</p>
+                  <p>{{ stabStages[0]?.deadlines.send_until ? formatTimestamp(stabStages[0]?.deadlines.send_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -183,7 +159,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.deadlines.time_to_complete }}</p>
+                  <p>{{ stabStages[0]?.deadlines.time_to_complete }} дня</p>
                 </div>
               </div>
             </div>
@@ -263,8 +239,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageSecond.deadlines.startDate.stringDate }}</p> -->
-                  <p>{{ stabStages[1]?.deadlines.start_date }}</p>
+                  <p>{{ stabStages[1]?.deadlines.start_date ? formatTimestamp(stabStages[1]?.deadlines.start_date) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -272,8 +247,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageSecond.deadlines.opportunityDate.stringDate }}</p> -->
-                  <p>{{ stabStages[1]?.deadlines.start_utill }}</p>
+                  <p>{{ stabStages[1]?.deadlines.start_utill ? formatTimestamp(stabStages[1]?.deadlines.start_utill) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -281,8 +255,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <!-- <p>{{ stabStages.stageSecond.deadlines.deadlineAllDate.stringDate }}</p> -->
-                  <p>{{ stabStages[1]?.deadlines.send_until }}</p>
+                  <p>{{ stabStages[1]?.deadlines.send_until ? formatTimestamp(stabStages[1]?.deadlines.send_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -290,7 +263,7 @@ const updateDeadlineDate = (val: string) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.deadlines.time_to_complete }}</p>
+                  <p>{{ stabStages[1]?.deadlines.time_to_complete }} дня</p>
                 </div>
               </div>
             </div>

@@ -6,8 +6,9 @@ import one from '@/assets/images/mainIcons/one.svg';
 import CalendarBlock from './components/CalendarBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import ScoreButton from './components/ScoreButton.vue';
-import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { computed, reactive } from 'vue';
+import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
+import type { IInputDefaultProps } from '@/types/inputs/types';
 
 interface Deadline {
   start_date: number;
@@ -55,26 +56,40 @@ const localStage = reactive<Stage>({
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'update:start-date', value: string): void;
-  (e: 'update:opportunity-date', value: string): void;
-  (e: 'update:deadline-date', value: string): void;
 }>();
 
 const closeWindow = () => {
   emit("close");
 };
 
+const dayToWorkInputObj = reactive<IInputDefaultProps>({
+  value: '',
+  label: 'Дней на выполнение задания',
+  placeholder: '',
+  error: {
+    show: false,
+    text: ''
+  },
+});
+
 const updateDate = (date: string, type: string) => {
-  if (type === 'start') emit('update:start-date', date); 
-  if (type === 'opportunity') emit('update:opportunity-date', date); 
-  if (type === 'deadline') emit('update:deadline-date', date); 
-}
+  if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
+  if (type === 'opportunity') localStage.deadlines.start_utill = new Date(date).getTime();
+  if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
+};
+
+const timeToCompleteStr = computed({
+  get: () => String(localStage.deadlines.time_to_complete),
+  set: (val: string) => {
+    const num = Number(val);
+    localStage.deadlines.time_to_complete = isNaN(num) ? 0 : num
+  },
+})
 
 function timestampToDateString(timestamp: number): string {
   const date = new Date(timestamp);
   const year = date.getFullYear();
-  // Месяц и день делаем двухзначными
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // месяцы от 0 до 11
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
@@ -132,6 +147,12 @@ const addNewScore = (nameBlock: string, id: number) => {
               label="Дедлайн отправки всех заданий"
               :date="timestampToDateString(localStage.deadlines.send_until)"
               @update:date="date => updateDate(date, 'deadline')"
+            />
+            <DefaultInput
+              v-model:value="timeToCompleteStr"
+              :label="dayToWorkInputObj.label"
+              :placeholder="dayToWorkInputObj.placeholder"
+              :error="dayToWorkInputObj.error"
             />
           </div>
         </div>
@@ -193,6 +214,11 @@ const addNewScore = (nameBlock: string, id: number) => {
                 @click="addNewScore('ProgramGoals', index)"
               />
             </div>
+          </div>
+
+
+          <div>
+            множитель
           </div>
 
         </div>

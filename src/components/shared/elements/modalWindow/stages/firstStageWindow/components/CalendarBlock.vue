@@ -35,6 +35,23 @@ const closeCalendar = () => {
   
   calendarIsOpen.value = false;
 };
+
+const formatIsoDate = (isoDate: string) => {
+  const parts = isoDate.split('-')
+  if (parts.length !== 3) return ''
+  const year = Number(parts[0])
+  const month = Number(parts[1])
+  const day = Number(parts[2])
+  if (!year || !month || !day) return ''
+  const date = new Date(year, month - 1, day)
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  .format(date)
+  .replace(' г.', '')
+}
 </script>
 
 <template>
@@ -48,7 +65,7 @@ const closeCalendar = () => {
       @click="openCalendar"
     >
       <div>
-        <p>{{ date }}</p>
+        <p>{{ formatIsoDate(date) }}</p>
       </div>
       <div>
         <img :src="calendar" alt="">
