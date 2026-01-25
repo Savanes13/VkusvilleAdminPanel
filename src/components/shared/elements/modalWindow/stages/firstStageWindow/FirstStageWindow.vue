@@ -83,8 +83,15 @@ const structLogic = computed(() => localStage.grades.find(item => item.criteria 
 const contentMotivation = computed(() => localStage.grades.find(item => item.criteria === 'ContentMotivation')?.grades ?? []);
 const programGoals = computed(() => localStage.grades.find(item => item.criteria === 'ProgramGoals')?.grades ?? []);
 
-const addNewScore = () => {
-  
+const addNewScore = (nameBlock: string, id: number) => {
+  const block = localStage.grades.find(item => item.criteria === nameBlock);
+  if (!block) return
+  if (!block.grades.includes(id)) {
+    block.grades.push(id)
+  } else {
+    const index = block.grades.indexOf(id)
+    block.grades.splice(index, 1)
+  }
 }
 </script>
 
@@ -92,12 +99,14 @@ const addNewScore = () => {
   <BackgroundModal>
     <div 
       class="stage-window"
-      v-clickOutside="closeWindow"
-    > 
+      > 
+      <!-- v-clickOutside="closeWindow" -->
       <ModalWindow
         :name="`Настройка ${1} этапа`"
         @close="closeWindow"
       >
+
+          {{ localStage }}
 
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
@@ -147,15 +156,11 @@ const addNewScore = () => {
             </div>
             <div class="score-block__items">
               <ScoreButton
-                v-for="item in structLogic"
-                :number="item"
-                :key="item"
-              />
-              <IconButton
-                v-if="structLogic?.length < 10"
-                class="button-icon__color-green-transparent"
-                icon="plus"
-                color-icon="#179C49"
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="structLogic.includes(index)"
+                @click="addNewScore('StructLogic', index)"
               />
             </div>
           </div>
@@ -166,15 +171,11 @@ const addNewScore = () => {
             </div>
             <div class="score-block__items">
               <ScoreButton
-                v-for="item in contentMotivation"
-                :number="item"
-                :key="item"
-              />
-              <IconButton
-                v-if="contentMotivation?.length < 10"
-                class="button-icon__color-green-transparent"
-                icon="plus"
-                color-icon="#179C49"
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="contentMotivation.includes(index)"
+                @click="addNewScore('ContentMotivation', index)"
               />
             </div>
           </div>
@@ -185,15 +186,11 @@ const addNewScore = () => {
             </div>
             <div class="score-block__items">
               <ScoreButton
-                v-for="item in programGoals"
-                :number="item"
-                :key="item"
-              />
-              <IconButton
-                v-if="programGoals?.length < 10"
-                class="button-icon__color-green-transparent"
-                icon="plus"
-                color-icon="#179C49"
+                v-for="(item, index) in 10"
+                :number="index"
+                :key="index"
+                :activity="programGoals.includes(index)"
+                @click="addNewScore('ProgramGoals', index)"
               />
             </div>
           </div>

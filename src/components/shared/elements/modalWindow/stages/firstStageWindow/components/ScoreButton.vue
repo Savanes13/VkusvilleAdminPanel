@@ -2,25 +2,39 @@
 import { buttonIcons } from '@/components/shared/icons/button/icons';
 
 interface IScoreButtonProps {
-  number: number
+  number: number;
+  activity: boolean;
 }
 
 const {
-  number
+  number,
+  activity
 } = defineProps<IScoreButtonProps>();
 </script>
 
 <template>
-  <div class="score-button">
+  <div 
+    class="score-button"
+    :class="{'score-button--activ' : activity }"
+  >
     <div>
       <p>{{ number }}</p>
     </div>
-    <div>
+
+    <div v-if="activity">
       <span
         class="svg"
         v-html="buttonIcons['circleClose']"
       ></span>
     </div>
+
+    <div v-else>
+      <span
+        class="svg plus-svg"
+        v-html="buttonIcons['plus']"
+      ></span>
+    </div>
+
   </div>
 </template>
 
@@ -31,12 +45,13 @@ const {
 .score-button {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6px;
   width: 65px;
   height: 40px;
   border-radius: 12px;
   padding: 8px 12px;
-  background: color.$colorAccentGreen;
+  background: color.$colorBackgroundAccentAlternative;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
@@ -46,6 +61,14 @@ const {
 }
 
 .score-button:hover {
+  background: color.$colorBackgroundAccentAlternative_Hover;
+}
+
+.score-button--activ {
+  background: color.$colorAccentGreen;
+}
+
+.score-button--activ:hover {
   background-color: color.$colorBackgroundAccent_Hover;
 }
 
