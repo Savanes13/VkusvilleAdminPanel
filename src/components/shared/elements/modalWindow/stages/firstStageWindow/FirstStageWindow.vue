@@ -72,11 +72,25 @@ const dayToWorkInputObj = reactive<IInputDefaultProps>({
   },
 });
 
-const updateDate = (date: string, type: string) => {
-  if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
-  if (type === 'opportunity') localStage.deadlines.start_utill = new Date(date).getTime();
-  if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
-};
+const multiplierInputObj = reactive<IInputDefaultProps>({
+  value: '',
+  label: 'Множитель',
+  placeholder: '',
+  error: {
+    show: false,
+    text: ''
+  },
+});
+
+const passingGradeInputObj = reactive<IInputDefaultProps>({
+  value: '',
+  label: 'Проходной балл',
+  placeholder: '',
+  error: {
+    show: false,
+    text: ''
+  },
+});
 
 const timeToCompleteStr = computed({
   get: () => String(localStage.deadlines.time_to_complete),
@@ -85,6 +99,28 @@ const timeToCompleteStr = computed({
     localStage.deadlines.time_to_complete = isNaN(num) ? 0 : num
   },
 })
+
+const gradeMulStr = computed({
+  get: () => String(localStage.grade_mul),
+  set: (val: string) => {
+    const num = Number(val)
+    localStage.grade_mul = isNaN(num) ? 0 : num
+  }
+})
+
+const minGradePass = computed({
+  get: () => String(localStage.min_grade_to_pass),
+  set: (val: string) => {
+    const num = Number(val)
+    localStage.min_grade_to_pass = isNaN(num) ? 0 : num
+  }
+})
+
+const updateDate = (date: string, type: string) => {
+  if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
+  if (type === 'opportunity') localStage.deadlines.start_utill = new Date(date).getTime();
+  if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
+};
 
 function timestampToDateString(timestamp: number): string {
   const date = new Date(timestamp);
@@ -120,8 +156,6 @@ const addNewScore = (nameBlock: string, id: number) => {
         :name="`Настройка ${1} этапа`"
         @close="closeWindow"
       >
-
-          {{ localStage }}
 
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
@@ -216,9 +250,19 @@ const addNewScore = (nameBlock: string, id: number) => {
             </div>
           </div>
 
-
-          <div>
-            множитель
+          <div class="block-multiplier">
+            <DefaultInput
+              v-model:value="gradeMulStr"
+              :label="multiplierInputObj.label"
+              :placeholder="multiplierInputObj.placeholder"
+              :error="multiplierInputObj.error"
+            />
+            <DefaultInput
+              v-model:value="minGradePass"
+              :label="passingGradeInputObj.label"
+              :placeholder="passingGradeInputObj.placeholder"
+              :error="passingGradeInputObj.error"
+            />
           </div>
 
         </div>
@@ -305,5 +349,10 @@ const addNewScore = (nameBlock: string, id: number) => {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.block-multiplier {
+  display: flex;
+  gap: 16px;
 }
 </style>
