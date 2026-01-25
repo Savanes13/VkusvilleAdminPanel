@@ -467,4 +467,10 @@ const formatTimestamp = (ts: number) => {
 .interview-button {
   width: 210px;
 }
+
+@media (max-width: 1300px) {
+  .wrap-editable {
+    flex-direction: column;
+  }
+}
 </style>

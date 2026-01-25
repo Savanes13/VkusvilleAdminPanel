@@ -51,7 +51,7 @@ const route = useRoute();
 .default-layout__content {
   width: 100%;
   display: flex;
-  height: 100vh;
+  // height: 100vh;
 }
 
 .default-layout__mobile-panel {
@@ -71,6 +71,7 @@ const route = useRoute();
 .admin-page {
   flex: 1;
   overflow-x: auto;
+  overflow-y: hidden;
   background: #F5F5F5;
 }
 
