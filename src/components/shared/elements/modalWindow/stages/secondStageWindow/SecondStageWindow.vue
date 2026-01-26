@@ -12,6 +12,7 @@ import type { IStage } from '@/types/pages/stages/typesStages';
 
 const emit = defineEmits<{
   (e: 'close'): void;
+  (e:"setNewObj", obj: IStage): void;
 }>();
 
 const props = defineProps<{ data: IStage }>()

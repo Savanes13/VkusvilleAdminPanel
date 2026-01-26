@@ -36,6 +36,12 @@ const formatTimestamp = (ts: number) => {
   .replace(' г.', '')
 }
 
+const setNewStageValue = (id: number, obj: IStage) => {
+  if(!pageDataArr.value) return;
+  if(id === 1) pageDataArr.value[0] = obj
+  if(id === 2) pageDataArr.value[1] = obj
+};
+
 const getPageData = async () => {
   try {
     const response = await getContenStagesPage();
@@ -314,20 +320,18 @@ getPageData();
         </div>
       </WrapperBlock>
     </div>
-
-    <!-- {{ pageDataArr.stageFirst.deadlines.startDate.date }} -->
-      <FirstStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
-        :data="pageDataArr[0]"
-        @close="closeStageWindow"
-      />
-
-      <SecondStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
-        :data="pageDataArr[1]"
-        @close="closeStageWindow"
-      />
-
+    <FirstStageWindow
+      v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
+      :data="pageDataArr[0]"
+      @close="closeStageWindow"
+      @set-new-obj="(obj) => setNewStageValue(1, obj)"
+    />
+    <SecondStageWindow
+      v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
+      :data="pageDataArr[1]"
+      @close="closeStageWindow"
+      @set-new-obj="(obj) => setNewStageValue(2, obj)"
+    />
   </div>
 </template>
 

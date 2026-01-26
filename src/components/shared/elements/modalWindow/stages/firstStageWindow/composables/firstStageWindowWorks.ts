@@ -3,7 +3,12 @@ import { computed, reactive } from "vue";
 import type { IStage } from "@/types/pages/stages/typesStages";
 import { changeDataStage } from "@/api/pages/stages/apiStages";
 
-export default function firstStageWindowWorks (props: { data: IStage }, emit: (e: 'close') => void) {  
+type FirstStageEmits = {
+  (e: 'close'): void
+  (e: 'setNewObj', obj: IStage): void
+}
+
+export default function firstStageWindowWorks (props: { data: IStage }, emit: FirstStageEmits) {  
   const localStage = reactive<IStage>({
     stage_id: props.data.stage_id,
     stage_key: props.data.stage_key,
@@ -110,7 +115,9 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: (e
 
   const changeStageData = async () => {
     try {
-      changeDataStage(1, localStage);
+      await changeDataStage(1, localStage);
+      emit("setNewObj", localStage);
+      closeWindow();
     } catch (error) {
       console.error('ошибка при изменении настроек этапа')
     }
