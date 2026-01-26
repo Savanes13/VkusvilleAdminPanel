@@ -6,7 +6,7 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
@@ -14,68 +14,6 @@ import type { IStage } from '@/types/pages/stages/typesStages';
 const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
-
-// const pageDataArr = reactive([
-//   {
-//     stage_id: 1,
-//     stage_key: "STAGE_1",
-//     deadlines: {
-//       start_date: 1747200000000,
-//       start_utill: 1747200000000,
-//       send_until: 1747200000000,
-//       time_to_complete: 3
-//     },
-//     grades:
-//     [
-//       {
-//         criteria: "StructLogic",
-//         grades: [0, 1, 2, 3, 6, 7, 8, 9]
-//       },
-//       {
-//         criteria: "ContentMotivation",
-//         grades: [0, 1, 2, 3, 4]
-//       },
-//       {
-//         criteria: "ProgramGoals",
-//         grades: [0, 1, 2, 3, 4]
-//       },
-//     ],
-//     grade_mul: 1.0,
-//     min_grade_to_pass: 10
-//   },
-//   {
-//     stage_id: 2,
-//     stage_key: "STAGE_2",
-//     deadlines: {
-//       start_date: 1747200000000,
-//       start_utill: 1747200000000,
-//       send_until: 1747200000000,
-//       time_to_complete: 3
-//     },
-//     grades:
-//     [
-//       {
-//         criteria: "Integrity",
-//         grades: [0, 1, 2, 3, 4]
-//       },
-//       {
-//         criteria: "Arguments",
-//         grades: [0, 1, 2, 3, 4, 6]
-//       },
-//       {
-//         criteria: "RealisticMeaningful",
-//         grades: [0, 1, 2, 3, 4]
-//       },
-//       {
-//         criteria: "Original",
-//         grades: [0, 1, 2]
-//       },
-      
-//     ],
-//     grade_mul: 2.0,
-//     min_grade_to_pass: 12
-//   },
-// ])
 
 const closeStageWindow = () => {
   stageWindowVisibility.value = false;
@@ -159,7 +97,7 @@ getPageData();
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.deadlines.start_utill ? formatTimestamp(pageDataArr[0]?.deadlines.start_utill) : '' }}</p>
+                  <p>{{ pageDataArr[0]?.deadlines.start_until ? formatTimestamp(pageDataArr[0]?.deadlines.start_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -271,7 +209,7 @@ getPageData();
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.deadlines.start_utill ? formatTimestamp(pageDataArr[1]?.deadlines.start_utill) : '' }}</p>
+                  <p>{{ pageDataArr[1]?.deadlines.start_until ? formatTimestamp(pageDataArr[1]?.deadlines.start_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">

@@ -62,7 +62,7 @@ const {
             />
             <CalendarBlock
               label="Дедлайн начала этапа"
-              :date="timestampToDateString(localStage.deadlines.start_utill)"
+              :date="timestampToDateString(localStage.deadlines.start_until)"
               @update:date="date => updateDate(date, 'opportunity')"
             />
             <CalendarBlock

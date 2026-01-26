@@ -1,6 +1,6 @@
 interface Deadline {
   start_date: number;
-  start_utill: number;
+  start_until: number;
   send_until: number;
   time_to_complete: number;
 }

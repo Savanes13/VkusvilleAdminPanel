@@ -10,7 +10,7 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: (
     min_grade_to_pass: props.data.min_grade_to_pass,
     deadlines: {
       start_date: props.data.deadlines.start_date,
-      start_utill: props.data.deadlines.start_utill,
+      start_until: props.data.deadlines.start_until,
       send_until: props.data.deadlines.send_until,
       time_to_complete: props.data.deadlines.time_to_complete,
     },
@@ -85,7 +85,7 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: (
   
   const updateDate = (date: string, type: string) => {
     if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
-    if (type === 'opportunity') localStage.deadlines.start_utill = new Date(date).getTime();
+    if (type === 'opportunity') localStage.deadlines.start_until = new Date(date).getTime();
     if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
   };
   
