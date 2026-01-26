@@ -17,6 +17,12 @@ const dataSwitch = [
     text: "2 этап"
   }
 ];
+
+const ApplicantStab = [
+  {
+    
+  }
+]
 </script>
 
 <template>
@@ -33,6 +39,7 @@ const dataSwitch = [
       />
       <DefaultButton
         class="default-button__size--large default-button__color-green-transparent control-button"
+        left-icon="edit"
       >
         Редактировать оценки
       </DefaultButton>
@@ -62,5 +69,6 @@ const dataSwitch = [
 
 .control-button {
   width: 242px;
+  margin-bottom: 20px;
 }
 </style>
