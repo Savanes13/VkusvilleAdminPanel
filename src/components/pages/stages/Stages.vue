@@ -119,7 +119,7 @@ getPageData();
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.deadlines.time_to_complete }} дня</p>
+                  <p>{{ pageDataArr[0]?.deadlines.time_to_complete }} часа</p>
                 </div>
               </div>
             </div>
@@ -231,7 +231,7 @@ getPageData();
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.deadlines.time_to_complete }} дня</p>
+                  <p>{{ pageDataArr[1]?.deadlines.time_to_complete }} часа</p>
                 </div>
               </div>
             </div>

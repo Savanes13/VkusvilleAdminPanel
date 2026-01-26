@@ -32,7 +32,7 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
   
   const dayToWorkInputObj = reactive<IInputDefaultProps>({
     value: '',
-    label: 'Дней на выполнение задания',
+    label: 'Часов на выполнение задания',
     placeholder: '',
     error: {
       show: false,
