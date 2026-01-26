@@ -1,6 +1,7 @@
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive } from "vue";
 import type { IStage } from "@/types/pages/stages/typesStages";
+import { changeDataStage } from "@/api/pages/stages/apiStages";
 
 export default function firstStageWindowWorks (props: { data: IStage }, emit: (e: 'close') => void) {  
   const localStage = reactive<IStage>({
@@ -107,6 +108,14 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: (e
     }
   }
 
+  const changeStageData = async () => {
+    try {
+      changeDataStage(1, localStage);
+    } catch (error) {
+      console.error('ошибка при изменении настроек этапа')
+    }
+  }
+
   return {
     localStage,
     timeToCompleteStr,
@@ -115,11 +124,10 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: (e
     dayToWorkInputObj,
     multiplierInputObj,
     passingGradeInputObj,
-
     structLogic,
     contentMotivation,
     programGoals,
-
+    changeStageData,
     closeWindow,
     timestampToDateString,
     updateDate,

@@ -27,6 +27,7 @@ const {
   structLogic,
   contentMotivation,
   programGoals,
+  changeStageData,
   closeWindow,
   timestampToDateString,
   updateDate,
@@ -149,11 +150,13 @@ const {
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
+             @click="closeWindow"
           >
             Отменить
           </DefaultButton>
           <DefaultButton
             class="default-button__size--large default-button__color-green"
+            @click="changeStageData"
           >
             Сохранить
           </DefaultButton>

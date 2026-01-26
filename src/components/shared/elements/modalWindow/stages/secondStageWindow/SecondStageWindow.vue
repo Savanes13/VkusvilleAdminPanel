@@ -28,6 +28,7 @@ const {
   argument,
   realisticMeaningful,
   original,
+  changeStageData,
   closeWindow,
   timestampToDateString,
   updateDate,
@@ -164,11 +165,13 @@ const {
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
+             @clicl="closeWindow"
           >
             Отменить
           </DefaultButton>
           <DefaultButton
             class="default-button__size--large default-button__color-green"
+            @click="changeStageData"
           >
             Сохранить
           </DefaultButton>
