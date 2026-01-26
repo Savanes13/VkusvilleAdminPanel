@@ -44,10 +44,10 @@ const route = useRoute();
       path="/access"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/interviews'"
       icon="meeting"
       text="Собеседования"
-      path="/"
+      path="/interviews"
     />
   </div>
 </template>

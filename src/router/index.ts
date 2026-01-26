@@ -10,6 +10,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Access from '@/components/pages/access/Access.vue'
 import Applicants from '@/components/pages/applicants/Applicants.vue'
 import Applicant from '@/components/pages/applicant/Applicant.vue'
+import Interviews from '@/components/pages/interviews/Interviews.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,7 @@ const router = createRouter({
         { path: "experts", component: Experts },
         { path: "access", component: Access },
         { path: "applicants", component: Applicants },
+        { path: "interviews", component: Interviews },
         {
           path: 'applicant/:id',
           name: 'applicant',
