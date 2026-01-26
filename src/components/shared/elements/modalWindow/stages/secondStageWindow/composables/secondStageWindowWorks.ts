@@ -1,9 +1,9 @@
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive } from "vue";
-import type { Stage } from "../SecondStageWindow.vue";
+import type { IStage } from "@/types/pages/stages/typesStages";
 
-export default function secondStageWindowWorks (props: { data: Stage }, emit: (e: 'close') => void) {  
-  const localStage = reactive<Stage>({
+export default function secondStageWindowWorks (props: { data: IStage }, emit: (e: 'close') => void) {  
+  const localStage = reactive<IStage>({
     stage_id: props.data.stage_id,
     stage_key: props.data.stage_key,
     grade_mul: props.data.grade_mul,

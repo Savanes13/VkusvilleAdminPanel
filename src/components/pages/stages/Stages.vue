@@ -8,71 +8,74 @@ import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
 import { reactive, ref } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import { getContenStagesPage } from '@/api/pages/stages/apiStages';
+import type { IStage } from '@/types/pages/stages/typesStages';
 
+const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 
-const stabStages = reactive([
-  {
-    stage_id: 1,
-    stage_key: "STAGE_1",
-    deadlines: {
-      start_date: 1747200000000,
-      start_utill: 1747200000000,
-      send_until: 1747200000000,
-      time_to_complete: 3
-    },
-    grades:
-    [
-      {
-        criteria: "StructLogic",
-        grades: [0, 1, 2, 3, 6, 7, 8, 9]
-      },
-      {
-        criteria: "ContentMotivation",
-        grades: [0, 1, 2, 3, 4]
-      },
-      {
-        criteria: "ProgramGoals",
-        grades: [0, 1, 2, 3, 4]
-      },
-    ],
-    grade_mul: 1.0,
-    min_grade_to_pass: 10
-  },
-  {
-    stage_id: 2,
-    stage_key: "STAGE_2",
-    deadlines: {
-      start_date: 1747200000000,
-      start_utill: 1747200000000,
-      send_until: 1747200000000,
-      time_to_complete: 3
-    },
-    grades:
-    [
-      {
-        criteria: "Integrity",
-        grades: [0, 1, 2, 3, 4]
-      },
-      {
-        criteria: "Arguments",
-        grades: [0, 1, 2, 3, 4, 6]
-      },
-      {
-        criteria: "RealisticMeaningful",
-        grades: [0, 1, 2, 3, 4]
-      },
-      {
-        criteria: "Original",
-        grades: [0, 1, 2]
-      },
+// const pageDataArr = reactive([
+//   {
+//     stage_id: 1,
+//     stage_key: "STAGE_1",
+//     deadlines: {
+//       start_date: 1747200000000,
+//       start_utill: 1747200000000,
+//       send_until: 1747200000000,
+//       time_to_complete: 3
+//     },
+//     grades:
+//     [
+//       {
+//         criteria: "StructLogic",
+//         grades: [0, 1, 2, 3, 6, 7, 8, 9]
+//       },
+//       {
+//         criteria: "ContentMotivation",
+//         grades: [0, 1, 2, 3, 4]
+//       },
+//       {
+//         criteria: "ProgramGoals",
+//         grades: [0, 1, 2, 3, 4]
+//       },
+//     ],
+//     grade_mul: 1.0,
+//     min_grade_to_pass: 10
+//   },
+//   {
+//     stage_id: 2,
+//     stage_key: "STAGE_2",
+//     deadlines: {
+//       start_date: 1747200000000,
+//       start_utill: 1747200000000,
+//       send_until: 1747200000000,
+//       time_to_complete: 3
+//     },
+//     grades:
+//     [
+//       {
+//         criteria: "Integrity",
+//         grades: [0, 1, 2, 3, 4]
+//       },
+//       {
+//         criteria: "Arguments",
+//         grades: [0, 1, 2, 3, 4, 6]
+//       },
+//       {
+//         criteria: "RealisticMeaningful",
+//         grades: [0, 1, 2, 3, 4]
+//       },
+//       {
+//         criteria: "Original",
+//         grades: [0, 1, 2]
+//       },
       
-    ],
-    grade_mul: 2.0,
-    min_grade_to_pass: 12
-  },
-])
+//     ],
+//     grade_mul: 2.0,
+//     min_grade_to_pass: 12
+//   },
+// ])
 
 const closeStageWindow = () => {
   stageWindowVisibility.value = false;
@@ -94,10 +97,23 @@ const formatTimestamp = (ts: number) => {
   .format(date)
   .replace(' г.', '')
 }
+
+const getPageData = async () => {
+  try {
+    const response = await getContenStagesPage();
+    pageDataArr.value = response.items;
+  } catch (error) {
+    console.error('ошибка при получении данных страницы')
+  }
+}
+getPageData();
 </script>
 
 <template>
-  <div class="stages">
+  <div 
+    class="stages"
+    v-if="pageDataArr"
+  >
     <PageHeader>
       Этапы
     </PageHeader>
@@ -135,7 +151,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.deadlines.start_date ? formatTimestamp(stabStages[0].deadlines.start_date) : '' }}</p>
+                  <p>{{ pageDataArr[0]?.deadlines.start_date ? formatTimestamp(pageDataArr[0].deadlines.start_date) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -143,7 +159,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.deadlines.start_utill ? formatTimestamp(stabStages[0]?.deadlines.start_utill) : '' }}</p>
+                  <p>{{ pageDataArr[0]?.deadlines.start_utill ? formatTimestamp(pageDataArr[0]?.deadlines.start_utill) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -151,7 +167,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.deadlines.send_until ? formatTimestamp(stabStages[0]?.deadlines.send_until) : '' }}</p>
+                  <p>{{ pageDataArr[0]?.deadlines.send_until ? formatTimestamp(pageDataArr[0]?.deadlines.send_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -159,7 +175,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.deadlines.time_to_complete }} дня</p>
+                  <p>{{ pageDataArr[0]?.deadlines.time_to_complete }} дня</p>
                 </div>
               </div>
             </div>
@@ -177,7 +193,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Проходной балл</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.min_grade_to_pass }}</p>
+                  <p>{{ pageDataArr[0]?.min_grade_to_pass }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -185,7 +201,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Текущий диапазон оценки</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.grade_mul }}</p>
+                  <p>{{ pageDataArr[0]?.grade_mul }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -193,7 +209,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценки стуктуры и логики</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.grades[0]?.grades.length ? Math.min(...stabStages[0].grades[0].grades) : '-' }} - {{ stabStages[0]?.grades[0]?.grades.length ? Math.max(...stabStages[0].grades[0].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[0]?.grades[0]?.grades.length ? Math.min(...pageDataArr[0].grades[0].grades) : '-' }} - {{ pageDataArr[0]?.grades[0]?.grades.length ? Math.max(...pageDataArr[0].grades[0].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -201,7 +217,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценки содержательности и мотивация</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.grades[1]?.grades.length ? Math.min(...stabStages[0].grades[1].grades) : '-' }} - {{ stabStages[0]?.grades[1]?.grades.length ? Math.max(...stabStages[0].grades[1].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[0]?.grades[1]?.grades.length ? Math.min(...pageDataArr[0].grades[1].grades) : '-' }} - {{ pageDataArr[0]?.grades[1]?.grades.length ? Math.max(...pageDataArr[0].grades[1].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -209,7 +225,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Оценки цели и связь с программой</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[0]?.grades[2]?.grades.length ? Math.min(...stabStages[0].grades[2].grades) : '-' }} - {{ stabStages[0]?.grades[2]?.grades.length ? Math.max(...stabStages[0].grades[2].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[0]?.grades[2]?.grades.length ? Math.min(...pageDataArr[0].grades[2].grades) : '-' }} - {{ pageDataArr[0]?.grades[2]?.grades.length ? Math.max(...pageDataArr[0].grades[2].grades) : '-' }}</p>
                 </div>
               </div>
             </div>
@@ -247,7 +263,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дата начала этапа</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.deadlines.start_date ? formatTimestamp(stabStages[1]?.deadlines.start_date) : '' }}</p>
+                  <p>{{ pageDataArr[1]?.deadlines.start_date ? formatTimestamp(pageDataArr[1]?.deadlines.start_date) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -255,7 +271,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дедлайн возможности начать этап</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.deadlines.start_utill ? formatTimestamp(stabStages[1]?.deadlines.start_utill) : '' }}</p>
+                  <p>{{ pageDataArr[1]?.deadlines.start_utill ? formatTimestamp(pageDataArr[1]?.deadlines.start_utill) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -263,7 +279,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Дедлайн отправки всех заданий</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.deadlines.send_until ? formatTimestamp(stabStages[1]?.deadlines.send_until) : '' }}</p>
+                  <p>{{ pageDataArr[1]?.deadlines.send_until ? formatTimestamp(pageDataArr[1]?.deadlines.send_until) : '' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -271,7 +287,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.deadlines.time_to_complete }} дня</p>
+                  <p>{{ pageDataArr[1]?.deadlines.time_to_complete }} дня</p>
                 </div>
               </div>
             </div>
@@ -289,7 +305,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Проходной балл</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.min_grade_to_pass }}</p>
+                  <p>{{ pageDataArr[1]?.min_grade_to_pass }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -297,7 +313,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Текущий диапазон оценки</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.grade_mul }}</p>
+                  <p>{{ pageDataArr[1]?.grade_mul }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -305,7 +321,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Целостность решения</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.grades[0]?.grades.length ? Math.min(...stabStages[1].grades[0].grades) : '-' }} - {{ stabStages[1]?.grades[0]?.grades.length ? Math.max(...stabStages[1].grades[0].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[1]?.grades[0]?.grades.length ? Math.min(...pageDataArr[1].grades[0].grades) : '-' }} - {{ pageDataArr[1]?.grades[0]?.grades.length ? Math.max(...pageDataArr[1].grades[0].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -313,7 +329,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Аргументация предложенного решения</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.grades[1]?.grades.length ? Math.min(...stabStages[1].grades[1].grades) : '-' }} - {{ stabStages[1]?.grades[1]?.grades.length ? Math.max(...stabStages[1].grades[1].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[1]?.grades[1]?.grades.length ? Math.min(...pageDataArr[1].grades[1].grades) : '-' }} - {{ pageDataArr[1]?.grades[1]?.grades.length ? Math.max(...pageDataArr[1].grades[1].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -321,7 +337,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Реалистичность и здравый смысл</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.grades[2]?.grades.length ? Math.min(...stabStages[1].grades[2].grades) : '-' }} - {{ stabStages[1]?.grades[2]?.grades.length ? Math.max(...stabStages[1].grades[2].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[1]?.grades[2]?.grades.length ? Math.min(...pageDataArr[1].grades[2].grades) : '-' }} - {{ pageDataArr[1]?.grades[2]?.grades.length ? Math.max(...pageDataArr[1].grades[2].grades) : '-' }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -329,7 +345,7 @@ const formatTimestamp = (ts: number) => {
                   <p>Оригинальность подхода</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ stabStages[1]?.grades[3]?.grades.length ? Math.min(...stabStages[1].grades[3].grades) : '-' }} - {{ stabStages[1]?.grades[3]?.grades.length ? Math.max(...stabStages[1].grades[3].grades) : '-' }}</p>
+                  <p>{{ pageDataArr[1]?.grades[3]?.grades.length ? Math.min(...pageDataArr[1].grades[3].grades) : '-' }} - {{ pageDataArr[1]?.grades[3]?.grades.length ? Math.max(...pageDataArr[1].grades[3].grades) : '-' }}</p>
                 </div>
               </div>
             </div>
@@ -361,16 +377,16 @@ const formatTimestamp = (ts: number) => {
       </WrapperBlock>
     </div>
 
-    <!-- {{ stabStages.stageFirst.deadlines.startDate.date }} -->
+    <!-- {{ pageDataArr.stageFirst.deadlines.startDate.date }} -->
       <FirstStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 1 && stabStages[0]"
-        :data="stabStages[0]"
+        v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
+        :data="pageDataArr[0]"
         @close="closeStageWindow"
       />
 
       <SecondStageWindow
-        v-if="stageWindowVisibility && numberSelectedStage === 2 && stabStages[1]"
-        :data="stabStages[1]"
+        v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
+        :data="pageDataArr[1]"
         @close="closeStageWindow"
       />
 

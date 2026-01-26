@@ -8,33 +8,13 @@ import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import ScoreButton from '../components/ScoreButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import firstStageWindowWorks from './composables/firstStageWindowWorks';
-
-interface Deadline {
-  start_date: number;
-  start_utill: number;
-  send_until: number;
-  time_to_complete: number;
-}
-
-interface GradeCriteria {
-  criteria: string
-  grades: number[];
-}
-
-export interface Stage {
-  stage_id: number;
-  stage_key: string;
-  deadlines: Deadline;
-  grades: GradeCriteria[];
-  grade_mul: number;
-  min_grade_to_pass: number;
-}
+import type { IStage } from '@/types/pages/stages/typesStages';
 
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const props = defineProps<{ data: Stage }>()
+const props = defineProps<{ data: IStage }>()
 
 const {
   localStage,
