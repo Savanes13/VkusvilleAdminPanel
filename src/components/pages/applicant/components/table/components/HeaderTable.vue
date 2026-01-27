@@ -7,7 +7,8 @@
     <div class="table-header__big-cell expert-cell">
       <p>Эксперт</p>
     </div>
-    <div class="table-header__double-cell">
+
+    <!-- <div class="table-header__double-cell">
       <div class="title">
         <div>
           <p>Баллы по критериям</p>
@@ -21,7 +22,8 @@
           <p>Структура и логика</p>
         </div>
       </div>
-    </div>
+    </div> -->
+
     <div class="table-header__big-cell summary-cell">
       <p>Итоговый балл</p>
     </div>
@@ -92,7 +94,7 @@
 .comment-cell {
   display: flex;
   flex: 423;
-  padding: 12px 21px 12px 12px;
+  padding: 12px;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;

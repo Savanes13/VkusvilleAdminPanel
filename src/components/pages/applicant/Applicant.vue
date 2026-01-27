@@ -24,7 +24,9 @@ const {
     </WrapperBlock>
 
     <WrapperBlock>
-      <ApplicantTable/>
+      <ApplicantTable
+        
+      />
     </WrapperBlock>
     
   </div>

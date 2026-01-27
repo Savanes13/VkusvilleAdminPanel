@@ -3,6 +3,7 @@ import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { ref } from 'vue';
 import HeaderTable from './components/HeaderTable.vue';
+import LineTable from './components/LineTable.vue';
 
 type TStages = "stage1" | "stage2"
 
@@ -19,11 +20,51 @@ const dataSwitch = [
   }
 ];
 
-const ApplicantStab = [
-  {
-    
+const ApplicantStab = {
+  display_name: "Микрочелик 1",
+  grades: {
+    1: {
+      expert: {
+        display_name: "Япи Дор",
+        level: 2,
+      },
+      grades: {
+        StructLogic: 2,
+        ContentMotivation: 2,
+        ProgramGoals: 2
+      },
+      comment: "коммент"
+    },
+    2: {
+      expert: {
+        display_name: "Япи Дор",
+        level: 2,
+      },
+      grades: {
+        StructLogic: 2,
+        ContentMotivation: 2,
+        ProgramGoals: 2
+      },
+      comment: "коммент"
+    },
+    3: {
+      expert: {
+        display_name: "Япи Дор",
+        level: 2,
+      },
+      grades: {
+        StructLogic: 2,
+        ContentMotivation: 2,
+        ProgramGoals: 2
+      },
+      comment: "коммент"
+    }
+  },
+  pass_info:{
+    is_passed: true,
+    total_grade: 4.5
   }
-]
+}
 </script>
 
 <template>
@@ -47,6 +88,12 @@ const ApplicantStab = [
     </div>
 
     <HeaderTable/>
+
+    <LineTable
+      v-for="item in ApplicantStab.grades"
+      :data="item"
+    />
+
 
   </div>
 </template>
