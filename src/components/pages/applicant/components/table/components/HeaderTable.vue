@@ -82,7 +82,6 @@
 .stages__stage {
   display: flex;
   padding: 12px;
-  justify-content: end;
   flex: 1;
 }
 
