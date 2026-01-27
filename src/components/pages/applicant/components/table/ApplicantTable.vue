@@ -2,6 +2,7 @@
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { ref } from 'vue';
+import HeaderTable from './components/HeaderTable.vue';
 
 type TStages = "stage1" | "stage2"
 
@@ -45,7 +46,7 @@ const ApplicantStab = [
       </DefaultButton>
     </div>
 
-
+    <HeaderTable/>
 
   </div>
 </template>
@@ -64,7 +65,6 @@ const ApplicantStab = [
 .control-block {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .control-button {
