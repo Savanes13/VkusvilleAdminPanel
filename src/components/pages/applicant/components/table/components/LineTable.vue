@@ -25,10 +25,18 @@ interface ILineTableProps {
   data: ExpertData;
   editingIsActive: boolean;
   undoChangesTriger: boolean
+  lastLine: boolean;
 }
 
 const props = defineProps<ILineTableProps>();
 
+const emit = defineEmits<{
+  (e: 'changeScores', obj: Grades): void;
+}>();
+
+const editingKey = ref<null | TEditingKey>(null);
+
+// локальная копия объекта строки
 const localData = reactive<ExpertData>({
   expert: { ...props.data.expert },
   grades: { ...props.data.grades },
@@ -46,12 +54,6 @@ watch(() => localData.grades, (newGrades) => {
   },{ deep: true }
 );
 
-const editingKey = ref<null | TEditingKey>(null);
-
-const emit = defineEmits<{
-  (e: 'changeScores', obj: Grades): void;
-}>();
-
 const toggleEditingKey = (key: TEditingKey) => {
   if (editingKey.value === key) {
     editingKey.value = null;
@@ -64,13 +66,8 @@ const toggleEditingKey = (key: TEditingKey) => {
 <template>
   <div 
     class="line-table"
+    :class="{'line-table--last' : lastLine && !editingIsActive}"
   >
-
-    <!-- {{ localData.grades.ContentMotivation }}
-    {{ localData.grades.StructLogic }}
-    {{ localData.grades.ProgramGoals }} -->
-
-    <!-- :class="{'line-table--last' : lastLine}" -->
     <div class="line-table__item expert-item">
       <div>
         <p>{{ data.expert.display_name }}</p>
@@ -88,7 +85,6 @@ const toggleEditingKey = (key: TEditingKey) => {
         ></span>
       </div>
     </div>
-
     <div class="double-item">
       <div 
         class="stages__stage motivation-item edit-item" 
@@ -105,7 +101,6 @@ const toggleEditingKey = (key: TEditingKey) => {
         />
         <p v-else>{{ localData.grades.ContentMotivation }}</p>
       </div>
-
       <div 
         class="stages__stage edit-item"
         :class="{'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive }"
@@ -122,7 +117,6 @@ const toggleEditingKey = (key: TEditingKey) => {
         <p v-else>{{ localData.grades.StructLogic }}</p>
       </div>
     </div>
-
     <div 
       class="line-table__item score-item edit-item"
       :class="{'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive }"
@@ -138,7 +132,6 @@ const toggleEditingKey = (key: TEditingKey) => {
       />
       <p v-else>{{ localData.grades.ProgramGoals }}</p>
     </div>
-
     <div class="line-table__item comment-item">
       <p>{{ data.comment }}</p>
     </div>

@@ -108,6 +108,12 @@ const ApplicantStab = {
 // }'
 // 
 
+const pathRequestData: PathRequestData = {
+  abit_id: Number(applicantId),
+  task_id: 1,
+  patched_grades: {} 
+};
+
 const getPageData = async () => {
   try {
     pageDataArr.value = ApplicantStab
@@ -117,11 +123,6 @@ const getPageData = async () => {
 };
 getPageData();
 
-const pathRequestData: PathRequestData = {
-  abit_id: Number(applicantId),
-  task_id: 1,
-  patched_grades: {} 
-};
 
 const activateEditing = () => {
   editingIsActive.value = true;
@@ -132,7 +133,8 @@ const finishEditing = () => {
 };
 
 const undoChanges = () => {
-  undoChangesTriger.value = !undoChangesTriger.value
+  undoChangesTriger.value = !undoChangesTriger.value;
+  finishEditing();
 };
 
 const changesFieldInLine = (id: string, obj: Grades) => {
@@ -141,9 +143,14 @@ const changesFieldInLine = (id: string, obj: Grades) => {
   console.log(pathRequestData)
 };
 
-const setNewValues = () => {
-
-}
+const setNewValues = async () => {
+  try {
+    // отправлять pathRequestData
+    finishEditing();
+  } catch (error) {
+    console.error("ошибка при изменении значений")
+  };
+};
 </script>
 
 <template>
@@ -151,11 +158,9 @@ const setNewValues = () => {
     class="applicant-table"
     v-if="pageDataArr"
   >
-
     <div class="applicant-table__title">
       <p>Оценки экспертов</p>
     </div>
-
     <div class="control-block">
      <DefaultSwitch
         class="switch-item"
@@ -171,22 +176,20 @@ const setNewValues = () => {
         Редактировать оценки
       </DefaultButton>
     </div>
-
     <HeaderTable/>
-
     <LineTable
       v-for="(item, index) in pageDataArr.grades"
       :data="item"
       :editing-is-active="editingIsActive"
       :undo-changes-triger="undoChangesTriger"
+       :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
       @change-scores="(obj) => changesFieldInLine(index, obj)"
     />
-
-    <div class="save-block">
-      <div 
-        class="save-block__buttons"
-        v-if="editingIsActive"
-      >
+    <div 
+      class="save-block"
+      v-if="editingIsActive"
+    >
+      <div class="save-block__buttons">
         <DefaultButton
           class="default-button__size--large default-button__color-gray button-management"
           @click="undoChanges"
@@ -195,13 +198,12 @@ const setNewValues = () => {
         </DefaultButton>
         <DefaultButton
           class="default-button__size--large default-button__color-green button-management"
-          @click="finishEditing"
+          @click="setNewValues"
         >
           Сохранить
         </DefaultButton>
       </div>
     </div>
-
   </div>
 </template>
 
