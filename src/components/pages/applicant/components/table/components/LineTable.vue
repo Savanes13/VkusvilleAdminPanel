@@ -51,23 +51,21 @@ const {
         <span></span>
       </div>
     </div>
-
-    <!-- <div class="line-table__item motivation-item">
-      <p>{{ data.grades.ContentMotivation }}</p>
-    </div>
     
-    <div class="line-table__item logic-item">
-      <p>{{ data.grades.StructLogic }}</p>
-    </div> -->
-
+    <div class="double-item">
+      <div class="stages__stage motivation-item">
+        <p>{{ data.grades.ContentMotivation }}</p>
+      </div>
+      <div class="stages__stage">
+        <p>{{ data.grades.StructLogic }}</p>
+      </div>
+    </div>
     <div class="line-table__item score-item">
       <p>{{ data.grades.ProgramGoals }}</p>
     </div>
-
     <div class="line-table__item comment-item">
       <p>{{ data.comment }}</p>
     </div>
-
   </div>
 </template>
 
@@ -80,12 +78,6 @@ const {
   border-left: 1px solid #DDE0E8;
   border-right: 1px solid #DDE0E8;
 }
-
-// .table-header,
-// .line-table {
-//   display: grid;
-//   grid-template-columns: 254px 106px 423px;
-// }
 
 .line-table--last {
   border-bottom-left-radius: 16px;
@@ -106,15 +98,36 @@ const {
 
 .expert-item {
   flex: 254;
-  // overflow: hidden;  
+}
+
+.stages {
+  display: flex;
+  flex: 1;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: color.$colorTextPrimary;
+}
+
+.stages__stage {
+  display: flex;
+  padding: 12px;
+  flex: 1;
+  align-items: center;
 }
 
 .motivation-item {
-  flex: 112
+  border-right: 1px solid #DDE0E8;
 }
 
-.logic-item {
-  flex: 186
+.double-item {
+  display: flex;
+  flex: 298;
+  height: 64px;
+  border-right: 1px solid #DDE0E8;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .score-item {

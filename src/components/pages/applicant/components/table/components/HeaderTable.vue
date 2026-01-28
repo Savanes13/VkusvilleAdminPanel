@@ -8,7 +8,7 @@
       <p>Эксперт</p>
     </div>
 
-    <!-- <div class="table-header__double-cell">
+    <div class="table-header__double-cell">
       <div class="title">
         <div>
           <p>Баллы по критериям</p>
@@ -22,7 +22,7 @@
           <p>Структура и логика</p>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="table-header__big-cell summary-cell">
       <p>Итоговый балл</p>
