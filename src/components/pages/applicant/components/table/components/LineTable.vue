@@ -4,6 +4,8 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { reactive, ref } from 'vue';
 
+type TEditingKey = 'ContentMotivation' | 'StructLogic' | 'ProgramGoals';
+
 type Expert = {
   display_name: string;
   level: number;
@@ -34,21 +36,31 @@ const localData = reactive<ExpertData>({
   comment: props.data.comment
 });
 
-const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoals'>(null);
+// общий вотчер на все три инпута
 
-// const emit = defineEmits<{
-//   (e: 'changeText', value: string, key: string): void;
-// }>();
+const editingKey = ref<null | TEditingKey>(null);
 
-// const changeText = (text: string) => {
-//   emit('changeText', text, keyLine);
-// }
+const emit = defineEmits<{
+  (e: 'changeScores', obj: Grades): void;
+}>();
+
+const toggleEditingKey = (key: TEditingKey) => {
+  if (editingKey.value === key) {
+    editingKey.value = null;
+  } else {
+    editingKey.value = key
+  };
+};
 </script>
 
 <template>
   <div 
     class="line-table"
   >
+
+    <!-- {{ localData.grades.ContentMotivation }}
+    {{ localData.grades.StructLogic }}
+    {{ localData.grades.ProgramGoals }} -->
 
     <!-- :class="{'line-table--last' : lastLine}" -->
     <div class="line-table__item expert-item">
@@ -73,31 +85,52 @@ const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoal
       <div 
         class="stages__stage motivation-item edit-item" 
         :class="{'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive }"
-        @click="editingKey = 'ContentMotivation'"
+        @click="toggleEditingKey('ContentMotivation')"
       >
         <input
           class="editable-input"
           :class="{'editable-input--active' : editingKey === 'ContentMotivation' && props.editingIsActive}"
           v-if="editingKey === 'ContentMotivation' && props.editingIsActive"
-
           v-model.number="localData.grades.ContentMotivation"
           @blur="editingKey = null"
+          autofocus
         />
-        <p v-else>
-          {{ localData.grades.ContentMotivation }}
-        </p>
+        <p v-else>{{ localData.grades.ContentMotivation }}</p>
       </div>
 
-      <div class="stages__stage edit-item">
-        <p>{{ data.grades.StructLogic }}</p>
+      <div 
+        class="stages__stage edit-item"
+        :class="{'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive }"
+        @click="toggleEditingKey('StructLogic')"
+      >
+        <input
+          class="editable-input"
+          :class="{'editable-input--active' : editingKey === 'StructLogic' && props.editingIsActive}"
+          v-if="editingKey === 'StructLogic' && props.editingIsActive"
+          v-model.number="localData.grades.StructLogic"
+          @blur="editingKey = null"
+          autofocus
+        />
+        <p v-else>{{ localData.grades.StructLogic }}</p>
       </div>
     </div>
 
-
-
-    <div class="line-table__item score-item edit-item">
-      <p>{{ data.grades.ProgramGoals }}</p>
+    <div 
+      class="line-table__item score-item edit-item"
+      :class="{'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive }"
+      @click="toggleEditingKey('ProgramGoals')"
+    >
+      <input
+        class="editable-input"
+        :class="{'editable-input--active' : editingKey === 'ProgramGoals' && props.editingIsActive}"
+        v-if="editingKey === 'ProgramGoals' && props.editingIsActive"
+        v-model.number="localData.grades.ProgramGoals"
+        @blur="editingKey = null"
+        autofocus
+      />
+      <p v-else>{{ localData.grades.ProgramGoals }}</p>
     </div>
+
     <div class="line-table__item comment-item">
       <p>{{ data.comment }}</p>
     </div>

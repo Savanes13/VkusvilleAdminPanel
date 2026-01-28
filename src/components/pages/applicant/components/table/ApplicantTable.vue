@@ -67,6 +67,27 @@ const ApplicantStab = {
   }
 }
 
+
+// струкутра патча
+
+// {
+//   "abit_id": 2,
+//   "task_id": 1,
+//   "patched_grades": {
+//        "1": {
+//         "StructLogic": 2,
+//         "ContentMotivation": 2,
+//         "ProgramGoals": 2
+//       },
+//       "2": {
+//             "StructLogic": 2,
+//             "ContentMotivation": 2,
+//             "ProgramGoals": 2
+//           }
+//       }
+// }
+
+
 const activateEditing = () => {
   editingIsActive.value = true;
 };
