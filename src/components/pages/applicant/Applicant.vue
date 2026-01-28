@@ -4,6 +4,7 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import ApplicantManagement from './components/ApplicantManagement.vue';
 import applicantWorks from './composables/applicantWorks';
 import BreadCumbs from '@/components/shared/elements/BreadCumbs.vue';
+import ApplicantTable from './components/table/ApplicantTable.vue';
 
 const {
   breadCrumb
@@ -22,10 +23,19 @@ const {
       <ApplicantManagement/>
     </WrapperBlock>
 
+    <WrapperBlock>
+      <ApplicantTable
+        
+      />
+    </WrapperBlock>
     
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+
+.applicant__management {
+  margin-bottom: 24px;
+}
 </style>

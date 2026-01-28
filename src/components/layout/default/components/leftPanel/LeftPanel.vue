@@ -26,7 +26,7 @@ const route = useRoute();
       path="/content"
     />
     <PanelItem
-      :is-active="route.path === '/applicants'"
+      :is-active="route.path.includes('applicant')"
       icon="enrolle"
       text="Абитуриенты"
       path="/applicants"
@@ -44,10 +44,10 @@ const route = useRoute();
       path="/access"
     />
     <PanelItem
-      :is-active="false"
+      :is-active="route.path === '/interviews'"
       icon="meeting"
       text="Собеседования"
-      path="/"
+      path="/interviews"
     />
   </div>
 </template>

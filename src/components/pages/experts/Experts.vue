@@ -75,10 +75,15 @@ getPageData();
           <p>Есть хотя бы 1 работа на грани дедлайна</p>
         </div>
       </div>
-      <TableExperts
-        :data="sortingContent"
+      <div
         v-if="sortingContent.length > 0"
-      />
+        class="table-wrapper"
+      >
+        <TableExperts
+          :data="sortingContent"
+          class="table-expert"
+        />
+      </div>
       <div
         class="no-found"
         v-else
@@ -113,5 +118,34 @@ getPageData();
   font-size: 16px;
   line-height: 24px;  
   color: color.$colorTextPrimary;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-expert {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 </style>
