@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ContentWindow from '@/components/shared/elements/modalWindow/content/ContentWindow.vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 type Expert = {
   display_name: string;
@@ -21,12 +21,19 @@ type ExpertData = {
 };
 
 interface ILineTableProps {
-  data: ExpertData 
+  data: ExpertData;
+  editingIsActive: boolean;
 }
 
-const {
-  data
-} = defineProps<ILineTableProps>();
+const props = defineProps<ILineTableProps>();
+
+const localData = reactive<ExpertData>({
+  expert: { ...props.data.expert },
+  grades: { ...props.data.grades },
+  comment: props.data.comment
+});
+
+const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoals'>(null);
 
 // const emit = defineEmits<{
 //   (e: 'changeText', value: string, key: string): void;
@@ -51,16 +58,34 @@ const {
         <span></span>
       </div>
     </div>
-    
+
     <div class="double-item">
-      <div class="stages__stage motivation-item">
-        <p>{{ data.grades.ContentMotivation }}</p>
+      <div 
+        class="stages__stage motivation-item edit-item" 
+        :class="{'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive }"
+        @click="editingKey = 'ContentMotivation'"
+      >
+        <input
+          class="editable-input"
+          :class="{'editable-input--active' : editingKey === 'ContentMotivation' && props.editingIsActive}"
+          v-if="editingKey === 'ContentMotivation' && props.editingIsActive"
+
+          v-model.number="localData.grades.ContentMotivation"
+          @blur="editingKey = null"
+        />
+        <p v-else>
+          {{ localData.grades.ContentMotivation }}
+        </p>
       </div>
-      <div class="stages__stage">
+
+      <div class="stages__stage edit-item">
         <p>{{ data.grades.StructLogic }}</p>
       </div>
     </div>
-    <div class="line-table__item score-item">
+
+
+
+    <div class="line-table__item score-item edit-item">
       <p>{{ data.grades.ProgramGoals }}</p>
     </div>
     <div class="line-table__item comment-item">
@@ -71,6 +96,7 @@ const {
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
 
 .line-table {
   display: flex;
@@ -137,5 +163,37 @@ const {
 .comment-item {
   flex: 423;
   border-right: none
+}
+
+.edit-item {
+  transition: background-color transition.$medium;
+  cursor: pointer;
+}
+
+.edit-item:hover {
+  background: color.$colorBackgroundWhite_Hover;
+}
+
+.edit-item--active {
+  background: color.$colorBackgroundAccentAlternative;
+}
+
+.editable-input--active:hover {
+  background: color.$colorBackgroundAccentAlternative !important;
+}
+
+.editable-input--active {
+  background: color.$colorBackgroundAccentAlternative;
+}
+
+.editable-input {
+  height: 100%;
+  width: 80%;
+  border: none;
+  outline: none;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
 }
 </style>
