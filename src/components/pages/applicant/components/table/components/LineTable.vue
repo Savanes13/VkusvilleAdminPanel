@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import ContentWindow from '@/components/shared/elements/modalWindow/content/ContentWindow.vue';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
-import IconButton from '@/components/shared/ui/button/IconButton.vue';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 type TEditingKey = 'ContentMotivation' | 'StructLogic' | 'ProgramGoals';
 
@@ -26,6 +24,7 @@ type ExpertData = {
 interface ILineTableProps {
   data: ExpertData;
   editingIsActive: boolean;
+  undoChangesTriger: boolean
 }
 
 const props = defineProps<ILineTableProps>();
@@ -36,7 +35,16 @@ const localData = reactive<ExpertData>({
   comment: props.data.comment
 });
 
-// общий вотчер на все три инпута
+watch(() => props.undoChangesTriger, () => {
+  localData.expert = { ...props.data.expert };
+  localData.grades = { ...props.data.grades };
+  localData.comment = props.data.comment;
+}, { deep: true });
+
+watch(() => localData.grades, (newGrades) => {
+    emit('changeScores', { ...newGrades });
+  },{ deep: true }
+);
 
 const editingKey = ref<null | TEditingKey>(null);
 
@@ -85,7 +93,7 @@ const toggleEditingKey = (key: TEditingKey) => {
       <div 
         class="stages__stage motivation-item edit-item" 
         :class="{'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive }"
-        @click="toggleEditingKey('ContentMotivation')"
+        @dblclick="toggleEditingKey('ContentMotivation')"
       >
         <input
           class="editable-input"
@@ -101,7 +109,7 @@ const toggleEditingKey = (key: TEditingKey) => {
       <div 
         class="stages__stage edit-item"
         :class="{'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive }"
-        @click="toggleEditingKey('StructLogic')"
+        @dblclick="toggleEditingKey('StructLogic')"
       >
         <input
           class="editable-input"
@@ -118,7 +126,7 @@ const toggleEditingKey = (key: TEditingKey) => {
     <div 
       class="line-table__item score-item edit-item"
       :class="{'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive }"
-      @click="toggleEditingKey('ProgramGoals')"
+      @dblclick="toggleEditingKey('ProgramGoals')"
     >
       <input
         class="editable-input"

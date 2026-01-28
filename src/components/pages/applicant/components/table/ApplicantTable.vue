@@ -4,11 +4,33 @@ import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { ref } from 'vue';
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
+import { useRoute } from 'vue-router';
+import type { IApplicantDataType } from '@/types/pages/applicant/applicantTypes';
+
+type Grades = {
+  StructLogic: number;
+  ContentMotivation: number;
+  ProgramGoals: number;
+};
+
+type PathRequestData = {
+  abit_id: number;
+  task_id: number;
+  patched_grades: {
+    [key: string]: Grades; 
+  };
+};
 
 type TStages = "stage1" | "stage2"
 
+const route = useRoute();
+const applicantId = route.params.id;
+
+const pageDataArr = ref<null | IApplicantDataType>(null);
+
 const selectedStage = ref<TStages>('stage1');
 const editingIsActive = ref<boolean>(false);
+const undoChangesTriger = ref<boolean>(false);
 
 const dataSwitch = [
   {
@@ -67,12 +89,10 @@ const ApplicantStab = {
   }
 }
 
-
 // струкутра патча
-
 // {
 //   "abit_id": 2,
-//   "task_id": 1,
+//   task_id": 1,
 //   "patched_grades": {
 //        "1": {
 //         "StructLogic": 2,
@@ -85,8 +105,23 @@ const ApplicantStab = {
 //             "ProgramGoals": 2
 //           }
 //       }
-// }
+// }'
+// 
 
+const getPageData = async () => {
+  try {
+    pageDataArr.value = ApplicantStab
+  } catch (error) {
+    console.error('ошибка при получении данных страницы')
+  }
+};
+getPageData();
+
+const pathRequestData: PathRequestData = {
+  abit_id: Number(applicantId),
+  task_id: 1,
+  patched_grades: {} 
+};
 
 const activateEditing = () => {
   editingIsActive.value = true;
@@ -95,10 +130,27 @@ const activateEditing = () => {
 const finishEditing = () => {
   editingIsActive.value = false;
 };
+
+const undoChanges = () => {
+  undoChangesTriger.value = !undoChangesTriger.value
+};
+
+const changesFieldInLine = (id: string, obj: Grades) => {
+  pathRequestData.patched_grades[id] = obj;
+  pathRequestData.patched_grades
+  console.log(pathRequestData)
+};
+
+const setNewValues = () => {
+
+}
 </script>
 
 <template>
-  <div class="applicant-table">
+  <div 
+    class="applicant-table"
+    v-if="pageDataArr"
+  >
 
     <div class="applicant-table__title">
       <p>Оценки экспертов</p>
@@ -123,9 +175,11 @@ const finishEditing = () => {
     <HeaderTable/>
 
     <LineTable
-      v-for="item in ApplicantStab.grades"
+      v-for="(item, index) in pageDataArr.grades"
       :data="item"
       :editing-is-active="editingIsActive"
+      :undo-changes-triger="undoChangesTriger"
+      @change-scores="(obj) => changesFieldInLine(index, obj)"
     />
 
     <div class="save-block">
@@ -135,12 +189,13 @@ const finishEditing = () => {
       >
         <DefaultButton
           class="default-button__size--large default-button__color-gray button-management"
-          @click="finishEditing"
+          @click="undoChanges"
         >
           Отменить
         </DefaultButton>
         <DefaultButton
           class="default-button__size--large default-button__color-green button-management"
+          @click="finishEditing"
         >
           Сохранить
         </DefaultButton>
