@@ -27,7 +27,7 @@ const ApplicantStab = {
     1: {
       expert: {
         display_name: "Япи Дор",
-        level: 2,
+        level: 1,
       },
       grades: {
         StructLogic: 2,

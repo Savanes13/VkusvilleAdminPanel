@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import ContentWindow from '@/components/shared/elements/modalWindow/content/ContentWindow.vue';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { reactive, ref } from 'vue';
 
@@ -55,7 +56,16 @@ const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoal
         <p>{{ data.expert.display_name }}</p>
       </div>
       <div>
-        <span></span>
+        <span
+          v-if="props.data.expert.level === 1"
+          class="svg"
+          v-html="mainIcons['levelOne']"
+        ></span>
+        <span
+          v-else
+          class="svg"
+          v-html="mainIcons['levelTwo']"
+        ></span>
       </div>
     </div>
 
@@ -123,6 +133,7 @@ const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoal
 }
 
 .expert-item {
+  justify-content: space-between;
   flex: 254;
 }
 
@@ -195,5 +206,13 @@ const editingKey = ref<null | 'ContentMotivation' | 'StructLogic' | 'ProgramGoal
   font-size: 16px;
   line-height: 24px;
   color: color.$colorTextPrimary;
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 </style>
