@@ -116,13 +116,27 @@ getPageData();
               <p>Выйти</p>
             </div>
           </div>
+
+          <div class="hidden-user-mobile">
+            <div class="user-icon">
+              <p>P</p>
+            </div>
+            <div class="user-fields user-fields--mobile">
+              <div class="user-fields__name">
+                <p>{{ pageDataArr.email }}</p>
+              </div>
+              <div class="user-fields__role">
+                <p>{{ roleLabel }}</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </transition>
     </div>
     <div 
       class="overlay"
       v-if="userInfoIsOpen"
-      v-clickOutside="toggleUserOpen"
     ></div>
   </div>
 </template>
@@ -174,6 +188,10 @@ getPageData();
   flex-direction: column;
 }
 
+.hidden-user-mobile {
+  display: none;
+}
+
 .user-fields__name {
   font-weight: 500;
   font-size: 16px;
@@ -190,7 +208,7 @@ getPageData();
 
 .header__hiden {
   position: absolute;
-  right: 40px;
+  right: 0px;
   top: 79px;
   width: 223px;
   height: 73px;
@@ -249,7 +267,7 @@ getPageData();
 .fade-slide-leave-from {
   opacity: 1;
   transform: translateY(0);
-  max-height: 100px;
+  max-height: 300px;
 }
 
 @media (max-width: 768px) {
@@ -279,19 +297,33 @@ getPageData();
     display: none;
   }
 
+  .hidden-user-mobile {
+    display: flex;
+    gap: 8px;
+  }
+
   .select-icon {
     display: none;
   }
 
   .header__hiden {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    height: 144px;
     width: 100%;
     right: 0px;
     left: 0px;
     top: 74px;
+    padding: 24px;
     border-radius: 0px;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
     box-shadow: none;
+  }
+
+  .user-fields--mobile {
+    display: block;
   }
 }
 
