@@ -34,6 +34,7 @@ const dataSwitch = [
         <DefaultSwitch
           v-model:value="selectedCompany"
           :data="dataSwitch"
+          :header-switch="true"
         />
       </div>
     </div>
@@ -69,6 +70,16 @@ const dataSwitch = [
 
   .logo {
     display: none;
+  }
+
+  .header__left {
+    gap: 0px;
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    padding: 8px 24px;
   }
 }
 </style>

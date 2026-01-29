@@ -8,12 +8,14 @@ interface ISwitchItem {
 
 interface IDefaultSwitchProps {
   data: ISwitchItem[];
-  value: string
+  value: string;
+  headerSwitch?: boolean
 };
 
 const {
   data,
-  value
+  value,
+  headerSwitch = false
 } = defineProps<IDefaultSwitchProps>();
 
 const emit = defineEmits<{
@@ -33,7 +35,10 @@ const switchValue = computed({
 </script>
 
 <template>
-  <div class="default-switch">
+  <div 
+    class="default-switch"
+    :class="{'default-switch--header' : headerSwitch}"
+  >
     <div class="default-switch__items">
       <div 
         v-for="item in data"
@@ -75,5 +80,18 @@ const switchValue = computed({
 .item--active {
   background: #FFFFFF;
   color: #179C49;
+}
+
+@media (max-width: 500px) {
+  .default-switch--header {
+    height: 32px;
+    border-radius: 12px;
+  }
+
+  .default-switch--header .item {
+    padding: 4px 12px;
+    font-size: 14px;
+    line-height: 16px;
+  }
 }
 </style>
