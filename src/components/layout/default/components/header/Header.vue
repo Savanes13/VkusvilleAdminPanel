@@ -100,35 +100,49 @@ getPageData();
           ></span>
         </div>
       </div>
+
+
       <transition :name="'fade-slide'" mode="out-in">
         <div 
           v-if="userInfoIsOpen"
           class="header__hiden"
         >
-          <div class="wrap-hiden">
-            <div>
-              <span
-                class="svg"
-                v-html="mainIcons['exit']"
-              ></span>
+
+          <div class="wrap-block">
+            <div class="wrap-hiden">
+              <div>
+                <span
+                  class="svg"
+                  v-html="mainIcons['exit']"
+                ></span>
+              </div>
+              <div>
+                <p>Выйти</p>
+              </div>
             </div>
-            <div>
-              <p>Выйти</p>
+  
+            <div class="hidden-user-mobile">
+              <div class="user-icon">
+                <p>P</p>
+              </div>
+              <div class="user-fields user-fields--mobile">
+                <div class="user-fields__name">
+                  <p>{{ pageDataArr.email }}</p>
+                </div>
+                <div class="user-fields__role">
+                  <p>{{ roleLabel }}</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="hidden-user-mobile">
-            <div class="user-icon">
-              <p>P</p>
-            </div>
-            <div class="user-fields user-fields--mobile">
-              <div class="user-fields__name">
-                <p>{{ pageDataArr.email }}</p>
-              </div>
-              <div class="user-fields__role">
-                <p>{{ roleLabel }}</p>
-              </div>
-            </div>
+          <div 
+            class="close-block"
+            @click="toggleUserOpen"
+          >
+            <span
+              v-html="mainIcons['close']"
+            ></span>
           </div>
 
         </div>
@@ -239,6 +253,11 @@ getPageData();
   transform: rotate(180deg);
 }
 
+.close-block {
+  display: none;
+  cursor: pointer;
+}
+
 .overlay {
   display: none;
   position: fixed;
@@ -289,10 +308,6 @@ getPageData();
     gap: 0px;
   }
 
-  .header__hiden {
-    right: 10px;
-  }
-
   .user-fields {
     display: none;
   }
@@ -302,13 +317,18 @@ getPageData();
     gap: 8px;
   }
 
+  .close-block {
+    display: block;
+  }
+
   .select-icon {
     display: none;
   }
 
   .header__hiden {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row;
+    align-items: start;
     justify-content: space-between;
     height: 144px;
     width: 100%;
@@ -322,6 +342,13 @@ getPageData();
     box-shadow: none;
   }
 
+  .wrap-block {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    height: 100%;
+  }
+
   .user-fields--mobile {
     display: block;
   }
@@ -330,6 +357,10 @@ getPageData();
 @media (max-width: 500px) {
   .header {
     padding: 8px 24px;
+  }
+
+  .header__hiden {
+    top: 56px;
   }
 }
 </style>
