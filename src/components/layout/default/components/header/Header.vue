@@ -81,7 +81,13 @@ getPageData();
         class="header__right"
         @click="toggleUserOpen"
       >
-        <div class="user-icon">
+        <div class="user-icon user-icon-desktop--top">
+          <p>P</p>
+        </div>
+        <div 
+          class="user-icon user-icon-mobile--top"
+          v-if="!userInfoIsOpen"
+        >
           <p>P</p>
         </div>
         <div class="user-fields">
@@ -100,8 +106,6 @@ getPageData();
           ></span>
         </div>
       </div>
-
-
       <transition :name="'fade-slide'" mode="out-in">
         <div 
           v-if="userInfoIsOpen"
@@ -135,7 +139,6 @@ getPageData();
               </div>
             </div>
           </div>
-
           <div 
             class="close-block"
             @click="toggleUserOpen"
@@ -144,7 +147,6 @@ getPageData();
               v-html="mainIcons['close']"
             ></span>
           </div>
-
         </div>
       </transition>
     </div>
@@ -189,6 +191,10 @@ getPageData();
   line-height: 20px;
   background: color.$colorStrokeAccent;
   color: color.$colorIconWhite;
+}
+
+.user-icon-mobile--top {
+  display: none;
 }
 
 .header__right {
@@ -351,6 +357,14 @@ getPageData();
 
   .user-fields--mobile {
     display: block;
+  }
+
+  .user-icon-desktop--top {
+    display: none;
+  }
+
+  .user-icon-mobile--top {
+    display: flex;
   }
 }
 
