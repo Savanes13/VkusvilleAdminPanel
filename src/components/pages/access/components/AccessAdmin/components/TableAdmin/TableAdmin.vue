@@ -21,7 +21,15 @@ const deleteAdmin = (id: number) => {
 
 <template>
   <div class="table">
-    <HeaderTable/>
+    <div 
+      v-if="data.length === 0"
+      class="table__hint"
+    >
+      <p>Здесь будут отображаться админы</p>
+    </div>
+    <HeaderTable
+      v-else
+    />
     <LineTable
       v-for="(item, index) in data"
       :name="item.display_name"
@@ -35,5 +43,12 @@ const deleteAdmin = (id: number) => {
 </template>
 
 <style lang="scss" scoped>
-  
+@use "@/style/variables/color.scss" as color;
+
+.table__hint {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+}
 </style>
