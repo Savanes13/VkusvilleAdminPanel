@@ -46,6 +46,15 @@ const toggleUserOpen = () => {
   };
 };
 
+const exitFromAccount = async () => {
+  try {
+    // удалить токен
+    toggleUserOpen();
+  } catch (error) {
+    console.error('ошибка выхода из аккаунта')
+  }
+}
+
 const getPageData = async () => {
   try {
     const respone = await checkAuth();
@@ -120,7 +129,9 @@ getPageData();
                   v-html="mainIcons['exit']"
                 ></span>
               </div>
-              <div>
+              <div
+                @click="exitFromAccount"
+              >
                 <p>Выйти</p>
               </div>
             </div>
@@ -295,6 +306,13 @@ getPageData();
   max-height: 300px;
 }
 
+@media (max-width: 900px) {
+  .user-fields__name {
+    max-width: 120px;
+    overflow: hidden;
+  }
+}
+
 @media (max-width: 768px) {
   .header {
     border-radius: 0px;
@@ -365,6 +383,11 @@ getPageData();
 
   .user-icon-mobile--top {
     display: flex;
+  }
+
+  .user-fields__name {
+    max-width: none;
+    overflow: auto;
   }
 }
 
