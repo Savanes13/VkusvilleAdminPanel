@@ -13,6 +13,8 @@
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .background-modal {
   display: flex;
   align-items: center;
@@ -26,5 +28,13 @@
   width: 100%;
   height: 100%;
   background: #00000080;
+}
+
+@media (max-width: 500px) {
+  .background-modal {
+    background: color.$colorBackgroundSecondary;
+    align-items: start;
+    padding-top: 4px;
+  }
 }
 </style>
