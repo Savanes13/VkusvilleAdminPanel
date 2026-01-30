@@ -20,10 +20,27 @@
     <div class="time-block__item">
       <p>13:00</p>
     </div>
-     <div class="time-block__item">
+    <div class="time-block__item">
       <p>14:00</p>
     </div>
-
+    <div class="time-block__item">
+      <p>15:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>16:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>17:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>18:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>19:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>20:00</p>
+    </div>
   </div>
 </template>
 

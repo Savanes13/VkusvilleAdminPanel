@@ -19,12 +19,21 @@ interface IInterviewsTableProps {
 const {
   data
 } = defineProps<IInterviewsTableProps>();
+
+const daysOfMonth = data.map(item => {
+  const date = new Date(item.day);
+  return date.getDate();
+});
 // можно уникализироовать по timestamp
 </script>
 
 <template>
   <div class="table">
     
+
+    <!-- {{ data }} -->
+
+    <!-- {{ daysOfMonth }} -->
     
     <TimeBlock/>
 
@@ -32,6 +41,8 @@ const {
       <ColumnTable
         v-for="(item, index) in data"
         :data="item"
+        :index="index"
+        :number-day="daysOfMonth[index]"
         :key="index"
       />
     </div>

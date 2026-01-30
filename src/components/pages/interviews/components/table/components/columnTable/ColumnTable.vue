@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import ColumnItem from './components/ColumnItem.vue';
 
 type Interview = {
@@ -12,12 +13,24 @@ type DayInterviews = {
 };
 
 interface IColumnTableProps {
-  data: DayInterviews
+  data: DayInterviews;
+  index: number;
+  numberDay: number;
 }
 
 const {
-  data
+  data,
+  index,
+  numberDay
 } = defineProps<IColumnTableProps>();
+
+const day = computed(() => {
+  if (index === 0) return "Пн"
+  if (index === 1) return "Вт"
+  if (index === 2) return "Ср"
+  if (index === 3) return "Чт"
+  if (index === 4) return "Пт"
+})
 </script>
 
 <template>
@@ -25,8 +38,12 @@ const {
 
     <!-- {{ data }} -->
 
+    <div class="column-table__day">
+      <p>{{ day }} {{ numberDay }}</p>
+    </div>
+
     <ColumnItem
-      v-for="(item, index) in 12"
+      v-for="(item, index) in 11"
       :time="index"
       :data="data"
     />
@@ -39,5 +56,14 @@ const {
 
 .column-table {
   width: 100%;
+}
+
+.column-table__day {
+  padding: 20px 0px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: color.$colorTextPrimary;
 }
 </style>

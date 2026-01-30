@@ -93,7 +93,7 @@ const requiredItem = data.interviews.find((item) => {
   padding: 4px;
   border-bottom: 1px solid #DDE0E8;
   border-left: 1px solid #DDE0E8;
-
+  cursor: pointer;
 }
 
 .column-item__content {
