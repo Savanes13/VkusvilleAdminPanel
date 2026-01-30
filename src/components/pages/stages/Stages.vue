@@ -398,6 +398,7 @@ getPageData();
 .item-block {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .item-block__text {
@@ -429,6 +430,10 @@ getPageData();
 @media (max-width: 1300px) {
   .wrap-editable {
     flex-direction: column;
+  }
+
+  .stages {
+    margin-bottom: 80px;
   }
 }
 </style>
