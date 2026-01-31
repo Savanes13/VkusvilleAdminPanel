@@ -43,8 +43,8 @@ const {
   <BackgroundModal>
     <div 
       class="stage-window"
-      > 
-      <!-- v-clickOutside="closeWindow" -->
+      v-clickOutside="closeWindow"
+    > 
       <ModalWindow
         :name="`Настройка ${2} этапа`"
         @close="closeWindow"

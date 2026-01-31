@@ -16,25 +16,23 @@ const {
   <div 
     class="score-button"
     :class="{'score-button--activ' : activity }"
+    @click.stop
   >
     <div>
       <p>{{ number }}</p>
     </div>
-
     <div v-if="activity">
       <span
         class="svg"
         v-html="buttonIcons['circleClose']"
       ></span>
     </div>
-
     <div v-else>
       <span
         class="svg plus-svg"
         v-html="buttonIcons['plus']"
       ></span>
     </div>
-
   </div>
 </template>
 
