@@ -6,6 +6,7 @@ import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 import { useRoute } from 'vue-router';
 import type { IApplicantDataType } from '@/types/pages/applicant/applicantTypes';
+import { getApplicantPage } from '@/api/pages/applicant/apiApplicant';
 
 type Grades = {
   StructLogic: number;
@@ -114,14 +115,14 @@ const pathRequestData: PathRequestData = {
   patched_grades: {} 
 };
 
-const getPageData = async () => {
-  try {
-    pageDataArr.value = ApplicantStab
-  } catch (error) {
-    console.error('ошибка при получении данных страницы')
-  }
-};
-getPageData();
+// const getPageData = async () => {
+//   try {
+//     pageDataArr.value = ApplicantStab
+//   } catch (error) {
+//     console.error('ошибка при получении данных страницы')
+//   }
+// };
+// getPageData();
 
 
 const activateEditing = () => {
@@ -146,11 +147,32 @@ const changesFieldInLine = (id: string, obj: Grades) => {
 const setNewValues = async () => {
   try {
     // отправлять pathRequestData
+
+    console.log(pathRequestData)
+
     finishEditing();
   } catch (error) {
     console.error("ошибка при изменении значений")
   };
 };
+
+const getPageData = async () => {
+  try {
+    pageDataArr.value = ApplicantStab
+  } catch (error) {
+    console.error('ошибка при получении данных страницы')
+  }
+};
+
+// const getPageData = async () => {
+//   try {
+//     if (!applicantId) return
+//     await getApplicantPage(Number(applicantId), 1)
+//   } catch (error) {
+
+//   }
+// }
+getPageData();
 </script>
 
 <template>
@@ -176,15 +198,21 @@ const setNewValues = async () => {
         Редактировать оценки
       </DefaultButton>
     </div>
-    <HeaderTable/>
-    <LineTable
-      v-for="(item, index) in pageDataArr.grades"
-      :data="item"
-      :editing-is-active="editingIsActive"
-      :undo-changes-triger="undoChangesTriger"
-       :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
-      @change-scores="(obj) => changesFieldInLine(index, obj)"
-    />
+
+    <div class="table-wrapper">
+      <div class="main-table">
+        <HeaderTable/>
+        <LineTable
+          v-for="(item, index) in pageDataArr.grades"
+          :data="item"
+          :editing-is-active="editingIsActive"
+          :undo-changes-triger="undoChangesTriger"
+          :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
+          @change-scores="(obj) => changesFieldInLine(index, obj)"
+        />
+      </div>
+    </div>
+
     <div 
       class="save-block"
       v-if="editingIsActive"
@@ -222,6 +250,36 @@ const setNewValues = async () => {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.main-table {
+  width: 100%;
+  min-width: 1400px; 
+  border-collapse: collapse;
+  // padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  // border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  // border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 
 .control-button {
