@@ -297,7 +297,7 @@ getPageData();
         </WrapperBlock>
       </div>
       <WrapperBlock>
-        <div class="header-stage">
+        <div class="header-stage header-stage--interviews">
           <div class="header-stage__title">
             <div class="counter">
               <p>Этап 3</p>
@@ -349,7 +349,8 @@ getPageData();
 }
 
 .wrap-editable {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
@@ -357,6 +358,10 @@ getPageData();
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+.header-stage--interviews {
+  margin-bottom: 8px;
 }
 
 .counter {
@@ -374,10 +379,25 @@ getPageData();
   color: #333333;
 }
 
+.wrapper-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .info-stage {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
+}
+
+.info-stage__item:first-child {
+  flex: 0 0 auto;
+}
+
+.info-stage__item:last-child {
+  flex: 1 1 auto; 
 }
 
 .info-stage__item {
@@ -388,6 +408,7 @@ getPageData();
   border-radius: 16px;
   border: 1px solid #D0D7E5;
   padding: 20px;
+  flex: 1;
 }
 
 .title-block {
@@ -422,9 +443,9 @@ getPageData();
 .not-configurable {
   font-weight: 400;
   font-size: 16px;
-  line-height: 25px;
-  color: #333333;
+  line-height: 24px;
   margin-bottom: 20px;
+  color: color.$colorTextSecondary;
 }
 
 .interview-button {
@@ -433,11 +454,18 @@ getPageData();
 
 @media (max-width: 1360px) {
   .wrap-editable {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .stages {
     margin-bottom: 80px;
+  }
+}
+
+@media (max-width: 550px) {
+  .item-block {
+    flex-direction: column;
+    gap: 4px;
   }
 }
 </style>
