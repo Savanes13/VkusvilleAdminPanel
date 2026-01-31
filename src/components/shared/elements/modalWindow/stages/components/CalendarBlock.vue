@@ -148,4 +148,12 @@ const formatIsoDate = (isoDate: string) => {
   width: 100%;
   height: 100%;
 }
+
+@media (max-width: 425px) {
+  .calendar-block__content {
+    height: 36px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
 </style>

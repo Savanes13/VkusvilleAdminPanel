@@ -48,7 +48,18 @@ const dataSwitch = [
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
 
+.access {
+  margin-bottom: 80px;
+}
+
 .access__switch {
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .access__switch {
+    margin-left: 24px;
+    margin-bottom: 20px;
+  }
 }
 </style>

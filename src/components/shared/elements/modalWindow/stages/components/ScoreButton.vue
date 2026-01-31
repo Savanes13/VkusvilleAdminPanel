@@ -77,4 +77,12 @@ const {
   width: 100%;
   height: 100%;
 }
+
+@media (max-width: 425px) {
+  .score-button {
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
 </style>

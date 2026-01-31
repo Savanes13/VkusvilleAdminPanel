@@ -129,7 +129,8 @@ const {
 }
 
 .granting-access__content {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
@@ -143,5 +144,33 @@ const {
   line-height: 24px;
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+@media(max-width: 1500px) {
+  .granting-access__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 920px) {
+  .granting-access__content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media(max-width: 768px) {
+   .granting-access__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 600px) {
+  .granting-access__content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .granting-access__content {
+    gap: 16px;
+  }
 }
 </style>

@@ -48,6 +48,7 @@ const {
       <ModalWindow
         :name="`Настройка ${2} этапа`"
         @close="closeWindow"
+        :have-mobile-type="true"
       >
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
@@ -79,6 +80,7 @@ const {
               :label="dayToWorkInputObj.label"
               :placeholder="dayToWorkInputObj.placeholder"
               :error="dayToWorkInputObj.error"
+              :small-mobile="true"
             />
           </div>
         </div>
@@ -156,12 +158,14 @@ const {
               :label="multiplierInputObj.label"
               :placeholder="multiplierInputObj.placeholder"
               :error="multiplierInputObj.error"
+              :small-mobile="true"
             />
             <DefaultInput
               v-model:value="minGradePass"
               :label="passingGradeInputObj.label"
               :placeholder="passingGradeInputObj.placeholder"
               :error="passingGradeInputObj.error"
+              :small-mobile="true"
             />
           </div>
         </div>

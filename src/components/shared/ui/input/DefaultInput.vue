@@ -11,6 +11,7 @@ interface IDefaultInputProps {
     text: string;
   }
   isSearch?: boolean;
+  smallMobile?: boolean;
 };
 
 let {
@@ -21,7 +22,8 @@ let {
     show: false,
     text: ''
   },
-  isSearch = false
+  isSearch = false,
+  smallMobile = false 
 } = defineProps<IDefaultInputProps>();
 
 const emit = defineEmits<{
@@ -57,7 +59,8 @@ const inputValue = computed({
         class="input"
         :class="{ 
           'input--error': error.show,
-          'input--search': isSearch
+          'input--search': isSearch,
+          'input--small': smallMobile
         }"
         :placeholder="placeholder"
         v-model="inputValue"
@@ -89,8 +92,10 @@ const inputValue = computed({
 }
 
 @media (max-width: 425px) {
-  .search-svg {
-    top: 6px;
+  .input--small {
+    height: 36px;
+    font-size: 14px;
+    line-height: 20px;
   }
 }
 </style>
