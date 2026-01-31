@@ -51,7 +51,7 @@ const closeWindow = () => {
 </script>
 
 <template>
-  <BackgroundModal>
+  <BackgroundModal :grey-mobile="true">
     <div 
       class="content-window"
       v-clickOutside="closeWindow"

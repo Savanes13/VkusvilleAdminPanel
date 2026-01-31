@@ -200,4 +200,26 @@ const {
   line-height: 24px;
   color: color.$colorTextPrimary;
 }
+
+@media (max-width: 1100px) {
+  .granting-access {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .granting-access__title {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 425px) {
+  .granting-access__content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .button-access {
+    margin-top: 0px;
+  }
+}
 </style>

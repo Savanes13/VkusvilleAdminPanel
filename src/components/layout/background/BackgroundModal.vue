@@ -1,11 +1,18 @@
 <script lang="ts" setup>
+interface IBackgroundModalProps {
+  greyMobile?: boolean
+};
 
+const {
+  greyMobile = false
+} = defineProps<IBackgroundModalProps>();
 </script>
 
 <template>
   <Teleport to="body">
     <div
       class="background-modal"
+      :class="{'background-modal--grey' : greyMobile}"
     >
       <slot></slot>
     </div>
@@ -30,8 +37,12 @@
   background: #00000080;
 }
 
+.background-modal--grey {
+  background: #00000080;
+}
+
 @media (max-width: 500px) {
-  .background-modal {
+  .background-modal--grey {
     background: color.$colorBackgroundSecondary;
     align-items: start;
     padding-top: 4px;

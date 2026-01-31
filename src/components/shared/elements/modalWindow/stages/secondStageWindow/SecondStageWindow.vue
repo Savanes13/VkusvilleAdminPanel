@@ -40,7 +40,7 @@ const {
 </script>
 
 <template>
-  <BackgroundModal>
+  <BackgroundModal :grey-mobile="true">
     <div 
       class="stage-window"
       v-clickOutside="closeWindow"

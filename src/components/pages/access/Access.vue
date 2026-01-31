@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
-import { ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import AccessBot from './components/AccessBot/AccessBot.vue';
 import AccessAdmin from './components/AccessAdmin/AccessAdmin.vue';
 
@@ -19,6 +19,32 @@ const dataSwitch = [
     text: "Доступ в админку"
   }
 ];
+
+const windowWidth = ref(window.innerWidth);
+
+const updateWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWidth);
+});
+
+const dataSwitchResponsive = computed(() => {
+  return dataSwitch.map(item => {
+    if (windowWidth.value < 360 && item.name === "bot") {
+      return { ...item, text: "Бот" };
+    }
+    if (windowWidth.value < 360 && item.name === "admin") {
+      return { ...item, text: "Админка" };
+    }
+    return item;
+  });
+});
 </script>
 
 <template>
@@ -29,7 +55,7 @@ const dataSwitch = [
     <div class="access__switch">
       <DefaultSwitch
         v-model:value="selectedBot"
-        :data="dataSwitch"
+        :data="dataSwitchResponsive"
       />
     </div>
     <transition name="fadeFast" mode="out-in">
