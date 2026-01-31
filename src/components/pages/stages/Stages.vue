@@ -320,18 +320,22 @@ getPageData();
         </div>
       </WrapperBlock>
     </div>
-    <FirstStageWindow
-      v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
-      :data="pageDataArr[0]"
-      @close="closeStageWindow"
-      @set-new-obj="(obj) => setNewStageValue(1, obj)"
-    />
-    <SecondStageWindow
-      v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
-      :data="pageDataArr[1]"
-      @close="closeStageWindow"
-      @set-new-obj="(obj) => setNewStageValue(2, obj)"
-    />
+    <transition name="fadeFast">
+      <FirstStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
+        :data="pageDataArr[0]"
+        @close="closeStageWindow"
+        @set-new-obj="(obj) => setNewStageValue(1, obj)"
+      />
+    </transition>
+    <transition name="fadeFast">
+      <SecondStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
+        :data="pageDataArr[1]"
+        @close="closeStageWindow"
+        @set-new-obj="(obj) => setNewStageValue(2, obj)"
+      />
+    </transition>
   </div>
 </template>
 

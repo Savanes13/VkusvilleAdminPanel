@@ -120,7 +120,6 @@ getPageData();
           v-if="userInfoIsOpen"
           class="header__hiden"
         >
-
           <div class="wrap-block">
             <div class="wrap-hiden">
               <div>
@@ -135,7 +134,6 @@ getPageData();
                 <p>Выйти</p>
               </div>
             </div>
-  
             <div class="hidden-user-mobile">
               <div class="user-icon">
                 <p>P</p>
@@ -161,10 +159,13 @@ getPageData();
         </div>
       </transition>
     </div>
-    <div 
-      class="overlay"
-      v-if="userInfoIsOpen"
-    ></div>
+    <transition name="fadeFast">
+      <div 
+        @click="toggleUserOpen"
+        class="overlay"
+        v-if="userInfoIsOpen"
+      ></div>
+    </transition>
   </div>
 </template>
 
