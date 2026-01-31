@@ -58,7 +58,7 @@ const closeWindow = () => {
         v-if="!empty"
       />
     </div>
-    <transition name="fadeFast" mode="out-in">
+    <transition name="fadeFast">
       <ContentWindow
         v-if="editModalVisibility"
         :key-line="keyLine"
@@ -101,24 +101,7 @@ const closeWindow = () => {
 .text-item {
   flex: 560;
   overflow: hidden;  
-
-  // text-overflow: ellipsis; 
 }
-
-// .text-item p {
-//   flex: 1;                // занимает всю ширину родителя
-//   margin: 0;              // убираем дефолтные отступы
-//   white-space: nowrap;    // запрет переноса
-//   overflow: hidden;       // скрыть лишнее
-//   text-overflow: ellipsis; // добавить троеточие
-// }
-
-
-
-// .text-item p {
-//   display: flex;
-//   flex-wrap: nowrap;
-// }
 
 .key-item {
   flex: 330;

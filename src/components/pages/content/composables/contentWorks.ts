@@ -1,6 +1,6 @@
 import { changeTextContentAbit, changeTextContentAdmin, getContentAbit, getContentAdmin } from "@/api/pages/content/apiContent";
 import type { IInputDefaultProps } from "@/types/inputs/types";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
 export default function contentWorks () {
   type TBotsType = "technical" | "applicants"
@@ -36,6 +36,29 @@ export default function contentWorks () {
       text: "Абитуриентский бот"
     }
   ];
+
+  const windowWidth = ref(window.innerWidth);
+
+  const updateWidth = () => {
+    windowWidth.value = window.innerWidth;
+  };
+
+  onMounted(() => {
+    window.addEventListener('resize', updateWidth);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateWidth);
+  });
+
+  const dataSwitchResponsive = computed(() => {
+    return dataSwitch.map(item => {
+      if (windowWidth.value < 500 && item.name === "technical") {
+        return { ...item, text: "Тех. бот" };
+      }
+      return item;
+    });
+  });
 
   const totalPages = computed(() => {
     return Math.ceil(filteredContent.value.length / pageSize);
@@ -112,10 +135,10 @@ export default function contentWorks () {
     currentPage,
     selectedBot,
     searchInputObj,
-    dataSwitch,
     totalPages,
     paginatedContent,
     missingLines,
+    dataSwitchResponsive,
     goToPage,
     changeTextLineTable
   }
