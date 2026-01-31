@@ -51,7 +51,7 @@ const closeWindow = () => {
 </script>
 
 <template>
-  <BackgroundModal>
+  <BackgroundModal :grey-mobile="true">
     <div 
       class="content-window"
       v-clickOutside="closeWindow"
@@ -59,6 +59,7 @@ const closeWindow = () => {
       <ModalWindow
         name="Редактирование текста"
         @close="closeWindow"
+        :have-mobile-type="true"
       > 
         <div class="content-window__warning">
           <p>Не редактируйте ключи в тексте, иначе сохранить изменения будет невозможно</p>
@@ -203,5 +204,13 @@ const closeWindow = () => {
   line-height: 24px;
   letter-spacing: 0%;
   color: #A15F01;
+}
+
+@media (max-width: 400px) {
+  .content-window__all-key {
+    flex-direction: column;
+    gap: 8px;
+    align-items: start;
+  }
 }
 </style>

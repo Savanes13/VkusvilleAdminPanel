@@ -6,13 +6,15 @@ interface IMobileItemProps {
   icon: string;
   text: string;
   path: string;
+  hidePanel?: boolean
 };
 
 const {
   isActive,
   icon,
   text,
-  path
+  path,
+  hidePanel = false
 } = defineProps<IMobileItemProps>();
 </script>
 
@@ -20,7 +22,10 @@ const {
   <router-link
     :to="path" 
     class="mobile-item"
-    :class="{'mobile-item--active' : isActive}"
+    :class="{
+      'mobile-item--active' : isActive,
+      'mobile-item--hide-panel' : hidePanel
+    }"
   >
     <div class="mobile-item__svg">
       <span
@@ -41,17 +46,37 @@ const {
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-
-.mobile-item__text {
+  color: color.$colorTextSecondary;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: color.$colorTextPrimary
+}
+
+.mobile-item--active {
+  color: color.$colorTextPrimary !important;
+  padding: 12px 0px;
+  .svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    :deep(svg path) {
+      fill: color.$colorTextPrimary;
+    }
+  }
+}
+
+.mobile-item--hide-panel {
+  flex-direction: row;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .svg {
-  :deep(svg) {
+  :deep(svg path) {
+    fill: color.$colorTextSecondary;
     width: 20px;
     height: 20px;
   }

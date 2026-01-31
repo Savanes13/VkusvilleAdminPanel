@@ -35,5 +35,5 @@ const deleteAdmin = (id: number) => {
 </template>
 
 <style lang="scss" scoped>
-  
+@use "@/style/variables/color.scss" as color;
 </style>

@@ -1,17 +1,13 @@
 <script lang="ts" setup>
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
-import { ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import AccessBot from './components/AccessBot/AccessBot.vue';
 import AccessAdmin from './components/AccessAdmin/AccessAdmin.vue';
-import { getContentAccessAdmins } from '@/api/pages/access/apiAccess';
 
 type TSelectType = "bot" | "admin";
 
 const selectedBot = ref<TSelectType>('bot');
-
-// const selectedItemBot = ref<number>(1);
-const selectedItemAdmin = ref<number>(0);
 
 const dataSwitch = [
   {
@@ -24,37 +20,31 @@ const dataSwitch = [
   }
 ];
 
-// const accessStab = {
-//   bot: {
-//     select: [
-//       {
-//         id: 1,
-//         value: "Эксперт 1 уровня"
-//       },
-//       {
-//         id: 2,
-//         value: "Эксперт 2 уровня"
-//       },
-//       {
-//         id: 3,
-//         value: "Менеджер продвижения"
-//       }
-//     ]
-//   },
-//   admin: {
+const windowWidth = ref(window.innerWidth);
 
-//   }
-// }
+const updateWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
 
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
 
-// const getPageData = async () => {
-//   try {
-//     await getContentAccessAdmins();
-//   } catch (error) {
-    
-//   }
-// }
-// getPageData()
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWidth);
+});
+
+const dataSwitchResponsive = computed(() => {
+  return dataSwitch.map(item => {
+    if (windowWidth.value < 360 && item.name === "bot") {
+      return { ...item, text: "Бот" };
+    }
+    if (windowWidth.value < 360 && item.name === "admin") {
+      return { ...item, text: "Админка" };
+    }
+    return item;
+  });
+});
 </script>
 
 <template>
@@ -62,16 +52,12 @@ const dataSwitch = [
     <PageHeader>
       Доступы
     </PageHeader>
-
     <div class="access__switch">
       <DefaultSwitch
         v-model:value="selectedBot"
-        :data="dataSwitch"
+        :data="dataSwitchResponsive"
       />
     </div>
-
-
-
     <transition name="fadeFast" mode="out-in">
       <AccessBot
         v-if="selectedBot === 'bot'"
@@ -82,15 +68,24 @@ const dataSwitch = [
         key="access-admin"
       />
     </transition>
-
-
   </div>
 </template>
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
 
+.access {
+  margin-bottom: 80px;
+}
+
 .access__switch {
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .access__switch {
+    margin-left: 24px;
+    margin-bottom: 20px;
+  }
 }
 </style>

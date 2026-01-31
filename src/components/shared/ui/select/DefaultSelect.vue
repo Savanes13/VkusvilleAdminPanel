@@ -70,7 +70,15 @@ const setNewSelectValue = (id: number) => {
         :key="index"
         @click="setNewSelectValue(item.id)"
       >
-        <p>{{ item.value }}</p>
+        <div>
+          <p>{{ item.value }}</p>
+        </div>
+        <div v-if="activeItem === item.id">
+          <span
+            class="svg check-svg"
+            v-html="selectIcons['check']"
+          ></span>
+        </div>
       </div>
     </div>
   </div>
@@ -90,7 +98,7 @@ const setNewSelectValue = (id: number) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 26px 8px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #DDE0E8;
   width: 100%;
@@ -133,10 +141,14 @@ const setNewSelectValue = (id: number) => {
   box-shadow: 0px 6px 12px 0px #00103D0F;
   box-shadow: 0px 6px 20px 0px #00103D0F;
   box-shadow: 0px 10px 36px 0px #00103D14;
+  z-index: 1;
 }
 
 .hide-item {
-  padding: 14px 26px 14px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;

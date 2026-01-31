@@ -72,10 +72,13 @@ const {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <TableExperts
-        :data="pageDataArr"
-        @delete="deleteAdmin"
-      />
+      <div class="table-wrapper">
+        <TableExperts
+          class="table-experts"
+          :data="pageDataArr"
+          @delete="deleteAdmin"
+        />
+      </div>
     </WrapperBlock>
   </div>
 </template>
@@ -87,6 +90,36 @@ const {
   margin-bottom: 24px;
 }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-experts {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
+}
+
 .granting-access__title {
   font-weight: 500;
   font-size: 24px;
@@ -96,13 +129,12 @@ const {
 }
 
 .granting-access__content {
-  display: flex;
-  // align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 
 .button-access {
-  // width: 147px;
   margin-top: 20px;
 }
 
@@ -112,5 +144,33 @@ const {
   line-height: 24px;
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+@media(max-width: 1500px) {
+  .granting-access__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 920px) {
+  .granting-access__content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media(max-width: 768px) {
+   .granting-access__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width: 600px) {
+  .granting-access__content {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .granting-access__content {
+    gap: 16px;
+  }
 }
 </style>

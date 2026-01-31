@@ -56,7 +56,6 @@ const formatIsoDate = (isoDate: string) => {
 
 <template>
   <div class="calendar-block">
-
     <div class="calendar-block__label">
       <p>{{ label }}</p>
     </div>
@@ -68,10 +67,9 @@ const formatIsoDate = (isoDate: string) => {
         <p>{{ formatIsoDate(date) }}</p>
       </div>
       <div>
-        <img :src="calendar" alt="">
+        <img class="svg" :src="calendar" alt="">
       </div>
     </div>
-
     <div  
       class="calendar"
       v-if="calendarIsOpen" 
@@ -79,7 +77,6 @@ const formatIsoDate = (isoDate: string) => {
     >
       <VDatePicker v-model="dateValue" />
     </div>
-
   </div>
 </template> 
 
@@ -87,7 +84,7 @@ const formatIsoDate = (isoDate: string) => {
 @use "@/style/variables/color.scss" as color;
 
 .calendar-block {
-
+  position: relative;
 }
 
 .calendar-block__label {
@@ -112,7 +109,51 @@ const formatIsoDate = (isoDate: string) => {
   cursor: pointer;
 }
 
+:deep(.vc-container) {
+  width: 100% !important;
+}
+
+:deep(.vc-pane) {
+  width: 100% !important;
+}
+
+:deep(.vc-weeks),
+:deep(.vc-weekdays) {
+  width: 100%;
+}
+
+:deep(.vc-day:not(.is-disabled):hover .vc-day-content) {
+  background-color: color.$colorStrokeAccent;
+  color: #fff;
+}
+
+:deep(.vc-day.is-selected .vc-day-content) {
+  background-color: color.$colorStrokeAccent !important; 
+  color: #ffffff !important;           
+  border-radius: 8px;                  
+}
+
 .calendar {
   position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 425px) {
+  .calendar-block__content {
+    height: 36px;
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 </style>

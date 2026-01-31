@@ -29,6 +29,8 @@ const {
   argument,
   realisticMeaningful,
   original,
+  readyToSendDateAfterPrepatch,
+  objPrepathData,
   changeStageData,
   closeWindow,
   timestampToDateString,
@@ -38,14 +40,15 @@ const {
 </script>
 
 <template>
-  <BackgroundModal>
+  <BackgroundModal :grey-mobile="true">
     <div 
       class="stage-window"
-      > 
-      <!-- v-clickOutside="closeWindow" -->
+      v-clickOutside="closeWindow"
+    > 
       <ModalWindow
         :name="`Настройка ${2} этапа`"
         @close="closeWindow"
+        :have-mobile-type="true"
       >
         <div class="dates-deadlines wrap-block">
           <div class="dates-deadlines__title-block wrap-block__title">
@@ -77,6 +80,7 @@ const {
               :label="dayToWorkInputObj.label"
               :placeholder="dayToWorkInputObj.placeholder"
               :error="dayToWorkInputObj.error"
+              :small-mobile="true"
             />
           </div>
         </div>
@@ -154,15 +158,39 @@ const {
               :label="multiplierInputObj.label"
               :placeholder="multiplierInputObj.placeholder"
               :error="multiplierInputObj.error"
+              :small-mobile="true"
             />
             <DefaultInput
               v-model:value="minGradePass"
               :label="passingGradeInputObj.label"
               :placeholder="passingGradeInputObj.placeholder"
               :error="passingGradeInputObj.error"
+              :small-mobile="true"
             />
           </div>
         </div>
+        <transition name="fadeFast">
+          <div 
+            class="warning-block"
+            v-if="readyToSendDateAfterPrepatch"
+          >
+            <div class="warning-block__title">
+              <p>Вы уверены?</p>
+            </div>
+            <div 
+              class="warning-block__text"
+              v-if="objPrepathData?.students_extend"
+            >
+              <p>После изменения дат {{ objPrepathData?.students_extend }} студентов снова смогут выполнить задание</p>
+            </div>
+            <div 
+              class="warning-block__text"
+              v-if="objPrepathData?.students_stop"
+            >
+              <p>После изменения дат у {{ objPrepathData?.students_stop }} студентов сократятся дедлайны</p>
+            </div>
+          </div>
+        </transition>
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"

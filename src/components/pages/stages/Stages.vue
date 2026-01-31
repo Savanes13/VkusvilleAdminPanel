@@ -6,7 +6,7 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
@@ -14,6 +14,14 @@ import type { IStage } from '@/types/pages/stages/typesStages';
 const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
+
+watch(stageWindowVisibility, (val) => {
+  if (val) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+});
 
 const closeStageWindow = () => {
   stageWindowVisibility.value = false;
@@ -297,7 +305,7 @@ getPageData();
         </WrapperBlock>
       </div>
       <WrapperBlock>
-        <div class="header-stage">
+        <div class="header-stage header-stage--interviews">
           <div class="header-stage__title">
             <div class="counter">
               <p>Этап 3</p>
@@ -320,18 +328,22 @@ getPageData();
         </div>
       </WrapperBlock>
     </div>
-    <FirstStageWindow
-      v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
-      :data="pageDataArr[0]"
-      @close="closeStageWindow"
-      @set-new-obj="(obj) => setNewStageValue(1, obj)"
-    />
-    <SecondStageWindow
-      v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
-      :data="pageDataArr[1]"
-      @close="closeStageWindow"
-      @set-new-obj="(obj) => setNewStageValue(2, obj)"
-    />
+    <transition name="fadeFast">
+      <FirstStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 1 && pageDataArr[0]"
+        :data="pageDataArr[0]"
+        @close="closeStageWindow"
+        @set-new-obj="(obj) => setNewStageValue(1, obj)"
+      />
+    </transition>
+    <transition name="fadeFast">
+      <SecondStageWindow
+        v-if="stageWindowVisibility && numberSelectedStage === 2 && pageDataArr[1]"
+        :data="pageDataArr[1]"
+        @close="closeStageWindow"
+        @set-new-obj="(obj) => setNewStageValue(2, obj)"
+      />
+    </transition>
   </div>
 </template>
 
@@ -345,7 +357,8 @@ getPageData();
 }
 
 .wrap-editable {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
@@ -353,6 +366,10 @@ getPageData();
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+
+.header-stage--interviews {
+  margin-bottom: 8px;
 }
 
 .counter {
@@ -370,10 +387,25 @@ getPageData();
   color: #333333;
 }
 
+.wrapper-block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .info-stage {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
+}
+
+.info-stage__item:first-child {
+  flex: 0 0 auto;
+}
+
+.info-stage__item:last-child {
+  flex: 1 1 auto; 
 }
 
 .info-stage__item {
@@ -384,6 +416,7 @@ getPageData();
   border-radius: 16px;
   border: 1px solid #D0D7E5;
   padding: 20px;
+  flex: 1;
 }
 
 .title-block {
@@ -398,6 +431,7 @@ getPageData();
 .item-block {
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .item-block__text {
@@ -417,18 +451,43 @@ getPageData();
 .not-configurable {
   font-weight: 400;
   font-size: 16px;
-  line-height: 25px;
-  color: #333333;
+  line-height: 24px;
   margin-bottom: 20px;
+  color: color.$colorTextSecondary;
 }
 
 .interview-button {
   width: 210px;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1400px) {
   .wrap-editable {
+    grid-template-columns: 1fr;
+  }
+
+  .stages {
+    margin-bottom: 80px;
+  }
+}
+
+@media (max-width: 850px) {
+  .item-block {
     flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .item-block {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .item-block {
+    flex-direction: column;
+    gap: 4px;
   }
 }
 </style>

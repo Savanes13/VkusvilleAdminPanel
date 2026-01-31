@@ -23,5 +23,9 @@
     font-size: 24px;
     line-height: 24px;
   }
+
+  .page-header {
+    margin-bottom: 20px;
+  }
 }
 </style>

@@ -12,10 +12,10 @@ const {
   currentPage,
   selectedBot,
   searchInputObj,
-  dataSwitch,
   totalPages,
   paginatedContent,
   missingLines,
+  dataSwitchResponsive,
   goToPage,
   changeTextLineTable
 } = contentWorks();
@@ -32,7 +32,7 @@ const {
     <div class="content__switch">
       <DefaultSwitch
         v-model:value="selectedBot"
-        :data="dataSwitch"
+        :data="dataSwitchResponsive"
       />
     </div>
     <WrapperBlock
@@ -47,11 +47,14 @@ const {
           :error="searchInputObj.error"
         />
       </div>
-      <TableContent
-        :data="paginatedContent"
-        :missing-lines="missingLines"
-        @change-text-line="changeTextLineTable"
-      />
+      <div class="table-wrapper">
+        <TableContent
+          class="table-content"
+          :data="paginatedContent"
+          :missing-lines="missingLines"
+          @change-text-line="changeTextLineTable"
+        />
+      </div>
       <div
         class="pagination" 
         v-if="totalPages > 1"
@@ -89,8 +92,42 @@ const {
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
 
+.content {
+  margin-bottom: 80px;
+}
+
 .search {
   margin-bottom: 20px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-content {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 
 .pagination {
@@ -133,5 +170,12 @@ const {
 
 .content__switch {
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .content__switch {
+    margin-left: 24px;
+    margin-bottom: 20px;
+  }
 }
 </style>

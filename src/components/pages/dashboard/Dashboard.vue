@@ -152,6 +152,10 @@ getPageData();
 @use "@/style/variables/color.scss" as color;
 @use "@/style/variables/transition.scss" as transition;
 
+.dashboard {
+  margin-bottom: 80px;
+}
+
 .dashboard__first-section {
   display: flex;
   gap: 24px;

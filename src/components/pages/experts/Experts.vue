@@ -129,6 +129,7 @@ getPageData();
   width: 100%;
   min-width: 1100px; 
   border-collapse: collapse;
+  padding-bottom: 10px;
 }
 
 .table-wrapper::-webkit-scrollbar {

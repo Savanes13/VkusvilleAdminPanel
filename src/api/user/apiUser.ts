@@ -25,6 +25,19 @@ export const register = async (display_name: string, email: string, password: st
   }
 };
 
+// выйти из аккаунта
+export const logout = async (): Promise<any> => {
+  try {
+    const response = await api.post('/api/auth/logout')
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response;
+    }
+    throw new Error("An unknown error");
+  }
+};
+
 // обновление токена
 export const refreshAccessToken = async (): Promise<{ access_token: string }> => {
   try {
@@ -50,4 +63,3 @@ export const checkAuth = async (): Promise<any> => {
     throw new Error("An unknown error");
   }
 };
-

@@ -43,7 +43,7 @@ const copyToken = () => {
         <div class="token-window__text">
           <p>Скопируйте токен для дальнейшего использования.</p>
         </div>
-        <div class="token-window__text">
+        <div class="token-window__text token-window__text--second">
           <p>Если закроете это окно, то сможете найти токен в таблице «Неиспользованные токены»</p>
         </div>
         <div class="token-window__token-block">
@@ -100,6 +100,10 @@ const copyToken = () => {
   margin-bottom: 10px;
 }
 
+.token-window__text--second {
+  margin-bottom: 24px;
+}
+
 .token-window__token-block {
   display: flex;
   align-items: center;
@@ -125,5 +129,26 @@ const copyToken = () => {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+@media (max-width: 425px) {
+  .token-window__token-block {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .token-window__token-block {
+    font-size: 12px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 330px) {
+  .token-window__token-block {
+    font-size: 11px;
+    line-height: 20px;
+  }
 }
 </style>
