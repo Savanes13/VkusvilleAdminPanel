@@ -431,7 +431,7 @@ getPageData();
   width: 210px;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1360px) {
   .wrap-editable {
     flex-direction: column;
   }
