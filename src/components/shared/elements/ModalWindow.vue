@@ -1,13 +1,30 @@
 <script lang="ts" setup>
 import close from '@/assets/images/mainIcons/close.svg'
+import { mainIcons } from '../icons/mainIcons';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 interface IModalWindowProps {
-  name: string
+  name: string;
+  haveMobileType?: boolean;
 };
 
 const {
-  name
+  name,
+  haveMobileType = false
 } = defineProps<IModalWindowProps>();
+
+const pageWidth = ref<number>(0);
+
+onMounted(() => {
+  pageWidth.value = window.innerWidth;
+  window.onresize = () => {
+    pageWidth.value = window.innerWidth;
+  };
+});
+
+onUnmounted(() => {
+  window.onresize = null;
+});
 
 const emit = defineEmits<{
   (e: 'close'): void
@@ -20,13 +37,26 @@ const closeWindow = () => {
 
 <template>
   <div class="modal-window">
-    <div class="modal-window__header">
+    <div 
+      class="modal-window__header"
+      :class="{'modal-window__header--mobile-type' : haveMobileType}"
+    >
+      <div
+        v-if="haveMobileType"
+        class="arrow"
+        @click="closeWindow"
+      >
+        <span
+          v-html="mainIcons['chevronLeft']"
+        ></span>
+      </div>
       <div>
         <p>{{ name }}</p>
       </div>
       <div
         @click="closeWindow"
         class="close"
+        v-if="!haveMobileType || pageWidth > 500"
       >
         <img :src="close" alt="">
       </div>
@@ -35,7 +65,6 @@ const closeWindow = () => {
   </div>
 </template>
 
-
 <style lang="scss" scoped>
 .modal-window {
   width: 100%;
@@ -43,6 +72,8 @@ const closeWindow = () => {
   border-radius: 24px;
   padding: 24px;
   background: #FFFFFF;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
 .modal-window__header {
@@ -57,5 +88,28 @@ const closeWindow = () => {
 
 .close {
   cursor: pointer;
+}
+
+.arrow {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .arrow {
+    display: block;
+    position: absolute;
+    top: 31px;
+    left: 16px;
+  }
+
+  .modal-window__header {
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  .modal-window__header--mobile-type {
+    margin-top: 9px;
+    justify-content: center;
+  }
 }
 </style>
