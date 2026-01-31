@@ -12,6 +12,7 @@ interface IDataArr {
   email: string
   id: number
   role: string
+  display_name: string
 };
 
 const pageDataArr = ref<null | IDataArr>(null);
@@ -101,7 +102,7 @@ getPageData();
         </div>
         <div class="user-fields">
           <div class="user-fields__name">
-            <p>{{ pageDataArr.email }}</p>
+            <p>{{ pageDataArr.display_name }}</p>
           </div>
           <div class="user-fields__role">
             <p>{{ roleLabel }}</p>
@@ -140,7 +141,7 @@ getPageData();
               </div>
               <div class="user-fields user-fields--mobile">
                 <div class="user-fields__name">
-                  <p>{{ pageDataArr.email }}</p>
+                  <p>{{ pageDataArr.display_name }}</p>
                 </div>
                 <div class="user-fields__role">
                   <p>{{ roleLabel }}</p>
@@ -307,10 +308,13 @@ getPageData();
   max-height: 300px;
 }
 
-@media (max-width: 900px) {
-  .user-fields__name {
-    max-width: 120px;
-    overflow: hidden;
+@media (max-width: 940px) {
+  .logo {
+    display: none;
+  }
+
+  .header__left {
+    gap: 0px;
   }
 }
 
@@ -323,10 +327,6 @@ getPageData();
 
   .overlay {
     display: block;
-  }
-
-  .logo {
-    display: none;
   }
 
   .header__left {
@@ -398,7 +398,12 @@ getPageData();
   }
 
   .header__hiden {
-    top: 56px;
+    top: 48px;
+  }
+
+  .user-icon-mobile--top {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>
