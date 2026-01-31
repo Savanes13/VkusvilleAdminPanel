@@ -5,7 +5,7 @@ import logo from '@/assets/images/logo/logo.svg'
 import { storeToRefs } from 'pinia';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import { useUserStore } from '@/store/user/userStore';
-import { checkAuth } from '@/api/user/apiUser';
+import { checkAuth, logout } from '@/api/user/apiUser';
 import { computed, ref } from 'vue';
 
 interface IDataArr {
@@ -49,7 +49,8 @@ const toggleUserOpen = () => {
 
 const exitFromAccount = async () => {
   try {
-    // удалить токен
+    await logout();
+    userStore.deleteAccessToken();
     toggleUserOpen();
   } catch (error) {
     console.error('ошибка выхода из аккаунта')
