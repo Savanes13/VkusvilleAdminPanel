@@ -23,6 +23,7 @@ import MobileBlock from './components/mobile/MobileBlock.vue';
 .default-layout {
   background-color: color.$colorBackgroundSecondary;
   padding: 0px 40px;
+  min-height: 100vh;
 }
 
 .default-layout__content {
