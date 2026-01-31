@@ -452,13 +452,27 @@ getPageData();
   width: 210px;
 }
 
-@media (max-width: 1360px) {
+@media (max-width: 1400px) {
   .wrap-editable {
     grid-template-columns: 1fr;
   }
 
   .stages {
     margin-bottom: 80px;
+  }
+}
+
+@media (max-width: 850px) {
+  .item-block {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .item-block {
+    flex-direction: row;
+    gap: 10px;
   }
 }
 
