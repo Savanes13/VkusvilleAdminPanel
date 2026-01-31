@@ -72,10 +72,13 @@ const {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <TableExperts
-        :data="pageDataArr"
-        @delete="deleteAdmin"
-      />
+      <div class="table-wrapper">
+        <TableExperts
+          class="table-experts"
+          :data="pageDataArr"
+          @delete="deleteAdmin"
+        />
+      </div>
     </WrapperBlock>
   </div>
 </template>
@@ -85,6 +88,36 @@ const {
 
 .granting-access {
   margin-bottom: 24px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-experts {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 
 .granting-access__title {
@@ -97,12 +130,10 @@ const {
 
 .granting-access__content {
   display: flex;
-  // align-items: center;
   gap: 24px;
 }
 
 .button-access {
-  // width: 147px;
   margin-top: 20px;
 }
 

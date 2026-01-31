@@ -62,10 +62,22 @@ const {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <TableAdmin
-        :data="adminTableArr"
-        @delete="deleteAdmin"
-      />
+      <div 
+        class="table__hint"
+        v-if="adminTableArr.length === 0"
+      >
+        <p>Здесь будут отображаться админы</p>
+      </div>
+      <div 
+        class="table-wrapper"
+        v-else
+      >
+        <TableAdmin
+          class="table-block"
+          :data="adminTableArr"
+          @delete="deleteAdmin"
+        />
+      </div>
     </WrapperBlock>
     <WrapperBlock class="table-tokens">
       <div class="table-tokens__title-block table-title">
@@ -76,13 +88,26 @@ const {
           <!-- TODO: подсказка -->
         </div>
       </div>
-      <TableToken
-        :data="tokenTableArr"
-        @delete="deleteToken"
-      />
+      <div 
+        class="table__hint"
+        v-if="tokenTableArr.length === 0"
+      >
+        <p>Здесь будут отображаться неиспользованные токены</p>
+      </div>
+      <div 
+        class="table-wrapper"
+        v-else
+      >
+        <TableToken
+          class="table-block"
+          :data="tokenTableArr"
+          @delete="deleteToken"
+        />
+      </div>
     </WrapperBlock>
     <transition name="fadeFast" mode="out-in">
       <TokenWindow
+        class="table-block"
         v-if="showTokenWindow"
         :token="createdToken"
         @close="closeWindow"
@@ -112,12 +137,40 @@ const {
 .granting-access__content {
   display: flex;
   flex: 1;
-  // align-items: center;
   gap: 24px;
 }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-block {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
+}
+
 .button-access {
-  // width: 147px;
   margin-top: 20px;
 }
 
@@ -139,5 +192,12 @@ const {
   line-height: 24px;
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.table__hint {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
 }
 </style>
