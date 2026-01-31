@@ -101,6 +101,8 @@ const closeWindow = () => {
 .text-item {
   flex: 560;
   overflow: hidden;  
+  white-space: nowrap;     
+  text-overflow: ellipsis;
 }
 
 .key-item {
