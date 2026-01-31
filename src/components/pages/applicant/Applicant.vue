@@ -13,9 +13,11 @@ const {
 
 <template>
   <div class="applicant">
-    <BreadCumbs
-      :data="breadCrumb"
-    />
+    <div class="applicant__bread-crumbs">
+      <BreadCumbs
+        :data="breadCrumb"
+      />
+    </div>
     <PageHeader>
       Имя Абитуриента
     </PageHeader>
@@ -37,5 +39,11 @@ const {
 
 .applicant__management {
   margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .applicant__bread-crumbs {
+    margin-left: 24px;
+  }
 }
 </style>

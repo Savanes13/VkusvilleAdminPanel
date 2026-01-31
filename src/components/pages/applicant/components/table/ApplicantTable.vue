@@ -312,4 +312,20 @@ getPageData();
 .button-management {
   width: 200px;
 }
+
+@media (max-width: 600px) {
+  .button-management {
+    width: 100px;
+  }
+}
+
+@media (max-width: 475px) {
+  .control-block {
+    display: block;
+  }
+
+  .switch-item {
+    margin-bottom: 16px;
+  }
+}
 </style>

@@ -201,4 +201,10 @@ const moveNextStage = async () => {
   display: flex;
   gap: 8px;
 }
+
+@media (max-width: 950px) {
+  .applicant-management__content {
+    flex-direction: column;
+  }
+}
 </style>
