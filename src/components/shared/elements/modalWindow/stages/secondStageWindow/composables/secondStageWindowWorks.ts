@@ -1,11 +1,16 @@
 import type { IInputDefaultProps } from "@/types/inputs/types";
-import { computed, reactive } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import type { IStage } from "@/types/pages/stages/typesStages";
-import { changeDataStage } from "@/api/pages/stages/apiStages";
+import { changeDataStage, prepatchDataStage } from "@/api/pages/stages/apiStages";
 
 type FirstStageEmits = {
   (e: 'close'): void
   (e: 'setNewObj', obj: IStage): void
+}
+
+interface IPrepathData {
+  students_extend: null | number;
+  students_stop: null | number;
 }
 
 export default function secondStageWindowWorks (props: { data: IStage }, emit: FirstStageEmits) {  
@@ -59,7 +64,9 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
       text: ''
     },
   });
-  
+
+  const readyToSendDateAfterPrepatch = ref<Boolean>(false);
+  const objPrepathData = ref<null | IPrepathData>(null);
   const integrity = computed(() => localStage.grades.find(item => item.criteria === 'Integrity')?.grades ?? []);
   const argument = computed(() => localStage.grades.find(item => item.criteria === 'Arguments')?.grades ?? []);
   const realisticMeaningful = computed(() => localStage.grades.find(item => item.criteria === 'RealisticMeaningful')?.grades ?? []);
@@ -88,6 +95,12 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
       localStage.min_grade_to_pass = isNaN(num) ? 0 : num
     }
   })
+
+  watch(localStage, () => {
+      readyToSendDateAfterPrepatch.value = false;
+      objPrepathData.value = null;
+    },{ deep: true }
+  );
   
   const updateDate = (date: string, type: string) => {
     if (type === 'start') localStage.deadlines.start_date = new Date(date).getTime();
@@ -114,8 +127,22 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
     }
   }
 
+  const prepathData = async () => {
+    try {
+      const respone = await prepatchDataStage(2, localStage);
+      objPrepathData.value = respone
+      readyToSendDateAfterPrepatch.value = true;
+    } catch (error) {
+      console.error("ошибка при препатче")
+    }
+  }
+
   const changeStageData = async () => {
     try {
+      if (!readyToSendDateAfterPrepatch.value) {
+        prepathData();
+        return
+      }
       changeDataStage(2, localStage);
       emit("setNewObj", localStage);
       closeWindow();
@@ -136,6 +163,8 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
     argument,
     realisticMeaningful,
     original,
+    readyToSendDateAfterPrepatch,
+    objPrepathData,
     changeStageData,
     closeWindow,
     timestampToDateString,

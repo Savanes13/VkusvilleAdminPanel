@@ -28,6 +28,8 @@ const {
   structLogic,
   contentMotivation,
   programGoals,
+  readyToSendDateAfterPrepatch,
+  objPrepathData,
   changeStageData,
   closeWindow,
   timestampToDateString,
@@ -148,6 +150,28 @@ const {
             />
           </div>
         </div>
+        <transition name="fadeFast">
+          <div 
+            class="warning-block"
+            v-if="readyToSendDateAfterPrepatch"
+          >
+            <div class="warning-block__title">
+              <p>Вы уверены?</p>
+            </div>
+            <div 
+              class="warning-block__text"
+              v-if="objPrepathData?.students_extend"
+            >
+              <p>После изменения дат {{ objPrepathData?.students_extend }} студентов снова смогут выполнить задание</p>
+            </div>
+            <div 
+              class="warning-block__text"
+              v-if="objPrepathData?.students_stop"
+            >
+              <p>После изменения дат у {{ objPrepathData?.students_stop }} студентов сократятся дедлайны</p>
+            </div>
+          </div>
+        </transition>
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"

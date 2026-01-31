@@ -68,10 +68,9 @@ const formatIsoDate = (isoDate: string) => {
         <p>{{ formatIsoDate(date) }}</p>
       </div>
       <div>
-        <img :src="calendar" alt="">
+        <img class="svg" :src="calendar" alt="">
       </div>
     </div>
-
     <div  
       class="calendar"
       v-if="calendarIsOpen" 
@@ -79,7 +78,6 @@ const formatIsoDate = (isoDate: string) => {
     >
       <VDatePicker v-model="dateValue" />
     </div>
-
   </div>
 </template> 
 
@@ -114,5 +112,13 @@ const formatIsoDate = (isoDate: string) => {
 
 .calendar {
   position: absolute;
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 </style>
