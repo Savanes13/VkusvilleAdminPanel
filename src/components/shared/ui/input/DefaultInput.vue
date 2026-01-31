@@ -87,4 +87,10 @@ const inputValue = computed({
 .input--search {
   padding-left: 36px;
 }
+
+@media (max-width: 425px) {
+  .search-svg {
+    top: 6px;
+  }
+}
 </style>

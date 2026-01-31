@@ -43,10 +43,13 @@ const {
           <p>Просрочившие дедлайн</p>
         </div>
       </div>
-      <TableApplicants
-        :data="paginatedContent"
-        :missing-lines="missingLines"
-      />
+      <div class="table-wrapper">
+        <TableApplicants
+          class="table-applicants"
+          :data="paginatedContent"
+          :missing-lines="missingLines"
+        />
+      </div>
       <div
         class="pagination" 
         v-if="totalPages > 1"
@@ -86,6 +89,36 @@ const {
 
 .search {
   margin-bottom: 8px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-applicants {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 
 .checkbox-block {
