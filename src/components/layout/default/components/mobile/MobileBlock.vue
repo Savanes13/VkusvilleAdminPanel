@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 
 const route = useRoute();
-const hideBlockIsOpen = ref<boolean>(true);
+const hideBlockIsOpen = ref<boolean>(false);
 
 const toggleHideBlock = () => {
   hideBlockIsOpen.value = !hideBlockIsOpen.value
