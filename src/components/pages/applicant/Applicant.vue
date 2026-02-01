@@ -5,6 +5,7 @@ import ApplicantManagement from './components/ApplicantManagement.vue';
 import applicantWorks from './composables/applicantWorks';
 import BreadCumbs from '@/components/shared/elements/BreadCumbs.vue';
 import ApplicantTable from './components/table/ApplicantTable.vue';
+import FinalAssessment from './components/FinalAssessment.vue';
 
 const {
   breadCrumb
@@ -27,9 +28,11 @@ const {
 
     <WrapperBlock>
       <ApplicantTable
-        
+        class="applicant-table"
       />
+      <FinalAssessment/>
     </WrapperBlock>
+
     
   </div>
 </template>
@@ -39,6 +42,10 @@ const {
 
 .applicant__management {
   margin-bottom: 24px;
+}
+
+.applicant-table {
+  margin-bottom: 20px;
 }
 
 @media (max-width: 768px) {
