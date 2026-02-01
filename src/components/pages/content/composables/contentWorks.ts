@@ -1,4 +1,5 @@
 import { changeTextContentAbit, changeTextContentAdmin, getContentAbit, getContentAdmin } from "@/api/pages/content/apiContent";
+import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
@@ -15,6 +16,7 @@ export default function contentWorks () {
   const currentPage = ref<number>(1);
   const pageSize = 8;
   const selectedBot = ref<TBotsType>('technical');
+  const companyStore = useCompanyStore()
 
   const searchInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -112,7 +114,11 @@ export default function contentWorks () {
       console.error("ошибка загрузки данных страницы")
     };
   };
-  getPageData();
+  
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
 
   const changeTextLineTable = async (text: string, key: string) => {
     try {

@@ -10,7 +10,7 @@ import { buttonIcons } from '@/components/shared/icons/button/icons';
 import { useCompanyStore } from '@/store/company/companyStore';
 
 const padeDataArr = ref<null | IDashboardData>(null);
-const companyStore = useCompanyStore()
+const companyStore = useCompanyStore();
 
 const getPageData = async () => {
   try {
