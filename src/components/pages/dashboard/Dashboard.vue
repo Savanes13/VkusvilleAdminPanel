@@ -5,7 +5,6 @@ import StageElement from './components/StageElement.vue';
 import { getDashboard } from '@/api/pages/dashboard/apiDashboard';
 import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
 import { ref, watch } from 'vue';
-import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { buttonIcons } from '@/components/shared/icons/button/icons';
 import { useCompanyStore } from '@/store/company/companyStore';
 

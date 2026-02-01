@@ -4,13 +4,15 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import TableExperts from './components/table/TableExperts.vue';
 import { getContentExpertsPage } from '@/api/pages/experts/apiExperts';
 import type { IExpertPage, TExpertsPageData } from '@/types/pages/experts/typesExperts';
+import { useCompanyStore } from '@/store/company/companyStore';
 
 const haveWorkDeadline = ref<boolean>(false);
 const expertsPageData = ref<null | TExpertsPageData>(null);
+const companyStore = useCompanyStore();
 
 const searchInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -46,7 +48,11 @@ const getPageData = async () => {
     console.error("ошибка загрузки данных страницы")
   };
 };
-getPageData();
+
+watch(() => companyStore.selectedCompany, () => {
+    getPageData()
+  },{ immediate: true }
+)
 </script>
 
 <template>

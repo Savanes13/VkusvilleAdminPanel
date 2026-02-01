@@ -1,4 +1,5 @@
 import { getApplicantsPage } from "@/api/pages/applicants/apiApplicants";
+import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive, ref, watch } from "vue";
 
@@ -14,6 +15,7 @@ export default function applicantsWorks () {
 
   const contentPageData = ref<null | IUser[]>(null);
   const overdueDeadlineSortActivity = ref<boolean>(false);
+  const companyStore = useCompanyStore();
   const currentPage = ref<number>(1);
   const pageSize = 8;
 
@@ -76,7 +78,11 @@ export default function applicantsWorks () {
       console.error("ошибка загрузки данных страницы")
     };
   };
-  getPageData();
+  
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
 
   return {
     paginatedContent,
