@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 import { useRoute } from 'vue-router';
 import type { IApplicantDataType } from '@/types/pages/applicant/applicantTypes';
 import { getApplicantPage } from '@/api/pages/applicant/apiApplicant';
+import { useCompanyStore } from '@/store/company/companyStore';
 
 type Grades = {
   StructLogic: number;
@@ -26,9 +27,8 @@ type TStages = "stage1" | "stage2"
 
 const route = useRoute();
 const applicantId = route.params.id;
-
 const pageDataArr = ref<null | IApplicantDataType>(null);
-
+const companyStore = useCompanyStore();
 const selectedStage = ref<TStages>('stage1');
 const editingIsActive = ref<boolean>(false);
 const undoChangesTriger = ref<boolean>(false);
@@ -172,7 +172,11 @@ const getPageData = async () => {
 
 //   }
 // }
-getPageData();
+
+watch(() => companyStore.selectedCompany, () => {
+    getPageData()
+  },{ immediate: true }
+)
 </script>
 
 <template>

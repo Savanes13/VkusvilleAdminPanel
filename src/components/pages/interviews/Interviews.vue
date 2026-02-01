@@ -3,6 +3,10 @@ import { getContentInterviewsPage } from '@/api/pages/Interviews/apiInterviews';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import InterviewsTable from './components/table/InterviewsTable.vue';
+import { watch } from 'vue';
+import { useCompanyStore } from '@/store/company/companyStore';
+
+const companyStore = useCompanyStore();
 
 const getPageData = async () => {
   try {
@@ -12,9 +16,11 @@ const getPageData = async () => {
     console.error('ошибка при получении данных страницы')
   }
 }
-getPageData();
 
-
+watch(() => companyStore.selectedCompany, () => {
+    getPageData()
+  },{ immediate: true }
+)
 
 const arr = [
   {
