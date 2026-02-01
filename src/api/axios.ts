@@ -2,13 +2,16 @@ import axios from 'axios'
 import { useUserStore } from '@/store/user/userStore'
 import { refreshAccessToken } from './user/apiUser'
 import router from '@/router';
+import { useCompanyStore } from '@/store/company/companyStore';
 
 const api = axios.create({
-  baseURL: 'https://ajasdc-test.vv-rea.management',
+  // baseURL: 'https://ajasdc-test.vv-rea.management',
   withCredentials: true 
 })
 
 api.interceptors.request.use(config => {
+  const companyStore = useCompanyStore();
+  config.baseURL = companyStore.selectedCompany === 'Reo' ? 'https://ajasdc-test.vv-rea.management' : 'https://ajasdc-test2.vv-rea.management';
   const userStore = useUserStore()
   if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   return config

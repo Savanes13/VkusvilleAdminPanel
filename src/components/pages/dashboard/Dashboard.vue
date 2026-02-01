@@ -4,11 +4,13 @@ import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 import StageElement from './components/StageElement.vue';
 import { getDashboard } from '@/api/pages/dashboard/apiDashboard';
 import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { buttonIcons } from '@/components/shared/icons/button/icons';
+import { useCompanyStore } from '@/store/company/companyStore';
 
 const padeDataArr = ref<null | IDashboardData>(null);
+const companyStore = useCompanyStore()
 
 const getPageData = async () => {
   try {
@@ -18,7 +20,11 @@ const getPageData = async () => {
     console.error("ошибка при получении данных страницы дашборд")
   }
 }
-getPageData();
+
+watch(() => companyStore.selectedCompany, () => {
+    getPageData()
+  },{ immediate: true }
+)
 </script>
 
 <template>
