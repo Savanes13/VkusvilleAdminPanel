@@ -3,7 +3,7 @@ import api from "@/api/axios";
 
 export const getContentExpertsPage = async (): Promise<any> => {
   try {
-    const response = await api.get('/api/experts/all')
+    const response = await api.get('/api/experts/stats-all')
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) {

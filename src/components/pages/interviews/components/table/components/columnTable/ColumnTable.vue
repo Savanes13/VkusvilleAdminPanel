@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import ColumnItem from './components/ColumnItem.vue';
+import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
 
 type Interview = {
+  id: number;
   start_time: number;
   reviewer_ids: number[];
 };

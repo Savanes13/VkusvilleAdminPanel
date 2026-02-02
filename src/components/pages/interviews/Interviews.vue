@@ -3,15 +3,17 @@ import { getContentInterviewsPage } from '@/api/pages/Interviews/apiInterviews';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import InterviewsTable from './components/table/InterviewsTable.vue';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
+import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
 
 const companyStore = useCompanyStore();
+const pageDataArr = ref<null | TInterviewsData>(null);
 
 const getPageData = async () => {
   try {
     const response = await getContentInterviewsPage();
-    // pageDataArr.value = response.items;
+    pageDataArr.value = response.items;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
@@ -22,77 +24,80 @@ watch(() => companyStore.selectedCompany, () => {
   },{ immediate: true }
 )
 
-const arr = [
-  {
-    day: 1769317200000,
-    interviews: [
-      {
-        start_time: 1769774400000,
-        reviewer_ids: [22, 4]
-      },
-      {
-        start_time: 1773651600000,
-        reviewer_ids: []
-      }
-    ]
-  },
-  {
-    day: 1769403600000,
-    interviews: [
-      {
-        start_time: 1769749200000,
-        reviewer_ids: [43]
-      },
-      {
-        start_time: 1773651600000,
-        reviewer_ids: [11]
-      }
-    ]
-  },
-  {
-    day: 1769490000000,
-    interviews: [
-      {
-        start_time: 1769749200000,
-        reviewer_ids: [43]
-      },
-      {
-        start_time: 1773651600000,
-        reviewer_ids: [11]
-      }
-    ]
-  },
-  {
-    day: 1769576400000,
-    interviews: [
-      {
-        start_time: 1769749200000,
-        reviewer_ids: [43, 22, 33]
-      },
-      {
-        start_time: 1769774400000,
-        reviewer_ids: []
-      }
-    ]
-  },
-  {
-    day: 1769662800000,
-    interviews: [
-      {
-        start_time: 1769749200000,
-        reviewer_ids: [43]
-      },
-      {
-        start_time: 1769774400000,
-        reviewer_ids: [11, 499, 43]
-      }
-    ]
-  },
-]
+// const arr = [
+//   {
+//     day: 1769317200000,
+//     interviews: [
+//       {
+//         start_time: 1769774400000,
+//         reviewer_ids: [22, 4]
+//       },
+//       {
+//         start_time: 1773651600000,
+//         reviewer_ids: []
+//       }
+//     ]
+//   },
+//   {
+//     day: 1769403600000,
+//     interviews: [
+//       {
+//         start_time: 1769749200000,
+//         reviewer_ids: [43]
+//       },
+//       {
+//         start_time: 1773651600000,
+//         reviewer_ids: [11]
+//       }
+//     ]
+//   },
+//   {
+//     day: 1769490000000,
+//     interviews: [
+//       {
+//         start_time: 1769749200000,
+//         reviewer_ids: [43]
+//       },
+//       {
+//         start_time: 1773651600000,
+//         reviewer_ids: [11]
+//       }
+//     ]
+//   },
+//   {
+//     day: 1769576400000,
+//     interviews: [
+//       {
+//         start_time: 1769749200000,
+//         reviewer_ids: [43, 22, 33]
+//       },
+//       {
+//         start_time: 1769774400000,
+//         reviewer_ids: []
+//       }
+//     ]
+//   },
+//   {
+//     day: 1769662800000,
+//     interviews: [
+//       {
+//         start_time: 1769749200000,
+//         reviewer_ids: [43]
+//       },
+//       {
+//         start_time: 1769774400000,
+//         reviewer_ids: [11, 499, 43]
+//       }
+//     ]
+//   },
+// ]
 </script>
 
 <template>
-  <div class="interviews">
+  <div 
+    class="interviews"
+    v-if="pageDataArr"
+  >
     <PageHeader>
       Собеседования
     </PageHeader>
@@ -100,7 +105,7 @@ const arr = [
     <div class="interviews__table-wrap">
 
       <InterviewsTable
-        :data="arr"
+        :data="pageDataArr"
       />
 
     </div>

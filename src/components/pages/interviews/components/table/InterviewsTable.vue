@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
 import ColumnTable from './components/columnTable/ColumnTable.vue';
 import TimeBlock from './components/timeBlock/TimeBlock.vue';
+import InterviewsDeleteWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsDeleteWindow.vue';
 
 type Interview = {
+  id: number
   start_time: number;
   reviewer_ids: number[];
 };
@@ -20,11 +23,11 @@ const {
   data
 } = defineProps<IInterviewsTableProps>();
 
+
 const daysOfMonth = data.map(item => {
   const date = new Date(item.day);
   return date.getDate();
 });
-// можно уникализироовать по timestamp
 </script>
 
 <template>
@@ -46,6 +49,14 @@ const daysOfMonth = data.map(item => {
         :key="index"
       />
     </div>
+
+    <!-- <InterviewsAddWindow
+    
+    /> -->
+
+    <!-- <InterviewsDeleteWindow
+    
+    /> -->
 
   </div>
 </template>

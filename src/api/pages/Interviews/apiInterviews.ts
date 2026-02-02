@@ -12,3 +12,32 @@ export const getContentInterviewsPage = async (): Promise<any> => {
     throw new Error("An unknown error");
   }
 };
+
+// получить всех экспертов для собеседование
+export const getExpertsForInterview = async (): Promise<any> => {
+  try {
+    const response = await api.get('/api/experts/data-all')
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) {
+      throw error.response;
+    }
+    throw new Error("An unknown error");
+  }
+};
+
+// добавить эксперта в собеседование
+export const addExpertToInterview = async (interview_id: number, expert_id: number): Promise<any> => {
+  try {
+    const request  = { interview_id, expert_id};
+    const response: AxiosResponse = await api.put(`/api/interview/reviewer`, request);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) throw error.response;
+    throw new Error('An unknown error');
+  }
+};
+
+
+// PUT /api/interview/reviewer {'interview_id': x, 'expert_id': y}
+// DELETE /api/interview/reviewer {'interview_id': x, 'expert_id': y
