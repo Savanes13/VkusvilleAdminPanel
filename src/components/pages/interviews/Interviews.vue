@@ -60,7 +60,7 @@ const closeAddExpertWindow = () => {
       Собеседования
     </PageHeader>
 
-    {{ addExpertWindowObj }}
+    <!-- {{ addExpertWindowObj }} -->
 
     <div class="interviews__table-wrap">
 
@@ -74,12 +74,14 @@ const closeAddExpertWindow = () => {
     <transition name="fadeFast">
       <InterviewsAddWindow
         v-if="visibilityAddExpertWindow"
+        :id="addExpertWindowObj.idInterview"
+        :experts="addExpertWindowObj.arrExpertIds"
         @close="closeAddExpertWindow"
       />
     </transition>
 
     <!-- <InterviewsDeleteWindow
-    
+      
     /> -->
 
   </div>
