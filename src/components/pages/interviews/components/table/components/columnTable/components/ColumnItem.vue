@@ -1,10 +1,16 @@
 <script lang="ts" setup>
+import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
 import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import { ref } from 'vue';
 
+interface IExpert {
+  display_name: string
+  id: number
+  level: number
+}
 
-// цвет от количества экспертов
 type Interview = {
   id: number;
   start_time: number;
@@ -27,6 +33,7 @@ const {
 } = defineProps<IColumnItemProps>();
 
 const isVisibleHideBlock = ref<boolean>(false);
+const expertDataArr = ref<null | IExpert[]>(null);
 let localTime = time + 8;
 let localTimePlus = time + 9;
 
@@ -58,13 +65,35 @@ const requiredItem = data.interviews.find((item) => {
 });
 
 const toggleHideBlock = () => {
-  isVisibleHideBlock.value = !isVisibleHideBlock.value;
+  if (isVisibleHideBlock.value === false) {
+    isVisibleHideBlock.value = true;
+    if (!requiredItem?.reviewer_ids) return
+    getExpertForHimId(requiredItem.reviewer_ids);
 
-  // получать список экспертов
-
-  // при закрытии очищать
+  } else {
+    isVisibleHideBlock.value = false;
+  }
 };
 
+const getExpertForHimId = async (arr: number[]) => {
+  try {
+    expertDataArr.value = null;
+    const promises = arr.map(id => getExpertsForId(id));
+    const results = await Promise.all(promises);
+    expertDataArr.value = results.flat()
+  } catch (error) {
+
+  }
+}
+
+const deleteExpert = async () => {
+  // тут навенрн эмит
+  // try {
+
+  // } catch (error) {
+
+  // }
+}
 </script>
 
 <template>
@@ -77,6 +106,10 @@ const toggleHideBlock = () => {
     <!-- {{ time }} -->
 
     <!-- {{ localTime }} -->
+
+    <!-- {{ requiredItem?.reviewer_ids }} -->
+
+    <!-- {{ expertDataArr }} -->
 
     <div 
       class="column-item__content"
@@ -116,6 +149,20 @@ const toggleHideBlock = () => {
           <p>Будут присутствовать</p>
         </div>
         <div class="experts-block__items">
+
+          <div 
+            class="expert-item"
+            v-for="expert in expertDataArr"
+          >
+            <div>
+              <p>{{ expert.display_name }}</p>
+            </div>
+            <div class="expert-item__delete">
+              <span
+                v-html="mainIcons['closeGray']"
+              ></span>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -219,15 +266,34 @@ const toggleHideBlock = () => {
 }
 
 .experts-block {
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.expert-item {
+  display: flex;
+  gap: 2px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+}
+
+.expert-item:hover .expert-item__delete {
+  opacity: 1;
+}
+
+.expert-item__delete {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.experts-block__title {
   color: color.$colorTextSecondary;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   display: flex;
-  gap: 2px;
-}
-
-.experts-block__title {
   margin-bottom: 2px;
 }
 </style>
