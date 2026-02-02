@@ -23,23 +23,23 @@ const {
   data
 } = defineProps<IInterviewsTableProps>();
 
+const emit = defineEmits<{
+  (e: 'openAddWindow', id: number, experts: number[]): void
+}>();
 
 const daysOfMonth = data.map(item => {
   const date = new Date(item.day);
   return date.getDate();
 });
+
+const openAddExpertWindow = (id: number, arrExperts: number[]) => {
+  emit('openAddWindow', id, arrExperts)
+}
 </script>
 
 <template>
-  <div class="table">
-    
-
-    <!-- {{ data }} -->
-
-    <!-- {{ daysOfMonth }} -->
-    
+  <div class="table">    
     <TimeBlock/>
-
     <div class="table__columns">
       <ColumnTable
         v-for="(item, index) in data"
@@ -47,17 +47,9 @@ const daysOfMonth = data.map(item => {
         :index="index"
         :number-day="daysOfMonth[index]"
         :key="index"
+        @open-add-window="openAddExpertWindow"
       />
     </div>
-
-    <!-- <InterviewsAddWindow
-    
-    /> -->
-
-    <!-- <InterviewsDeleteWindow
-    
-    /> -->
-
   </div>
 </template>
 
@@ -70,6 +62,6 @@ const daysOfMonth = data.map(item => {
 
 .table__columns {
   display: flex;
-  flex: 1;        // ← занимает всю доступную ширину
+  flex: 1; 
 }
 </style>

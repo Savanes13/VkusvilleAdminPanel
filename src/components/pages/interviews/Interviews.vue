@@ -1,14 +1,28 @@
 <script lang="ts" setup>
 import { getContentInterviewsPage } from '@/api/pages/Interviews/apiInterviews';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
-import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import InterviewsTable from './components/table/InterviewsTable.vue';
 import { ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
+import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
+import InterviewsDeleteWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsDeleteWindow.vue';
 
-const companyStore = useCompanyStore();
+interface IAddExpertWindowObj {
+  idInterview: number | null;
+  arrExpertIds: number[] | null;
+}
+
 const pageDataArr = ref<null | TInterviewsData>(null);
+const companyStore = useCompanyStore();
+
+
+const visibilityAddExpertWindow = ref<boolean>(false);
+const addExpertWindowObj = ref<IAddExpertWindowObj>({
+  idInterview: null,
+  arrExpertIds: null
+});
+
 
 const getPageData = async () => {
   try {
@@ -24,73 +38,17 @@ watch(() => companyStore.selectedCompany, () => {
   },{ immediate: true }
 )
 
-// const arr = [
-//   {
-//     day: 1769317200000,
-//     interviews: [
-//       {
-//         start_time: 1769774400000,
-//         reviewer_ids: [22, 4]
-//       },
-//       {
-//         start_time: 1773651600000,
-//         reviewer_ids: []
-//       }
-//     ]
-//   },
-//   {
-//     day: 1769403600000,
-//     interviews: [
-//       {
-//         start_time: 1769749200000,
-//         reviewer_ids: [43]
-//       },
-//       {
-//         start_time: 1773651600000,
-//         reviewer_ids: [11]
-//       }
-//     ]
-//   },
-//   {
-//     day: 1769490000000,
-//     interviews: [
-//       {
-//         start_time: 1769749200000,
-//         reviewer_ids: [43]
-//       },
-//       {
-//         start_time: 1773651600000,
-//         reviewer_ids: [11]
-//       }
-//     ]
-//   },
-//   {
-//     day: 1769576400000,
-//     interviews: [
-//       {
-//         start_time: 1769749200000,
-//         reviewer_ids: [43, 22, 33]
-//       },
-//       {
-//         start_time: 1769774400000,
-//         reviewer_ids: []
-//       }
-//     ]
-//   },
-//   {
-//     day: 1769662800000,
-//     interviews: [
-//       {
-//         start_time: 1769749200000,
-//         reviewer_ids: [43]
-//       },
-//       {
-//         start_time: 1769774400000,
-//         reviewer_ids: [11, 499, 43]
-//       }
-//     ]
-//   },
-// ]
+const openAddExpertWindow = (id: number, arrExperts: number[]) => {
+  visibilityAddExpertWindow.value = true
+  addExpertWindowObj.value.idInterview = id;
+  addExpertWindowObj.value.arrExpertIds = arrExperts;
+}
+
+const closeAddExpertWindow = () => {
+  visibilityAddExpertWindow.value = false
+  addExpertWindowObj.value.arrExpertIds = null;
+  addExpertWindowObj.value.idInterview = null;
+}
 </script>
 
 <template>
@@ -102,13 +60,27 @@ watch(() => companyStore.selectedCompany, () => {
       Собеседования
     </PageHeader>
 
+    {{ addExpertWindowObj }}
+
     <div class="interviews__table-wrap">
 
       <InterviewsTable
         :data="pageDataArr"
+        @open-add-window="openAddExpertWindow"
       />
 
     </div>
+
+    <transition name="fadeFast">
+      <InterviewsAddWindow
+        v-if="visibilityAddExpertWindow"
+        @close="closeAddExpertWindow"
+      />
+    </transition>
+
+    <!-- <InterviewsDeleteWindow
+    
+    /> -->
 
   </div>
 </template>

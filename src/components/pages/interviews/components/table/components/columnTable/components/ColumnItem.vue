@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
-import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface IExpert {
   display_name: string
@@ -32,10 +31,24 @@ const {
   time
 } = defineProps<IColumnItemProps>();
 
+const emit = defineEmits<{
+  (e: 'openAddWindow', id: number, experts: number[]): void
+}>();
+
 const isVisibleHideBlock = ref<boolean>(false);
 const expertDataArr = ref<null | IExpert[]>(null);
+const hideBlockRef = ref<HTMLElement | null>(null);
+const contentRef = ref<HTMLElement | null>(null);
 let localTime = time + 8;
 let localTimePlus = time + 9;
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 
 const times = data.interviews.map(interview => {
   const date = new Date(interview.start_time);
@@ -64,14 +77,18 @@ const requiredItem = data.interviews.find((item) => {
   return localTime === toNumber;
 });
 
-const toggleHideBlock = () => {
-  if (isVisibleHideBlock.value === false) {
-    isVisibleHideBlock.value = true;
-    if (!requiredItem?.reviewer_ids) return
-    getExpertForHimId(requiredItem.reviewer_ids);
-
-  } else {
+const handleClickOutside = (event: MouseEvent) => {
+  const target = event.target as Node;
+  // если клик вне pop-up и вне контента
+  if (hideBlockRef.value && contentRef.value && !hideBlockRef.value.contains(target) && !contentRef.value.contains(target)) {
     isVisibleHideBlock.value = false;
+  }
+};
+
+const toggleHideBlock = () => {
+  isVisibleHideBlock.value = !isVisibleHideBlock.value;
+  if (isVisibleHideBlock.value && requiredItem?.reviewer_ids) {
+    getExpertForHimId(requiredItem.reviewer_ids);
   }
 };
 
@@ -82,8 +99,13 @@ const getExpertForHimId = async (arr: number[]) => {
     const results = await Promise.all(promises);
     expertDataArr.value = results.flat()
   } catch (error) {
-
+    console.error('ошибка при получении данных эксперта')
   }
+}
+
+const openAddExpertWindow = () => {
+  if (!requiredItem?.id) return
+  emit('openAddWindow', requiredItem?.id, requiredItem?.reviewer_ids)
 }
 
 const deleteExpert = async () => {
@@ -99,18 +121,6 @@ const deleteExpert = async () => {
 <template>
   <div class="column-item">
 
-    <!-- {{requiredItem  }} -->
-
-    <!-- {{ times }} -->
-
-    <!-- {{ time }} -->
-
-    <!-- {{ localTime }} -->
-
-    <!-- {{ requiredItem?.reviewer_ids }} -->
-
-    <!-- {{ expertDataArr }} -->
-
     <div 
       class="column-item__content"
       :class="{
@@ -120,6 +130,7 @@ const deleteExpert = async () => {
       }"
       v-if="times.includes(localTime)"
       @click="toggleHideBlock"
+      ref="contentRef"
     >
       <div class="time">
         <p v-if="localTime === 8">0{{ localTime }}:00 – 0{{ localTimePlus }}:00</p>
@@ -134,7 +145,7 @@ const deleteExpert = async () => {
     <div 
       class="column-item__hide-block"
       v-if="isVisibleHideBlock && requiredItem"
-      v-clickOutside="toggleHideBlock"
+      ref="hideBlockRef"
     >
       <div class="hide-date">
         <div class="hide-date__title">
@@ -169,12 +180,11 @@ const deleteExpert = async () => {
       <DefaultButton
         class="default-button__size--large default-button__color-gray"
         left-icon="plusBlack"
+        @click="openAddExpertWindow"
       >
         Добавить эксперта
       </DefaultButton>
     </div>
-
-
 
   </div>
 </template>

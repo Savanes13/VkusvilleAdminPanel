@@ -26,6 +26,10 @@ const {
   numberDay
 } = defineProps<IColumnTableProps>();
 
+const emit = defineEmits<{
+  (e: 'openAddWindow', id: number, experts: number[]): void
+}>();
+
 const day = computed(() => {
   if (index === 0) return "Пн"
   if (index === 1) return "Вт"
@@ -33,6 +37,10 @@ const day = computed(() => {
   if (index === 3) return "Чт"
   if (index === 4) return "Пт"
 })
+
+const openAddExpertWindow = (id: number, arrExperts: number[]) => {
+  emit('openAddWindow', id, arrExperts)
+}
 </script>
 
 <template>
@@ -48,6 +56,7 @@ const day = computed(() => {
       v-for="(item, index) in 11"
       :time="index"
       :data="data"
+      @open-add-window="openAddExpertWindow"
     />
 
   </div>
