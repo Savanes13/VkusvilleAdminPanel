@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
 import ColumnTable from './components/columnTable/ColumnTable.vue';
 import TimeBlock from './components/timeBlock/TimeBlock.vue';
-import InterviewsDeleteWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsDeleteWindow.vue';
 
 type Interview = {
   id: number

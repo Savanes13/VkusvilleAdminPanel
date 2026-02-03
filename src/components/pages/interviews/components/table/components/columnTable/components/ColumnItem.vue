@@ -104,7 +104,7 @@ const getExpertForHimId = async (arr: number[]) => {
 }
 
 const openAddExpertWindow = () => {
-  if (!requiredItem?.id) return
+  if (requiredItem?.id === null || requiredItem?.id === undefined) return
   emit('openAddWindow', requiredItem?.id, requiredItem?.reviewer_ids)
 }
 
@@ -120,6 +120,8 @@ const deleteExpert = async () => {
 
 <template>
   <div class="column-item">
+
+    {{ requiredItem?.id }}
 
     <div 
       class="column-item__content"

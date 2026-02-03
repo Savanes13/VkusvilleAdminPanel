@@ -2,8 +2,8 @@
 import BackgroundModal from '@/components/layout/background/BackgroundModal.vue';
 import ModalWindow from '../../ModalWindow.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { addExpertToInterview, getExpertsForInterview } from '@/api/pages/Interviews/apiInterviews';
-import { computed, ref } from 'vue';
+import { getExpertsForInterview } from '@/api/pages/Interviews/apiInterviews';
+import { ref } from 'vue';
 import arrow from '@/assets/images/checkbox/arrow.svg'
 
 interface IInterviewsAddWindowProps {
@@ -18,7 +18,7 @@ const {
 
 const emit = defineEmits<{
   (e: 'close'): void;
-  (e: 'changeText', value: string): void;
+  (e: 'changeExperts', id: number, arr: number[]): void;
 }>();
 
 const closeWindow = () => {
@@ -34,7 +34,6 @@ type Reviewer = {
 const arrExperts = ref<null | Reviewer[]>(null);
 const selectedExperts = ref<number[]>([]);
 
-
 const getAllExperts = async () => {
   try {
     const response = await getExpertsForInterview();
@@ -47,7 +46,6 @@ const getAllExperts = async () => {
     console.error(error);
   }
 };
-
 getAllExperts();
 
 const toggleExpert = (id: number) => {
@@ -58,13 +56,13 @@ const toggleExpert = (id: number) => {
   }
 };
 
-const setExpert = async () => {
+const setExperts = async () => {
   try {
-    if (!id) return;
-    for (const expertId of selectedExperts.value) {
-      await addExpertToInterview(id, expertId);
-    }
-    //emit
+    if (id === null || id === undefined) return;
+    // for (const expertId of selectedExperts.value) {
+    //   await addExpertToInterview(id, expertId);
+    // }
+    emit("changeExperts", id, selectedExperts.value)
     closeWindow();
   } catch (error) {
     console.error(error);
@@ -125,7 +123,7 @@ const setExpert = async () => {
           </DefaultButton>
           <DefaultButton
             class="default-button__size--large default-button__color-green"
-            @click="setExpert"
+            @click="setExperts"
           >
             Сохранить
           </DefaultButton>
@@ -158,10 +156,14 @@ const setExpert = async () => {
 }
 
 .experts {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 24px;
+  
 }
 
 .experts__item {
+  padding: 10px 0px;
   display: flex;
   gap: 10px;
 }

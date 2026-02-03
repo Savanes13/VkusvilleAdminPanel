@@ -6,7 +6,6 @@ import { ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
 import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
-import InterviewsDeleteWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsDeleteWindow.vue';
 
 interface IAddExpertWindowObj {
   idInterview: number | null;
@@ -15,14 +14,11 @@ interface IAddExpertWindowObj {
 
 const pageDataArr = ref<null | TInterviewsData>(null);
 const companyStore = useCompanyStore();
-
-
 const visibilityAddExpertWindow = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
   idInterview: null,
   arrExpertIds: null
 });
-
 
 const getPageData = async () => {
   try {
@@ -49,6 +45,17 @@ const closeAddExpertWindow = () => {
   addExpertWindowObj.value.arrExpertIds = null;
   addExpertWindowObj.value.idInterview = null;
 }
+
+const changeExpertsInInrerview = (id: number, arr: number[]) => {
+  if (!pageDataArr.value) return
+  pageDataArr.value.forEach(day => {
+    day.interviews.forEach(interview => {
+      if (interview.id === id) {
+        interview.reviewer_ids = arr;
+      }
+    });
+  });
+}
 </script>
 
 <template>
@@ -60,15 +67,11 @@ const closeAddExpertWindow = () => {
       Собеседования
     </PageHeader>
 
-    <!-- {{ addExpertWindowObj }} -->
-
     <div class="interviews__table-wrap">
-
       <InterviewsTable
         :data="pageDataArr"
         @open-add-window="openAddExpertWindow"
       />
-
     </div>
 
     <transition name="fadeFast">
@@ -77,13 +80,9 @@ const closeAddExpertWindow = () => {
         :id="addExpertWindowObj.idInterview"
         :experts="addExpertWindowObj.arrExpertIds"
         @close="closeAddExpertWindow"
+        @change-experts="changeExpertsInInrerview"
       />
     </transition>
-
-    <!-- <InterviewsDeleteWindow
-      
-    /> -->
-
   </div>
 </template>
 
