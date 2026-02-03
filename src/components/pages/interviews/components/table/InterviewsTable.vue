@@ -36,7 +36,7 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
 </script>
 
 <template>
-  <div class="table">    
+  <div class="table">     
     <TimeBlock/>
     <div class="table__columns">
       <ColumnTable
