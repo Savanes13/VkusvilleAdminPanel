@@ -4,7 +4,7 @@ import api from "@/api/axios";
 // получить данные страницы контента по абитуриентскому боту
 export const getContentAbit = async (): Promise<any> => {
   try {
-    const response = await api.get('/api/bot-texts/abit?limit=100&offset=0')
+    const response = await api.get('/api/bot-texts/abit')
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) {
@@ -17,7 +17,7 @@ export const getContentAbit = async (): Promise<any> => {
 // получить данные страницы контента по техническому боту
 export const getContentAdmin = async (): Promise<any> => {
   try {
-    const response = await api.get('/api/bot-texts/admin?limit=100&offset=0')
+    const response = await api.get('/api/bot-texts/admin')
     return response.data;
   } catch (error: unknown) {
     if (error instanceof AxiosError && error.response) {
