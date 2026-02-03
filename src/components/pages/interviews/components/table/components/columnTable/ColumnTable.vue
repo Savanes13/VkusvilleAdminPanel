@@ -53,9 +53,10 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
     </div>
 
     <ColumnItem
-      v-for="(item, index) in 11"
+      v-for="(item, index) in 12"
       :time="index"
       :data="data"
+      :first-line="index === 0"
       @open-add-window="openAddExpertWindow"
     />
 

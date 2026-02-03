@@ -24,11 +24,13 @@ type DayInterviews = {
 interface IColumnItemProps {
   data: DayInterviews
   time: number
+  firstLine: boolean
 }
 
 const {
   data,
-  time
+  time,
+  firstLine
 } = defineProps<IColumnItemProps>();
 
 const emit = defineEmits<{
@@ -119,7 +121,10 @@ const deleteExpert = async () => {
 </script>
 
 <template>
-  <div class="column-item">
+  <div 
+    class="column-item"
+    :class="{'column-item--border-top' : firstLine}"
+  >
     <div 
       class="column-item__content"
       :class="{
@@ -197,6 +202,10 @@ const deleteExpert = async () => {
   border-bottom: 1px solid #DDE0E8;
   border-left: 1px solid #DDE0E8;
   cursor: pointer;
+}
+
+.column-item--border-top {
+  border-top: 1px solid #DDE0E8;
 }
 
 .column-item__content {

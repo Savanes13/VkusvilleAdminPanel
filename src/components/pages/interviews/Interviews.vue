@@ -85,10 +85,13 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
         <p v-if="monthsArr.length === 1">{{ capitalize(monthsArr[0]) }}</p>
         <p v-else>{{ monthsArr.map(capitalize).join(' - ') }}</p>
       </div>
-      <InterviewsTable
-        :data="pageDataArr"
-        @open-add-window="openAddExpertWindow"
-      />
+      <div class="table-wrapper">
+        <InterviewsTable
+          class="interview-table"
+          :data="pageDataArr"
+          @open-add-window="openAddExpertWindow"
+        />
+      </div>
     </div>
     <transition name="fadeFast">
       <InterviewsAddWindow
@@ -118,5 +121,36 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
   color: color.$colorTextPrimary;
   padding-top: 32px;
   padding-left: 24px;
+  margin-bottom: 8px;
 }
+
+// .table-wrapper {
+//   width: 100%;
+//   overflow-x: auto;
+// }
+
+// .interview-table {
+//   width: 100%;
+//   min-width: 1100px; 
+//   border-collapse: collapse;
+//   padding-bottom: 10px;
+// }
+
+// .table-wrapper::-webkit-scrollbar {
+//   height: 8px !important;
+//   cursor: default !important;
+// }
+
+// .table-wrapper::-webkit-scrollbar-track {
+//   background: color.$colorBackgroundSecondary;
+//   border-radius: 6px;
+//   overflow: hidden;
+//   cursor: default !important;
+// }
+
+// .table-wrapper::-webkit-scrollbar-thumb {
+//   border-radius: 6px;
+//   background: color.$colorTextTertiary;
+//   cursor: default !important;
+// }
 </style>
