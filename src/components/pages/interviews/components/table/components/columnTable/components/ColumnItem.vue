@@ -120,9 +120,6 @@ const deleteExpert = async () => {
 
 <template>
   <div class="column-item">
-
-    {{ requiredItem?.id }}
-
     <div 
       class="column-item__content"
       :class="{
@@ -154,7 +151,11 @@ const deleteExpert = async () => {
           <p>Время и дата</p>
         </div>
         <div class="hide-date__text">
-          <p>Понедельник, 17 ноября, 09:00–10:00</p>
+          <p>Понедельник, 17 ноября, 
+            <span v-if="localTime === 8">0{{ localTime }}:00 – 0{{ localTimePlus }}:00</span>
+            <span v-if="localTime === 9">0{{ localTime }}:00 – {{ localTimePlus }}:00</span>
+            <span v-if="localTime > 9">{{ localTime }}:00 – {{ localTimePlus }}:00</span>
+          </p>
         </div>
       </div>
       <div class="experts-block">
@@ -169,11 +170,6 @@ const deleteExpert = async () => {
           >
             <div>
               <p>{{ expert.display_name }}</p>
-            </div>
-            <div class="expert-item__delete">
-              <span
-                v-html="mainIcons['closeGray']"
-              ></span>
             </div>
           </div>
 
@@ -289,15 +285,6 @@ const deleteExpert = async () => {
   font-size: 16px;
   line-height: 24px;
   color: color.$colorTextPrimary;
-}
-
-.expert-item:hover .expert-item__delete {
-  opacity: 1;
-}
-
-.expert-item__delete {
-  opacity: 0;
-  transition: opacity 0.2s ease;
 }
 
 .experts-block__title {
