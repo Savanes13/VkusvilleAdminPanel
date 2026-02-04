@@ -146,8 +146,6 @@ const changesFieldInLine = (id: string, obj: Grades) => {
 
 const setNewValues = async () => {
   try {
-    // отправлять pathRequestData
-
     console.log(pathRequestData)
 
     finishEditing();
@@ -158,20 +156,13 @@ const setNewValues = async () => {
 
 const getPageData = async () => {
   try {
-    pageDataArr.value = ApplicantStab
+    if(!applicantId) return;
+    const response = await getApplicantPage(Number(applicantId), 1);
+    pageDataArr.value = response;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
 };
-
-// const getPageData = async () => {
-//   try {
-//     if (!applicantId) return
-//     await getApplicantPage(Number(applicantId), 1)
-//   } catch (error) {
-
-//   }
-// }
 
 watch(() => companyStore.selectedCompany, () => {
     getPageData()

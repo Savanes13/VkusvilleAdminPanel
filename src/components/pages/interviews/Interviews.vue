@@ -13,6 +13,7 @@ interface IAddExpertWindowObj {
 }
 
 const pageDataArr = ref<null | TInterviewsData>(null);
+const selectedWeek = ref<number>(1);
 const companyStore = useCompanyStore();
 const visibilityAddExpertWindow = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
@@ -70,6 +71,10 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
     });
   });
 }
+
+const setSelectedWeek = (id: number) => {
+  selectedWeek.value = id
+}
 </script>
 
 <template>
@@ -81,10 +86,41 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
       Собеседования
     </PageHeader>
     <div class="interviews__table-wrap">
-      <div class="months">
-        <p v-if="monthsArr.length === 1">{{ capitalize(monthsArr[0]) }}</p>
-        <p v-else>{{ monthsArr.map(capitalize).join(' - ') }}</p>
+
+      <div class="info-table">
+        <div class="months">
+          <p v-if="monthsArr.length === 1">{{ capitalize(monthsArr[0]) }}</p>
+          <p v-else>{{ monthsArr.map(capitalize).join(' - ') }}</p>
+        </div>
+
+        <div class="weeks">
+          <div
+            class="weeks__item"
+            :class="{'weeks__item--active' : selectedWeek === 1}"
+            @click="setSelectedWeek(1)"
+          >
+            <p>1 неделя</p>
+          </div>
+          <div
+            class="weeks__item"
+            :class="{'weeks__item--active' : selectedWeek === 2}"
+            @click="setSelectedWeek(2)"
+          >
+            <p>2 неделя</p>
+          </div>
+          <div
+            class="weeks__item"
+            :class="{'weeks__item--active' : selectedWeek === 3}"
+            @click="setSelectedWeek(3)"
+          >
+            <p>3 неделя</p>
+          </div>
+        </div>
       </div>
+
+
+
+
       <div class="table-wrapper">
         <InterviewsTable
           class="interview-table"
@@ -107,11 +143,18 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
 
 .interviews__table-wrap {
   background: color.$colorIconWhite;
   border-radius: 24px;
   padding-bottom: 20px;
+}
+
+.info-table {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .months {
@@ -124,33 +167,36 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
   margin-bottom: 8px;
 }
 
-// .table-wrapper {
-//   width: 100%;
-//   overflow-x: auto;
-// }
+.weeks {
+  display: flex;
+  gap: 8px;
+  padding-top: 24px;
+  padding-right: 24px;
+}
 
-// .interview-table {
-//   width: 100%;
-//   min-width: 1100px; 
-//   border-collapse: collapse;
-//   padding-bottom: 10px;
-// }
+.weeks__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 40px;
+  border-radius: 12px;
+  background: color.$colorBackgroundAccentAlternative;
+  color: color.$colorTextAcccent;
+  cursor: pointer;
+  transition: background-color transition.$medium;
+}
 
-// .table-wrapper::-webkit-scrollbar {
-//   height: 8px !important;
-//   cursor: default !important;
-// }
+.weeks__item:hover {
+  background: color.$colorBackgroundAccentAlternative_Hover;
+}
 
-// .table-wrapper::-webkit-scrollbar-track {
-//   background: color.$colorBackgroundSecondary;
-//   border-radius: 6px;
-//   overflow: hidden;
-//   cursor: default !important;
-// }
+.weeks__item--active {
+  background: color.$colorStrokeAccent;
+  color: color.$colorTextWhite;
+}
 
-// .table-wrapper::-webkit-scrollbar-thumb {
-//   border-radius: 6px;
-//   background: color.$colorTextTertiary;
-//   cursor: default !important;
-// }
+.weeks__item--active:hover {
+  background: color.$colorBackgroundAccent_Hover;
+}
 </style>

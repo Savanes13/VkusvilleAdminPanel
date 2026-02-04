@@ -45,9 +45,9 @@ const {
     </div>
     <div 
       class="line-table__item dedline-item"
-      :class="{'dedline-item--overdue' : !deadline}"
+      :class="{'dedline-item--overdue' : deadline}"
     >
-      <p v-if="!empty">{{ deadline ? "Соблюден" : "Просрочен" }}</p>
+      <p v-if="!empty">{{ !deadline ? "Соблюден" : "Просрочен" }}</p>
     </div>
     <div class="line-table__item empty-item">
       <router-link :to="`/applicant/${id}`">

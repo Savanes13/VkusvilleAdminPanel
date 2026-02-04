@@ -56,7 +56,7 @@ export default function applicantsWorks () {
       );
     }
     if (overdueDeadlineSortActivity.value) {
-      result = result.filter(item => item.deadline_expired === false);
+      result = result.filter(item => item.deadline_expired === true);
     }
     return result;
   });
