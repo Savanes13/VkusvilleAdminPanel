@@ -252,4 +252,15 @@ const setSelectedWeek = (id: number) => {
   background: color.$colorTextTertiary;
   cursor: default !important;
 }
+
+@media(max-width: 830px) {
+  .info-table {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .weeks {
+    padding-left: 24px;
+  }
+}
 </style>
