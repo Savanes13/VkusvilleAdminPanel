@@ -2,7 +2,7 @@
 import BackgroundModal from '@/components/layout/background/BackgroundModal.vue';
 import ModalWindow from '../../ModalWindow.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { getExpertsForInterview } from '@/api/pages/Interviews/apiInterviews';
+import { addExpertToInterview, getExpertsForInterview } from '@/api/pages/Interviews/apiInterviews';
 import { ref } from 'vue';
 import arrow from '@/assets/images/checkbox/arrow.svg'
 
@@ -59,9 +59,7 @@ const toggleExpert = (id: number) => {
 const setExperts = async () => {
   try {
     if (id === null || id === undefined) return;
-    // for (const expertId of selectedExperts.value) {
-    //   await addExpertToInterview(id, expertId);
-    // }
+    await addExpertToInterview(id, selectedExperts.value);
     emit("changeExperts", id, selectedExperts.value)
     closeWindow();
   } catch (error) {

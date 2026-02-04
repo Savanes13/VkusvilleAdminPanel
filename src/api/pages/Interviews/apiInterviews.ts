@@ -40,9 +40,9 @@ export const getExpertsForId = async (ex_id: number): Promise<any> => {
 };
 
 // добавить эксперта в собеседование
-export const addExpertToInterview = async (interview_id: number, expert_id: number): Promise<any> => {
+export const addExpertToInterview = async (interview_id: number, experts: number[]): Promise<any> => {
   try {
-    const request  = { interview_id, expert_id};
+    const request  = { interview_id, experts};
     const response: AxiosResponse = await api.put(`/api/interview/reviewer`, request);
     return response.data;
   } catch (error: unknown) {
@@ -50,7 +50,3 @@ export const addExpertToInterview = async (interview_id: number, expert_id: numb
     throw new Error('An unknown error');
   }
 };
-
-
-// PUT /api/interview/reviewer {'interview_id': x, 'expert_id': y}
-// DELETE /api/interview/reviewer {'interview_id': x, 'expert_id': y
