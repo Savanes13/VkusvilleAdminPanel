@@ -13,7 +13,7 @@ interface IAddExpertWindowObj {
 }
 
 const pageDataArr = ref<null | TInterviewsData>(null);
-const selectedWeek = ref<number>(1);
+const selectedWeek = ref<number>(0);
 const companyStore = useCompanyStore();
 const visibilityAddExpertWindow = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
@@ -23,8 +23,8 @@ const addExpertWindowObj = ref<IAddExpertWindowObj>({
 
 const getPageData = async () => {
   try {
-    const response = await getContentInterviewsPage();
-    pageDataArr.value = response.items;
+    const response = await getContentInterviewsPage(selectedWeek.value);
+    pageDataArr.value = [...response.items]
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
@@ -34,6 +34,10 @@ watch(() => companyStore.selectedCompany, () => {
     getPageData()
   },{ immediate: true }
 )
+
+watch(selectedWeek, (newWeek, oldWeek) => {
+  getPageData()
+})
 
 const monthsArr = computed(() => {
   if (!pageDataArr.value) return [];
@@ -85,6 +89,10 @@ const setSelectedWeek = (id: number) => {
     <PageHeader>
       Собеседования
     </PageHeader>
+
+
+    <!-- {{ pageDataArr }} -->
+
     <div class="interviews__table-wrap">
 
       <div class="info-table">
@@ -96,38 +104,45 @@ const setSelectedWeek = (id: number) => {
         <div class="weeks">
           <div
             class="weeks__item"
+            :class="{'weeks__item--active' : selectedWeek === 0}"
+            @click="setSelectedWeek(0)"
+          >
+            <p>1 неделя</p>
+          </div>
+          <div
+            class="weeks__item"
             :class="{'weeks__item--active' : selectedWeek === 1}"
             @click="setSelectedWeek(1)"
           >
-            <p>1 неделя</p>
+            <p>2 неделя</p>
           </div>
           <div
             class="weeks__item"
             :class="{'weeks__item--active' : selectedWeek === 2}"
             @click="setSelectedWeek(2)"
           >
-            <p>2 неделя</p>
-          </div>
-          <div
-            class="weeks__item"
-            :class="{'weeks__item--active' : selectedWeek === 3}"
-            @click="setSelectedWeek(3)"
-          >
             <p>3 неделя</p>
           </div>
         </div>
       </div>
 
-
-
-
       <div class="table-wrapper">
         <InterviewsTable
+          v-if="pageDataArr.length != 0"
           class="interview-table"
+          :key="selectedWeek"
           :data="pageDataArr"
           @open-add-window="openAddExpertWindow"
         />
+
+        <div 
+          v-else
+          class="empty-week"
+        >
+          <p>Эта неделя пуста</p>
+        </div>
       </div>
+
     </div>
     <transition name="fadeFast">
       <InterviewsAddWindow
@@ -198,5 +213,14 @@ const setSelectedWeek = (id: number) => {
 
 .weeks__item--active:hover {
   background: color.$colorBackgroundAccent_Hover;
+}
+
+.empty-week {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
+  text-align: center;
+  padding: 20px 0px;
 }
 </style>

@@ -46,8 +46,6 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
 <template>
   <div class="column-table">
 
-    <!-- {{ data }} -->
-
     <div class="column-table__day">
       <p>{{ day }} {{ numberDay }}</p>
     </div>

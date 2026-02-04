@@ -2,7 +2,7 @@
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface IExpert {
   display_name: string
@@ -22,7 +22,7 @@ type DayInterviews = {
 };
 
 interface IColumnItemProps {
-  data: DayInterviews
+  data: DayInterviews 
   time: number
   firstLine: boolean
 }
@@ -41,8 +41,9 @@ const isVisibleHideBlock = ref<boolean>(false);
 const expertDataArr = ref<null | IExpert[]>(null);
 const hideBlockRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);
-let localTime = time + 8;
-let localTimePlus = time + 9;
+
+const localTime = computed(() => time + 8);
+const localTimePlus = computed(() => time + 9);
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
@@ -52,16 +53,18 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 
-const times = data.interviews.map(interview => {
-  const date = new Date(interview.start_time);
-  return Number(
-    date.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Moscow",
-    }).split(":")[0]
-  );
-});
+const times = computed(() =>
+  data.interviews.map(interview => {
+    const date = new Date(interview.start_time);
+    return Number(
+      date.toLocaleTimeString("ru-RU", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Europe/Moscow",
+      }).split(":")[0]
+    );
+  })
+);
 
 const timestampToNumber = (date: number) => {
   const newDate = new Date(date);
@@ -74,9 +77,10 @@ const timestampToNumber = (date: number) => {
   );
 }
 
-const requiredItem = data.interviews.find((item) => {
-  const toNumber = timestampToNumber(item.start_time);
-  return localTime === toNumber;
+const requiredItem = computed(() => {
+  return data.interviews.find(item => {
+    return timestampToNumber(item.start_time) === localTime.value;
+  });
 });
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -89,8 +93,8 @@ const handleClickOutside = (event: MouseEvent) => {
 
 const toggleHideBlock = () => {
   isVisibleHideBlock.value = !isVisibleHideBlock.value;
-  if (isVisibleHideBlock.value && requiredItem?.reviewer_ids) {
-    getExpertForHimId(requiredItem.reviewer_ids);
+  if (isVisibleHideBlock.value && requiredItem.value?.reviewer_ids) {
+    getExpertForHimId(requiredItem.value.reviewer_ids);
   }
 };
 
@@ -106,18 +110,18 @@ const getExpertForHimId = async (arr: number[]) => {
 }
 
 const openAddExpertWindow = () => {
-  if (requiredItem?.id === null || requiredItem?.id === undefined) return
-  emit('openAddWindow', requiredItem?.id, requiredItem?.reviewer_ids)
+  if (!requiredItem.value?.id) return;
+  emit('openAddWindow', requiredItem.value.id, requiredItem.value.reviewer_ids);
 }
 
-const deleteExpert = async () => {
-  // тут навенрн эмит
-  // try {
-
-  // } catch (error) {
-
-  // }
-}
+const contentClass = computed(() => {
+  const reviewersLength = requiredItem.value?.reviewer_ids?.length ?? 0;
+  return {
+    'column-item__content--green': reviewersLength >= 2,
+    'column-item__content--yellow': reviewersLength === 1,
+    'column-item__content--red': reviewersLength === 0
+  };
+});
 </script>
 
 <template>
@@ -127,11 +131,7 @@ const deleteExpert = async () => {
   >
     <div 
       class="column-item__content"
-      :class="{
-        'column-item__content--green' : requiredItem?.reviewer_ids.length >= 2,
-        'column-item__content--yellow' : requiredItem?.reviewer_ids.length === 1,
-        'column-item__content--red' : requiredItem?.reviewer_ids.length === 0
-      }"
+      :class="contentClass"
       v-if="times.includes(localTime)"
       @click="toggleHideBlock"
       ref="contentRef"

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import ColumnTable from './components/columnTable/ColumnTable.vue';
 import TimeBlock from './components/timeBlock/TimeBlock.vue';
 
@@ -25,10 +26,12 @@ const emit = defineEmits<{
   (e: 'openAddWindow', id: number, experts: number[]): void
 }>();
 
-const daysOfMonth = data.map(item => {
-  const date = new Date(item.day);
-  return date.getDate();
-});
+const daysOfMonth = computed(() =>
+  data.map(item => {
+    const date = new Date(item.day);
+    return date.getDate();
+  })
+);
 
 const openAddExpertWindow = (id: number, arrExperts: number[]) => {
   emit('openAddWindow', id, arrExperts)
@@ -38,12 +41,13 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
 <template>
   <div class="table">     
     <TimeBlock/>
+
     <div class="table__columns">
       <ColumnTable
         v-for="(item, index) in data"
         :data="item"
         :index="index"
-        :number-day="daysOfMonth[index]"
+        :number-day="daysOfMonth[index]!"
         :key="index"
         @open-add-window="openAddExpertWindow"
       />
