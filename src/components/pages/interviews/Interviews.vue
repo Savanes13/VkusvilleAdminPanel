@@ -134,7 +134,6 @@ const setSelectedWeek = (id: number) => {
           :data="pageDataArr"
           @open-add-window="openAddExpertWindow"
         />
-
         <div 
           v-else
           class="empty-week"
@@ -222,5 +221,35 @@ const setSelectedWeek = (id: number) => {
   color: color.$colorTextPrimary;
   text-align: center;
   padding: 20px 0px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.interview-table {
+  width: 100%;
+  min-width: 1100px; 
+  border-collapse: collapse;
+  padding-bottom: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 </style>
