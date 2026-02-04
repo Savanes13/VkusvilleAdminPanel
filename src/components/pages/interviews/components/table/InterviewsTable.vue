@@ -46,7 +46,7 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
       <ColumnTable
         v-for="(item, index) in data"
         :data="item"
-        :index="index"
+        :index-column="index"
         :number-day="daysOfMonth[index]!"
         :key="index"
         @open-add-window="openAddExpertWindow"

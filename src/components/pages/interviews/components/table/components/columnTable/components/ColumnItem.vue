@@ -22,15 +22,17 @@ type DayInterviews = {
 };
 
 interface IColumnItemProps {
-  data: DayInterviews 
-  time: number
-  firstLine: boolean
+  data: DayInterviews ;
+  time: number;
+  firstLine: boolean;
+  columnIndex: number;
 }
 
 const {
   data,
   time,
-  firstLine
+  firstLine,
+  columnIndex
 } = defineProps<IColumnItemProps>();
 
 const emit = defineEmits<{
@@ -145,9 +147,10 @@ const contentClass = computed(() => {
         <p>{{ requiredItem?.reviewer_ids.length }} экспертов</p>
       </div>
     </div>
-
+    
     <div 
       class="column-item__hide-block"
+      :class="{'column-item__hide-block--left' : columnIndex === 3 || columnIndex === 4}"
       v-if="isVisibleHideBlock && requiredItem"
       ref="hideBlockRef"
     >
@@ -236,17 +239,13 @@ const contentClass = computed(() => {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  // color: color.$colorIconPrimary;
 }
 
 .experts {
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  // color: color.$colorIconPrimary;
 }
-
-// делать только border-bottom
 
 .column-item__hide-block {
   width: 330px;
@@ -259,6 +258,11 @@ const contentClass = computed(() => {
   box-shadow: 0px 15px 36.8px 0px #00000026;
   border-radius: 20px;
   z-index: 10;
+}
+
+.column-item__hide-block--left {
+  left: auto; 
+  right: 100%;
 }
 
 .hide-date {

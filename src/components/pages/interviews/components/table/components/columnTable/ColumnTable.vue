@@ -16,13 +16,13 @@ type DayInterviews = {
 
 interface IColumnTableProps {
   data: DayInterviews;
-  index: number;
+  indexColumn: number;
   numberDay: number;
 }
 
 const {
   data,
-  index,
+  indexColumn,
   numberDay
 } = defineProps<IColumnTableProps>();
 
@@ -31,11 +31,11 @@ const emit = defineEmits<{
 }>();
 
 const day = computed(() => {
-  if (index === 0) return "Пн"
-  if (index === 1) return "Вт"
-  if (index === 2) return "Ср"
-  if (index === 3) return "Чт"
-  if (index === 4) return "Пт"
+  if (indexColumn === 0) return "Пн"
+  if (indexColumn === 1) return "Вт"
+  if (indexColumn === 2) return "Ср"
+  if (indexColumn === 3) return "Чт"
+  if (indexColumn === 4) return "Пт"
 })
 
 const openAddExpertWindow = (id: number, arrExperts: number[]) => {
@@ -55,6 +55,7 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
       :time="index"
       :data="data"
       :first-line="index === 0"
+      :column-index="indexColumn"
       @open-add-window="openAddExpertWindow"
     />
 
