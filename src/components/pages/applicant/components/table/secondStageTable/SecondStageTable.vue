@@ -213,14 +213,6 @@ watch(() => companyStore.selectedCompany, () => {
   cursor: default !important;
 }
 
-.control-button {
-  width: 242px;
-}
-
-.switch-item {
-  margin-bottom: 2px;
-}
-
 .save-block {
   display: flex;
   align-items: center;
@@ -247,16 +239,6 @@ watch(() => companyStore.selectedCompany, () => {
 @media (max-width: 600px) {
   .button-management {
     width: 100px;
-  }
-}
-
-@media (max-width: 475px) {
-  .control-block {
-    display: block;
-  }
-
-  .switch-item {
-    margin-bottom: 16px;
   }
 }
 </style>

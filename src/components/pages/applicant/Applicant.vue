@@ -107,9 +107,27 @@ const {
   margin-bottom: 20px;
 }
 
+.control-button {
+  width: 242px;
+}
+
+@media (max-width: 800px) {
+  .control-button {
+    width: 232px;
+  }
+}
+
 @media (max-width: 768px) {
   .applicant__bread-crumbs {
     margin-left: 24px;
+  }
+}
+
+@media (max-width: 475px) {
+  .control-block {
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
   }
 }
 </style>
