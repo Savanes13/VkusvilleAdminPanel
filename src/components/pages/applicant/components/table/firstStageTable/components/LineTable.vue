@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { mainIcons } from '@/components/shared/icons/mainIcons';
+import type { IGradeRangeFirst } from '@/types/pages/applicant/applicantTypes';
 import { reactive, ref, watch } from 'vue';
 
 type TEditingKey = 'ContentMotivation' | 'StructLogic' | 'ProgramGoals';
@@ -24,7 +25,8 @@ type ExpertData = {
 interface ILineTableProps {
   data: ExpertData;
   editingIsActive: boolean;
-  undoChangesTriger: boolean
+  undoChangesTriger: boolean;
+  gradeRange: IGradeRangeFirst;
   lastLine: boolean;
 }
 

@@ -150,6 +150,7 @@ watch(() => companyStore.selectedCompany, () => {
           :data="item"
           :editing-is-active="editingIsActive"
           :undo-changes-triger="undoChangesTriger"
+          :grade-range="pageDataArr.grade_range"
           :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
           @change-scores="(obj) => changesFieldInLine(index, obj)"
         />

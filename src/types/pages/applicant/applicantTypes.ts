@@ -35,7 +35,7 @@ type PassInfo = {
   grade_2: number;
 };
 
-type GradeRangeFirst = {
+export type IGradeRangeFirst = {
   StructLogic: {
     min: number;
     max: number;
@@ -50,7 +50,7 @@ type GradeRangeFirst = {
   };
 };
 
-type GradeRangeSecond = {
+export type IGradeRangeSecond = {
   Integrity: {
     min: number;
     max: number;
@@ -73,12 +73,12 @@ export interface IApplicantDataTypeFirstStage {
   display_name: string;
   grades: Record<string, GradeLineFirst>;
   pass_info: PassInfo;
-  grade_range: GradeRangeFirst;
+  grade_range: IGradeRangeFirst;
 };
 
 export interface IApplicantDataTypeSecondStage {
   display_name: string;
   grades: Record<string, GradeLineSecond>;
   pass_info: PassInfo;
-  grade_range: GradeRangeSecond;
+  grade_range: IGradeRangeSecond;
 };
