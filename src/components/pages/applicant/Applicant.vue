@@ -6,7 +6,6 @@ import applicantWorks from './composables/applicantWorks';
 import BreadCumbs from '@/components/shared/elements/BreadCumbs.vue';
 import FirstStageTable from './components/table/firstStageTable/FirstStageTable.vue';
 import SecondStageTable from './components/table/secondStageTable/SecondStageTable.vue';
-import FinalAssessment from './components/FinalAssessment.vue';
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 
@@ -30,16 +29,12 @@ const {
     <PageHeader>
       Имя Абитуриента
     </PageHeader>
-
     <WrapperBlock class="applicant__management">
       <ApplicantManagement
         
       />
     </WrapperBlock>
-
-
     <WrapperBlock>
-
       <div class="applicant-table__title">
         <p>Оценки экспертов</p>
       </div>
@@ -58,8 +53,6 @@ const {
           Редактировать оценки
         </DefaultButton>
       </div>
-
-
       <FirstStageTable
         class="applicant-table"
         v-if="selectedStage === 'stage1'"
@@ -74,11 +67,7 @@ const {
         :selected-stage="selectedStage"
         @finish-editing="finishEditing"
       /> 
-
-      <FinalAssessment/>
     </WrapperBlock>
-
-
   </div>
 </template>
 

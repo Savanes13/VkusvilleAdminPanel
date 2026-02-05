@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import type { IApplicantDataTypeSecondStage } from '@/types/pages/applicant/applicantTypes';
 import { getApplicantPage, pathApplicantScores } from '@/api/pages/applicant/apiApplicant';
 import { useCompanyStore } from '@/store/company/companyStore';
+import FinalAssessment from '../../FinalAssessment.vue';
 
 type Grades = {
   Integrity: number;
@@ -180,6 +181,22 @@ watch(() => companyStore.selectedCompany, () => {
         </DefaultButton>
       </div>
     </div>
+    <div class="assessment-block">
+      <FinalAssessment
+        title="Итоговая оценка"
+        :score="pageDataArr.pass_info.total_grade"
+        :show-state="true"
+        :passed="pageDataArr.pass_info.is_passed"
+      />
+      <FinalAssessment
+        title="Средняя оценка 1 уровня"
+        :score="pageDataArr.pass_info.grade_1"
+      />
+      <FinalAssessment
+        title="Средняя оценка 2 уровня"
+        :score="pageDataArr.pass_info.grade_2"
+      />
+    </div>
   </div>
 </template>
 
@@ -236,9 +253,38 @@ watch(() => companyStore.selectedCompany, () => {
   width: 200px;
 }
 
+.assessment-block {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .assessment-block {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .assessment-block {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   .button-management {
     width: 100px;
+  }
+
+  .assessment-block {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 450px) {
+  .assessment-block {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 </style>

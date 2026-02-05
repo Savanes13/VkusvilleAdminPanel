@@ -1,12 +1,31 @@
 <script lang="ts" setup>
 import { mainIcons } from '@/components/shared/icons/mainIcons';
+
+interface IFinalAssessmentProps {
+  title: string
+  score: number
+  showState? :boolean
+  passed? :boolean
+  haveHint? :boolean
+  hintText?: string
+}
+
+const {
+  title,
+  score,
+  showState = false,
+  passed = false,
+  haveHint = false, 
+  hintText = ''
+} = defineProps<IFinalAssessmentProps>();
 </script>
 
 <template>
   <div class="final-assessment">
+
     <div class="final-assessment__title">
       <div>
-        <p>Итоговая оценка</p>
+        <p>{{ title }}</p>
       </div>
       <div>
         <!-- hint -->
@@ -15,9 +34,12 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 
     <div class="final-assessment__content">
       <div class="score">
-        <p>9,5</p>
+        <p>{{ score }}</p>
       </div>
-      <div class="failed">
+      <div 
+        class="failed"
+        v-if="showState && !passed"
+      >
         <div>
           <span
             class="svg"
@@ -37,7 +59,9 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 @use "@/style/variables/color.scss" as color;
 
 .final-assessment {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: color.$colorBackgroundWhite;
   padding: 20px;
   border: 1px solid #DDE0E8;
