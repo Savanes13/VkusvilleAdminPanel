@@ -1,15 +1,12 @@
 <script lang="ts" setup>
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { ref, watch } from 'vue';
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 import { useRoute } from 'vue-router';
 import type { IApplicantDataTypeSecondStage } from '@/types/pages/applicant/applicantTypes';
-import { getApplicantPage } from '@/api/pages/applicant/apiApplicant';
+import { getApplicantPage, pathApplicantScores } from '@/api/pages/applicant/apiApplicant';
 import { useCompanyStore } from '@/store/company/companyStore';
-
-type TStages = "stage1" | "stage2"
 
 type Grades = {
   Integrity: number;
@@ -42,99 +39,69 @@ const route = useRoute();
 const applicantId = route.params.id;
 const pageDataArr = ref<null | IApplicantDataTypeSecondStage>(null);
 const companyStore = useCompanyStore();
-// const selectedStage = ref<TStages>('stage1');
-// const editingIsActive = ref<boolean>(false);
 const undoChangesTriger = ref<boolean>(false);
 
-const ApplicantStab = {
-  display_name: "Тестовый Персонаж",
-  grades: {
-    3: {
-      expert: {
-        display_name: "Мамут Рахал",
-        level: 2
-      },
-      grades: {
-        Integrity: 2,
-        Arguments: 2,
-        RealisticMeaningful: 4,
-        Original: 2
-      },
-      comment: "Ну наш слоняра ну харош"
-    },
-    4: {
-      expert: {
-        display_name: "Мамут Рахал",
-        level: 1
-      },
-      grades: {
-        Integrity: 2,
-        Arguments: 2,
-        RealisticMeaningful: 4,
-        Original: 2
-      },
-      comment: 'fdsfd'
-    }
-  },
-  pass_info: {
-    is_passed: true,
-    total_grade: 12,
-    grade_1: 12,
-    grade_2: 12
-  },
-  grade_range: {
-    Integrity: {
-      min: 0,
-      max: 2
-    },
-    Arguments: {
-      min: 0,
-      max: 8
-    },
-    RealisticMeaningful: {
-      min: 0,
-      max: 2
-    },
-    Original: {
-      min: 0,
-      max: 2
-    },
-  }
-};
-
-// струкутра патча
-// {
-//   "abit_id": 2,
-//   task_id": 1,
-//   "patched_grades": {
-//        "1": {
-//         "StructLogic": 2,
-//         "ContentMotivation": 2,
-//         "ProgramGoals": 2
+// const ApplicantStab = {
+//   display_name: "Тестовый Персонаж",
+//   grades: {
+//     3: {
+//       expert: {
+//         display_name: "Мамут Рахал",
+//         level: 2
 //       },
-//       "2": {
-//             "StructLogic": 2,
-//             "ContentMotivation": 2,
-//             "ProgramGoals": 2
-//           }
-//       }
-// }'
-// 
+//       grades: {
+//         Integrity: 2,
+//         Arguments: 2,
+//         RealisticMeaningful: 4,
+//         Original: 2
+//       },
+//       comment: "Ну наш слоняра ну харош"
+//     },
+//     4: {
+//       expert: {
+//         display_name: "Мамут Рахал",
+//         level: 1
+//       },
+//       grades: {
+//         Integrity: 2,
+//         Arguments: 2,
+//         RealisticMeaningful: 4,
+//         Original: 2
+//       },
+//       comment: 'fdsfd'
+//     }
+//   },
+//   pass_info: {
+//     is_passed: true,
+//     total_grade: 12,
+//     grade_1: 12,
+//     grade_2: 12
+//   },
+//   grade_range: {
+//     Integrity: {
+//       min: 0,
+//       max: 2
+//     },
+//     Arguments: {
+//       min: 0,
+//       max: 8
+//     },
+//     RealisticMeaningful: {
+//       min: 0,
+//       max: 2
+//     },
+//     Original: {
+//       min: 0,
+//       max: 2
+//     },
+//   }
+// };
 
 const pathRequestData: PathRequestData = {
   abit_id: Number(applicantId),
-  task_id: 1,
+  task_id: 2,
   patched_grades: {} 
 };
-
-// const getPageData = async () => {
-//   try {
-//     pageDataArr.value = ApplicantStab
-//   } catch (error) {
-//     console.error('ошибка при получении данных страницы')
-//   }
-// };
-// getPageData();
 
 const finishEditing = () => {
   emit('finishEditing')
@@ -148,13 +115,11 @@ const undoChanges = () => {
 const changesFieldInLine = (id: string, obj: Grades) => {
   pathRequestData.patched_grades[id] = obj;
   pathRequestData.patched_grades
-  console.log(pathRequestData)
 };
 
 const setNewValues = async () => {
   try {
-    console.log(pathRequestData)
-
+    await pathApplicantScores(pathRequestData);
     finishEditing();
   } catch (error) {
     console.error("ошибка при изменении значений")
@@ -164,10 +129,9 @@ const setNewValues = async () => {
 const getPageData = async () => {
   try {
     if(!applicantId) return;
-    pageDataArr.value = ApplicantStab
-
-    // const response = await getApplicantPage(Number(applicantId), 1);
-    // pageDataArr.value = response;
+    // pageDataArr.value = ApplicantStab
+    const response = await getApplicantPage(Number(applicantId), 2);
+    pageDataArr.value = response;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
@@ -197,7 +161,6 @@ watch(() => companyStore.selectedCompany, () => {
         />
       </div>
     </div>
-
     <div 
       class="save-block"
       v-if="editingIsActive"
@@ -232,7 +195,6 @@ watch(() => companyStore.selectedCompany, () => {
   width: 100%;
   min-width: 1800px; 
   border-collapse: collapse;
-  // padding-bottom: 10px;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -242,13 +204,11 @@ watch(() => companyStore.selectedCompany, () => {
 
 .table-wrapper::-webkit-scrollbar-track {
   background: color.$colorBackgroundSecondary;
-  // border-radius: 6px;
   overflow: hidden;
   cursor: default !important;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-  // border-radius: 6px;
   background: color.$colorTextTertiary;
   cursor: default !important;
 }

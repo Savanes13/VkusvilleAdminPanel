@@ -37,3 +37,14 @@ export const giveMoreDaysForWork = async (abit_id: number, extend_time: number):
     throw new Error('An unknown error');
   }
 };
+
+// поменять данные 
+export const pathApplicantScores = async (obj: any): Promise<any> => {
+  try {
+    const response: AxiosResponse = await api.patch(`/api/abit/grade`, obj);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response) throw error.response;
+    throw new Error('An unknown error');
+  }
+};
