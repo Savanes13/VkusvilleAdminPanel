@@ -10,7 +10,7 @@
     <div class="table-header__double-cell">
       <div class="stages">
         <div class="stages__stage">
-          <p>Мотивация</p>
+          <p>Контент и мотивация</p>
         </div>
         <div class="stages__stage">
           <p>Структура и логика</p>

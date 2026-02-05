@@ -30,13 +30,17 @@ interface ILineTableProps {
   lastLine: boolean;
 }
 
+type GradeErrors = Partial<Record<TEditingKey, string>>;
+
 const props = defineProps<ILineTableProps>();
 
 const emit = defineEmits<{
   (e: 'changeScores', obj: Grades): void;
+  (e: 'errors', obj: GradeErrors): void;
 }>();
 
 const editingKey = ref<null | TEditingKey>(null);
+const errors = reactive<GradeErrors>({});
 
 // локальная копия объекта строки
 const localData = reactive<ExpertData>({
@@ -51,10 +55,14 @@ watch(() => props.undoChangesTriger, () => {
   localData.comment = props.data.comment;
 }, { deep: true });
 
-watch(() => localData.grades, (newGrades) => {
-    emit('changeScores', { ...newGrades });
+
+
+watch(() => errors, (errorsGrades) => {
+    emit('errors', errorsGrades);
   },{ deep: true }
 );
+
+
 
 const toggleEditingKey = (key: TEditingKey) => {
   if (editingKey.value === key) {
@@ -63,6 +71,53 @@ const toggleEditingKey = (key: TEditingKey) => {
     editingKey.value = key
   };
 };
+
+
+
+
+const validateGrade = (key: TEditingKey, value: number) => {
+  const range = props.gradeRange[key];
+  if (!Number.isFinite(value)) {
+    return 'Введите число';
+  }
+  if (value < range.min || value > range.max) {
+    return `Значение должно быть от ${range.min} до ${range.max}`;
+  }
+  return null;
+};
+
+
+const onBlurGrade = (key: TEditingKey) => {
+  const value = localData.grades[key];
+  const error = validateGrade(key, value);
+  if (error) {
+    errors[key] = error;
+    return;
+  }
+  delete errors[key];
+  editingKey.value = null;
+};
+
+
+watch(
+  () => localData.grades,
+  (grades) => {
+    const hasErrors = (Object.keys(grades) as TEditingKey[]).some((key) => {
+      const error = validateGrade(key, grades[key]);
+      if (error) {
+        errors[key] = error;
+        return true;
+      }
+      delete errors[key];
+      return false;
+    });
+
+    if (!hasErrors) {
+      emit('changeScores', { ...grades });
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -70,6 +125,7 @@ const toggleEditingKey = (key: TEditingKey) => {
     class="line-table"
     :class="{'line-table--last' : lastLine && !editingIsActive}"
   >
+
     <div class="line-table__item expert-item">
       <div>
         <p>{{ data.expert.display_name }}</p>
@@ -88,18 +144,27 @@ const toggleEditingKey = (key: TEditingKey) => {
       </div>
     </div>
 
+    <!-- {{ errors }} -->
+
     <div class="double-item">
       <div 
         class="stages__stage motivation-item edit-item" 
-        :class="{'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive }"
+        :class="{
+          'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive,
+          'edit-item--error' : errors.ContentMotivation
+         }"
         @dblclick="toggleEditingKey('ContentMotivation')"
       >
         <input
+          type="number"
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'ContentMotivation' && props.editingIsActive}"
+          :class="{
+            'editable-input--active' : editingKey === 'ContentMotivation' && props.editingIsActive,
+            'editable-input--error' : errors.ContentMotivation
+          }"
           v-if="editingKey === 'ContentMotivation' && props.editingIsActive"
           v-model.number="localData.grades.ContentMotivation"
-          @blur="editingKey = null"
+          @blur="onBlurGrade('ContentMotivation')"
           autofocus
         />
         <p v-else>{{ localData.grades.ContentMotivation }}</p>
@@ -107,15 +172,22 @@ const toggleEditingKey = (key: TEditingKey) => {
       
       <div 
         class="stages__stage edit-item"
-        :class="{'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive }"
+        :class="{
+          'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive,
+          'edit-item--error' : errors.StructLogic
+         }"
         @dblclick="toggleEditingKey('StructLogic')"
       >
         <input
+          type="number"
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'StructLogic' && props.editingIsActive}"
+          :class="{
+            'editable-input--active' : editingKey === 'StructLogic' && props.editingIsActive,
+            'editable-input--error' : errors.StructLogic
+          }"
           v-if="editingKey === 'StructLogic' && props.editingIsActive"
           v-model.number="localData.grades.StructLogic"
-          @blur="editingKey = null"
+          @blur="onBlurGrade('StructLogic')"
           autofocus
         />
         <p v-else>{{ localData.grades.StructLogic }}</p>
@@ -123,15 +195,22 @@ const toggleEditingKey = (key: TEditingKey) => {
     </div>
     <div 
       class="line-table__item score-item edit-item"
-      :class="{'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive }"
+      :class="{
+        'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive,
+        'edit-item--error' : errors.ProgramGoals
+       }"
       @dblclick="toggleEditingKey('ProgramGoals')"
     >
       <input
+        type="number"
         class="editable-input"
-        :class="{'editable-input--active' : editingKey === 'ProgramGoals' && props.editingIsActive}"
+        :class="{
+          'editable-input--active' : editingKey === 'ProgramGoals' && props.editingIsActive,
+          'editable-input--error' : errors.ProgramGoals
+        }"
         v-if="editingKey === 'ProgramGoals' && props.editingIsActive"
         v-model.number="localData.grades.ProgramGoals"
-        @blur="editingKey = null"
+        @blur="onBlurGrade('ProgramGoals')"
         autofocus
       />
       <p v-else>{{ localData.grades.ProgramGoals }}</p>
@@ -223,6 +302,10 @@ const toggleEditingKey = (key: TEditingKey) => {
   background: color.$colorBackgroundWhite_Hover;
 }
 
+.edit-item--error {
+  background: color.$colorBackgroundNegativeTint !important;
+}
+
 .edit-item--active {
   background: color.$colorBackgroundAccentAlternative;
 }
@@ -233,6 +316,10 @@ const toggleEditingKey = (key: TEditingKey) => {
 
 .editable-input--active {
   background: color.$colorBackgroundAccentAlternative;
+}
+
+.editable-input--error {
+  background: color.$colorBackgroundNegativeTint !important;
 }
 
 .editable-input {
@@ -252,5 +339,17 @@ const toggleEditingKey = (key: TEditingKey) => {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

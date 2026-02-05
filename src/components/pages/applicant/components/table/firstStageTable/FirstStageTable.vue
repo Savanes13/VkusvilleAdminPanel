@@ -8,6 +8,7 @@ import type { IApplicantDataTypeFirstStage } from '@/types/pages/applicant/appli
 import { getApplicantPage, pathApplicantScores } from '@/api/pages/applicant/apiApplicant';
 import { useCompanyStore } from '@/store/company/companyStore';
 import FinalAssessment from '../../FinalAssessment.vue';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
 
 type Grades = {
   StructLogic: number;
@@ -40,6 +41,8 @@ const applicantId = route.params.id;
 const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
 const companyStore = useCompanyStore();
 const undoChangesTriger = ref<boolean>(false);
+
+const showErrorsBlock = ref<boolean>(false);
 
 // const ApplicantStab = {
 //   display_name: "Тестовый Персонаж",
@@ -91,6 +94,8 @@ const undoChangesTriger = ref<boolean>(false);
 //   }
 // };
 
+
+
 const pathRequestData: PathRequestData = {
   abit_id: Number(applicantId),
   task_id: 1,
@@ -106,13 +111,27 @@ const undoChanges = () => {
   finishEditing();
 };
 
+
+
 const changesFieldInLine = (id: string, obj: Grades) => {
   pathRequestData.patched_grades[id] = obj;
-  pathRequestData.patched_grades
+  pathRequestData.patched_grades;
+  showErrorsBlock.value = false;
 };
+
+const valideteNewValue = () => {
+  if (combinedError.value) {
+    showErrorsBlock.value = true;
+    return false
+  };
+  return true
+}
+
+
 
 const setNewValues = async () => {
   try {
+    if(!valideteNewValue()) return
     await pathApplicantScores(pathRequestData);
     finishEditing();
   } catch (error) {
@@ -135,6 +154,39 @@ watch(() => companyStore.selectedCompany, () => {
     getPageData()
   },{ immediate: true }
 )
+
+
+
+const closeErrorBlock = () => {
+  showErrorsBlock.value = false;
+}
+
+type TEditingKey = 'ContentMotivation' | 'StructLogic' | 'ProgramGoals';
+type GradeErrors = Partial<Record<TEditingKey, string>>;
+const allErrors = ref<Record<string, GradeErrors>>({});
+const combinedError = ref<string | null>(null);
+
+
+const fieldNames: Record<TEditingKey, string> = {
+  ContentMotivation: 'Контент и мотивация',
+  StructLogic: 'Структура и логика',
+  ProgramGoals: 'Цели и связь с программой'
+};
+
+const getErrors = (index: string, errors: GradeErrors) => {
+  allErrors.value[index] = errors;
+  const combinedArray: string[] = [];
+  Object.entries(allErrors.value).forEach(([lineIdx, lineErrors]) => {
+    Object.entries(lineErrors).forEach(([field, message]) => {
+      if (message) {
+        combinedArray.push(`${fieldNames[field as TEditingKey]}: ${message}`);
+      }
+    });
+  });
+  const uniqueErrors = Array.from(new Set(combinedArray));
+  combinedError.value = uniqueErrors.length > 0 ? uniqueErrors.join('; ') : null;
+  console.log('Объединённая ошибка:', combinedError.value);
+};
 </script>
 
 <template>
@@ -142,6 +194,7 @@ watch(() => companyStore.selectedCompany, () => {
     class="applicant-table"
     v-if="pageDataArr"
   >
+
     <div class="table-wrapper">
       <div class="main-table">
         <HeaderTable/>
@@ -153,6 +206,8 @@ watch(() => companyStore.selectedCompany, () => {
           :grade-range="pageDataArr.grade_range"
           :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
           @change-scores="(obj) => changesFieldInLine(index, obj)"
+
+           @errors="(errors) => getErrors(index, errors)"
         />
       </div>
     </div>
@@ -191,6 +246,31 @@ watch(() => companyStore.selectedCompany, () => {
         :score="pageDataArr.pass_info.grade_2"
       />
     </div>
+
+    <transition name="fadeFast">
+      <div 
+        class="errors-block"
+        v-if="showErrorsBlock"
+      >
+        <div>
+          <span
+            v-html="mainIcons['warning']"
+          ></span>
+        </div>
+        <div>
+          <p>{{ combinedError }}</p>
+        </div>
+        <div  
+          @click="closeErrorBlock"
+          class="errors-block__close"
+        > 
+          <span
+            v-html="mainIcons['closeGray']"
+          ></span>
+        </div>
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -253,6 +333,29 @@ watch(() => companyStore.selectedCompany, () => {
   margin-top: 20px;
 }
 
+.errors-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 422px;
+  position: fixed;
+  padding: 16px;
+  background: color.$colorBlack;
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextWhite;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.errors-block__close {
+  cursor: pointer;
+}
+
 @media (max-width: 900px) {
   .assessment-block {
     display: grid;
@@ -279,6 +382,13 @@ watch(() => companyStore.selectedCompany, () => {
 @media (max-width: 450px) {
   .assessment-block {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .errors-block {
+    width: 310px;
+    font-size: 14px;
+    line-height: 20px;
+    bottom: 70px;
   }
 }
 </style>
