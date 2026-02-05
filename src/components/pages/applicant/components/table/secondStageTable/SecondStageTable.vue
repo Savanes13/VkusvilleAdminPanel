@@ -5,14 +5,15 @@ import { ref, watch } from 'vue';
 import HeaderTable from './components/HeaderTable.vue';
 import LineTable from './components/LineTable.vue';
 import { useRoute } from 'vue-router';
-import type { IApplicantDataType } from '@/types/pages/applicant/applicantTypes';
+import type { IApplicantDataTypeSecondStage } from '@/types/pages/applicant/applicantTypes';
 import { getApplicantPage } from '@/api/pages/applicant/apiApplicant';
 import { useCompanyStore } from '@/store/company/companyStore';
 
 type Grades = {
-  StructLogic: number;
-  ContentMotivation: number;
-  ProgramGoals: number;
+  Integrity: number;
+  Arguments: number;
+  RealisticMeaningful: number;
+  Original: number;
 };
 
 type PathRequestData = {
@@ -27,7 +28,7 @@ type TStages = "stage1" | "stage2"
 
 const route = useRoute();
 const applicantId = route.params.id;
-const pageDataArr = ref<null | IApplicantDataType>(null);
+const pageDataArr = ref<null | IApplicantDataTypeSecondStage>(null);
 const companyStore = useCompanyStore();
 const selectedStage = ref<TStages>('stage1');
 const editingIsActive = ref<boolean>(false);
@@ -45,50 +46,60 @@ const dataSwitch = [
 ];
 
 const ApplicantStab = {
-  display_name: "Микрочелик 1",
+  display_name: "Тестовый Персонаж",
   grades: {
-    1: {
-      expert: {
-        display_name: "Япи Дор",
-        level: 1,
-      },
-      grades: {
-        StructLogic: 2,
-        ContentMotivation: 2,
-        ProgramGoals: 2
-      },
-      comment: "коммент"
-    },
-    2: {
-      expert: {
-        display_name: "Япи Дор",
-        level: 2,
-      },
-      grades: {
-        StructLogic: 2,
-        ContentMotivation: 2,
-        ProgramGoals: 2
-      },
-      comment: "коммент"
-    },
     3: {
       expert: {
-        display_name: "Япи Дор",
-        level: 2,
+        display_name: "Мамут Рахал",
+        level: 2
       },
       grades: {
-        StructLogic: 2,
-        ContentMotivation: 2,
-        ProgramGoals: 2
+        Integrity: 2,
+        Arguments: 2,
+        RealisticMeaningful: 4,
+        Original: 2
       },
-      comment: "коммент"
+      comment: "Ну наш слоняра ну харош"
+    },
+    4: {
+      expert: {
+        display_name: "Мамут Рахал",
+        level: 1
+      },
+      grades: {
+        Integrity: 2,
+        Arguments: 2,
+        RealisticMeaningful: 4,
+        Original: 2
+      },
+      comment: 'fdsfd'
     }
   },
-  pass_info:{
+  pass_info: {
     is_passed: true,
-    total_grade: 4.5
+    total_grade: 12,
+    grade_1: 12,
+    grade_2: 12
+  },
+  grade_range: {
+    Integrity: {
+      min: 0,
+      max: 2
+    },
+    Arguments: {
+      min: 0,
+      max: 8
+    },
+    RealisticMeaningful: {
+      min: 0,
+      max: 2
+    },
+    Original: {
+      min: 0,
+      max: 2
+    },
   }
-}
+};
 
 // струкутра патча
 // {
@@ -157,8 +168,10 @@ const setNewValues = async () => {
 const getPageData = async () => {
   try {
     if(!applicantId) return;
-    const response = await getApplicantPage(Number(applicantId), 1);
-    pageDataArr.value = response;
+    pageDataArr.value = ApplicantStab
+
+    // const response = await getApplicantPage(Number(applicantId), 1);
+    // pageDataArr.value = response;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
@@ -179,7 +192,7 @@ watch(() => companyStore.selectedCompany, () => {
       <p>Оценки экспертов</p>
     </div>
     <div class="control-block">
-     <DefaultSwitch
+      <DefaultSwitch
         class="switch-item"
         v-model:value="selectedStage"
         :data="dataSwitch"
@@ -254,7 +267,7 @@ watch(() => companyStore.selectedCompany, () => {
 
 .main-table {
   width: 100%;
-  min-width: 1400px; 
+  min-width: 1800px; 
   border-collapse: collapse;
   // padding-bottom: 10px;
 }

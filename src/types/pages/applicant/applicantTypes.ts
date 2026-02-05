@@ -3,16 +3,29 @@ type Expert = {
   level: number;
 };
 
-type Grades = {
+type GradesFirst = {
   StructLogic: number;
   ContentMotivation: number;
   ProgramGoals: number;
 };
 
-type GradeLine = {
+type GradesSecond = {
+  Integrity: number;
+  Arguments: number;
+  RealisticMeaningful: number;
+  Original: number;
+};
+
+type GradeLineFirst = {
   expert: Expert;
-  grades: Grades;
-  comment: string;
+  grades: GradesFirst;
+  comment: string | null;
+};
+
+type GradeLineSecond = {
+  expert: Expert;
+  grades: GradesSecond;
+  comment: string | null;
 };
 
 type PassInfo = {
@@ -22,7 +35,7 @@ type PassInfo = {
   grade_2: number;
 };
 
-type GradeRange = {
+type GradeRangeFirst = {
   StructLogic: {
     min: number;
     max: number;
@@ -37,9 +50,35 @@ type GradeRange = {
   };
 };
 
-export interface IApplicantDataType {
+type GradeRangeSecond = {
+  Integrity: {
+    min: number;
+    max: number;
+  };
+  Arguments: {
+    min: number;
+    max: number;
+  };
+  RealisticMeaningful: {
+    min: number;
+    max: number;
+  };
+  Original: {
+    min: number;
+    max: number;
+  };
+};
+
+export interface IApplicantDataTypeFirstStage {
   display_name: string;
-  grades: Record<string, GradeLine>;
+  grades: Record<string, GradeLineFirst>;
   pass_info: PassInfo;
-  grade_range: GradeRange;
+  grade_range: GradeRangeFirst;
+};
+
+export interface IApplicantDataTypeSecondStage {
+  display_name: string;
+  grades: Record<string, GradeLineSecond>;
+  pass_info: PassInfo;
+  grade_range: GradeRangeSecond;
 };

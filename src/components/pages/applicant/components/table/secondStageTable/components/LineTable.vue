@@ -2,7 +2,7 @@
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import { reactive, ref, watch } from 'vue';
 
-type TEditingKey = 'ContentMotivation' | 'StructLogic' | 'ProgramGoals';
+type TEditingKey = 'Integrity' | 'Arguments' | 'RealisticMeaningful' | 'Original';
 
 type Expert = {
   display_name: string;
@@ -10,15 +10,16 @@ type Expert = {
 };
 
 type Grades = {
-  StructLogic: number;
-  ContentMotivation: number;
-  ProgramGoals: number;
+  Integrity: number;
+  Arguments: number;
+  RealisticMeaningful: number;
+  Original: number;
 };
 
 type ExpertData = {
   expert: Expert;
   grades: Grades;
-  comment: string
+  comment: string | null
 };
 
 interface ILineTableProps {
@@ -85,56 +86,77 @@ const toggleEditingKey = (key: TEditingKey) => {
         ></span>
       </div>
     </div>
+
+
     <div class="double-item">
       <div 
         class="stages__stage motivation-item edit-item" 
-        :class="{'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive }"
-        @dblclick="toggleEditingKey('ContentMotivation')"
+        :class="{'edit-item--active' : editingKey === 'Integrity' && props.editingIsActive }"
+        @dblclick="toggleEditingKey('Integrity')"
       >
         <input
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'ContentMotivation' && props.editingIsActive}"
-          v-if="editingKey === 'ContentMotivation' && props.editingIsActive"
-          v-model.number="localData.grades.ContentMotivation"
+          :class="{'editable-input--active' : editingKey === 'Integrity' && props.editingIsActive}"
+          v-if="editingKey === 'Integrity' && props.editingIsActive"
+          v-model.number="localData.grades.Integrity"
           @blur="editingKey = null"
           autofocus
         />
-        <p v-else>{{ localData.grades.ContentMotivation }}</p>
+        <p v-else>{{ localData.grades.Integrity }}</p>
       </div>
+
+      <div 
+        class="stages__stage argument-item edit-item"
+        :class="{'edit-item--active' : editingKey === 'Arguments' && props.editingIsActive }"
+        @dblclick="toggleEditingKey('Arguments')"
+      >
+        <input
+          class="editable-input"
+          :class="{'editable-input--active' : editingKey === 'Arguments' && props.editingIsActive}"
+          v-if="editingKey === 'Arguments' && props.editingIsActive"
+          v-model.number="localData.grades.Arguments"
+          @blur="editingKey = null"
+          autofocus
+        />
+        <p v-else>{{ localData.grades.Arguments }}</p>
+      </div>
+
       <div 
         class="stages__stage edit-item"
-        :class="{'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive }"
-        @dblclick="toggleEditingKey('StructLogic')"
+        :class="{'edit-item--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive }"
+        @dblclick="toggleEditingKey('RealisticMeaningful')"
       >
         <input
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'StructLogic' && props.editingIsActive}"
-          v-if="editingKey === 'StructLogic' && props.editingIsActive"
-          v-model.number="localData.grades.StructLogic"
+          :class="{'editable-input--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive}"
+          v-if="editingKey === 'RealisticMeaningful' && props.editingIsActive"
+          v-model.number="localData.grades.RealisticMeaningful"
           @blur="editingKey = null"
           autofocus
         />
-        <p v-else>{{ localData.grades.StructLogic }}</p>
+        <p v-else>{{ localData.grades.RealisticMeaningful }}</p>
       </div>
     </div>
+
     <div 
       class="line-table__item score-item edit-item"
-      :class="{'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive }"
-      @dblclick="toggleEditingKey('ProgramGoals')"
+      :class="{'edit-item--active' : editingKey === 'Original' && props.editingIsActive }"
+      @dblclick="toggleEditingKey('Original')"
     >
       <input
         class="editable-input"
-        :class="{'editable-input--active' : editingKey === 'ProgramGoals' && props.editingIsActive}"
-        v-if="editingKey === 'ProgramGoals' && props.editingIsActive"
-        v-model.number="localData.grades.ProgramGoals"
+        :class="{'editable-input--active' : editingKey === 'Original' && props.editingIsActive}"
+        v-if="editingKey === 'Original' && props.editingIsActive"
+        v-model.number="localData.grades.Original"
         @blur="editingKey = null"
         autofocus
       />
-      <p v-else>{{ localData.grades.ProgramGoals }}</p>
+      <p v-else>{{ localData.grades.Original }}</p>
     </div>
     <div class="line-table__item comment-item">
-      <p>{{ data.comment }}</p>
+      <p >{{ data.comment }}</p>
     </div>
+    
   </div>
 </template>
 
@@ -188,6 +210,10 @@ const toggleEditingKey = (key: TEditingKey) => {
 }
 
 .motivation-item {
+  border-right: 1px solid #DDE0E8;
+}
+
+.argument-item  {
   border-right: 1px solid #DDE0E8;
 }
 

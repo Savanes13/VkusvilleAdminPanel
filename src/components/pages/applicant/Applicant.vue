@@ -4,7 +4,8 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import ApplicantManagement from './components/ApplicantManagement.vue';
 import applicantWorks from './composables/applicantWorks';
 import BreadCumbs from '@/components/shared/elements/BreadCumbs.vue';
-import ApplicantTable from './components/table/ApplicantTable.vue';
+import FirstStageTable from './components/table/firstStageTable/FirstStageTable.vue';
+import SecondStageTable from './components/table/secondStageTable/SecondStageTable.vue';
 import FinalAssessment from './components/FinalAssessment.vue';
 
 const {
@@ -22,14 +23,22 @@ const {
     <PageHeader>
       Имя Абитуриента
     </PageHeader>
+
     <WrapperBlock class="applicant__management">
-      <ApplicantManagement/>
+      <ApplicantManagement
+        
+      />
     </WrapperBlock>
 
     <WrapperBlock>
-      <ApplicantTable
+      <!-- <FirstStageTable
+        class="applicant-table"
+      /> -->
+
+      <SecondStageTable
         class="applicant-table"
       />
+
       <FinalAssessment/>
     </WrapperBlock>
 
