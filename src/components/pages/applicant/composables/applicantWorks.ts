@@ -4,11 +4,23 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 export default function applicantWorks () {
+  type TStages = "stage1" | "stage2"
+
   const companyStore = useCompanyStore();
 
   const route = useRoute();
   const applicantId = route.params.id;
   const pageDataArr = ref<null | any>(null);
+  const selectedStage = ref<TStages>('stage1');
+  const editingIsActive = ref<boolean>(false);
+
+  const activateEditing = () => {
+    editingIsActive.value = true;
+  };
+
+  const finishEditing = () => {
+    editingIsActive.value = false;
+  };
 
   const breadCrumb = [
     {
@@ -20,6 +32,19 @@ export default function applicantWorks () {
       path: "/cart"
     },
   ];
+
+  const dataSwitch = [
+    {
+      name: "stage1",
+      text: "1 этап"
+    },
+    {
+      name: "stage2",
+      text: "2 этап"
+    }
+  ];
+
+
 
   // const getPageData = async () => {
   //   try {
@@ -36,6 +61,11 @@ export default function applicantWorks () {
   // )
   
   return {
-    breadCrumb
+    breadCrumb,
+    selectedStage,
+    dataSwitch,
+    editingIsActive,
+    activateEditing,
+    finishEditing
   }
 }

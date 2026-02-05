@@ -25,24 +25,23 @@ type PathRequestData = {
 
 type TStages = "stage1" | "stage2"
 
+interface IFirstStageTableProps {
+  editingIsActive: boolean
+}
+
+const {
+  editingIsActive,
+} = defineProps<IFirstStageTableProps>();
+
+const emit = defineEmits<{
+  (e: 'finishEditing'): void
+}>();
+
 const route = useRoute();
 const applicantId = route.params.id;
 const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
 const companyStore = useCompanyStore();
-const selectedStage = ref<TStages>('stage1');
-const editingIsActive = ref<boolean>(false);
 const undoChangesTriger = ref<boolean>(false);
-
-const dataSwitch = [
-  {
-    name: "stage1",
-    text: "1 этап"
-  },
-  {
-    name: "stage2",
-    text: "2 этап"
-  }
-];
 
 const ApplicantStab = {
   display_name: "Тестовый Персонаж",
@@ -94,7 +93,6 @@ const ApplicantStab = {
   }
 };
 
-
 // струкутра патча
 // {
 //   "abit_id": 2,
@@ -130,24 +128,30 @@ const pathRequestData: PathRequestData = {
 // getPageData();
 
 
-const activateEditing = () => {
-  editingIsActive.value = true;
-};
+// const activateEditing = () => {
+//   editingIsActive.value = true;
+// };
+
 
 const finishEditing = () => {
-  editingIsActive.value = false;
+  emit('finishEditing')
 };
+
 
 const undoChanges = () => {
   undoChangesTriger.value = !undoChangesTriger.value;
   finishEditing();
 };
 
+
+
 const changesFieldInLine = (id: string, obj: Grades) => {
   pathRequestData.patched_grades[id] = obj;
   pathRequestData.patched_grades
   console.log(pathRequestData)
 };
+
+
 
 const setNewValues = async () => {
   try {
@@ -158,6 +162,8 @@ const setNewValues = async () => {
     console.error("ошибка при изменении значений")
   };
 };
+
+
 
 const getPageData = async () => {
   try {
@@ -171,6 +177,7 @@ const getPageData = async () => {
   }
 };
 
+
 watch(() => companyStore.selectedCompany, () => {
     getPageData()
   },{ immediate: true }
@@ -182,25 +189,6 @@ watch(() => companyStore.selectedCompany, () => {
     class="applicant-table"
     v-if="pageDataArr"
   >
-    <div class="applicant-table__title">
-      <p>Оценки экспертов</p>
-    </div>
-    <div class="control-block">
-     <DefaultSwitch
-        class="switch-item"
-        v-model:value="selectedStage"
-        :data="dataSwitch"
-      />
-      <DefaultButton
-        v-if="!editingIsActive"
-        class="default-button__size--large default-button__color-green-transparent control-button"
-        left-icon="edit"
-        @click="activateEditing"
-      >
-        Редактировать оценки
-      </DefaultButton>
-    </div>
-
     <div class="table-wrapper">
       <div class="main-table">
         <HeaderTable/>
@@ -239,20 +227,6 @@ watch(() => companyStore.selectedCompany, () => {
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
-
-.applicant-table__title {
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: color.$colorTextPrimary;
-  margin-bottom: 20px;
-}
-
-.control-block {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
 
 .table-wrapper {
   width: 100%;
