@@ -60,7 +60,11 @@ watch(() => companyStore.selectedCompany, () => {
     class="experts"
     v-if="expertsPageData" 
   >
-    <PageHeader>
+    <PageHeader
+      hint-text="Статистика работы экспертов: непроверенные задания, просрочки и риск дедлайна. Помогает отслеживать загрузку и оперативно реагировать."
+      :hint-width="300"
+      :hint-height="100"
+    >
       Эксперты
     </PageHeader>
     <WrapperBlock>
@@ -133,7 +137,7 @@ watch(() => companyStore.selectedCompany, () => {
 
 .table-expert {
   width: 100%;
-  min-width: 1100px; 
+  min-width: 1300px; 
   border-collapse: collapse;
   padding-bottom: 10px;
 }
