@@ -6,6 +6,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
 import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
 
 interface IAddExpertWindowObj {
   idInterview: number | null;
@@ -16,15 +17,23 @@ const pageDataArr = ref<null | TInterviewsData>(null);
 const selectedWeek = ref<number>(0);
 const companyStore = useCompanyStore();
 const visibilityAddExpertWindow = ref<boolean>(false);
+const successBlockIsVisible = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
   idInterview: null,
   arrExpertIds: null
 });
+let hideTimeout: number | null = null;
 const viewportWidth = ref(window.innerWidth);
 
 const updateWidth = () => {
   viewportWidth.value = window.innerWidth;
 };
+
+onUnmounted(() => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+});
 
 onMounted(() => {
   window.addEventListener('resize', updateWidth);
@@ -87,10 +96,23 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
       }
     });
   });
+  successBlockIsVisible.value = true;
+  if (hideTimeout) clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(() => {
+    successBlockIsVisible.value = false;
+  }, 4000);
 }
 
 const setSelectedWeek = (id: number) => {
   selectedWeek.value = id
+}
+
+const closeSuccessBlock = () => {
+  successBlockIsVisible.value = false;
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+    hideTimeout = null;
+  }
 }
 </script>
 
@@ -162,6 +184,29 @@ const setSelectedWeek = (id: number) => {
         @close="closeAddExpertWindow"
         @change-experts="changeExpertsInInrerview"
       />
+    </transition>
+    <transition name="fadeFast">
+      <div 
+        class="success-block"
+        v-if="successBlockIsVisible"
+      >
+        <div>
+          <span
+            v-html="mainIcons['checkCurcle']"
+          ></span>
+        </div>
+        <div>
+          <p>Эксперты успешно изменены</p>
+        </div>
+        <div  
+          @click="closeSuccessBlock"
+          class="success-block__close"
+        > 
+          <span
+            v-html="mainIcons['closeGray']"
+          ></span>
+        </div>
+      </div>
     </transition>
   </div>
 </template>
@@ -264,6 +309,29 @@ const setSelectedWeek = (id: number) => {
   cursor: default !important;
 }
 
+.success-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 422px;
+  position: fixed;
+  padding: 16px;
+  background: color.$colorBlack;
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextWhite;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.success-block__close {
+  cursor: pointer;
+}
+
 @media(max-width: 830px) {
   .info-table {
     flex-direction: column;
@@ -272,6 +340,15 @@ const setSelectedWeek = (id: number) => {
 
   .weeks {
     padding-left: 24px;
+  }
+}
+
+@media (max-width: 450px) {
+  .success-block {
+    width: 310px;
+    font-size: 14px;
+    line-height: 20px;
+    bottom: 70px;
   }
 }
 
