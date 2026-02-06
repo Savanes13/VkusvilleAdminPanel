@@ -1,12 +1,18 @@
 <script lang="ts" setup>
 import { giveMoreDaysForWork, moveToNextStage } from '@/api/pages/applicant/apiApplicant';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { reactive, ref, watch } from 'vue';
+import { onUnmounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 interface IErrorNextStage {
+  show: boolean
+  text: string
+}
+
+interface ITheseChanges {
   show: boolean
   text: string
 }
@@ -29,6 +35,17 @@ const errorNextStage = ref<IErrorNextStage>({
   show: false,
   text: ''
 })
+const theseChanges = ref<ITheseChanges>({
+  show: false,
+  text: ''
+})
+let hideTimeout: number | null = null;
+
+onUnmounted(() => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+});
 
 watch(() => dayInputObj.value, () => {
   dayInputObj.error.show = false;
@@ -45,6 +62,14 @@ const toggleDayModal = () => {
 const toggleStageModal = () => {
   isStageModalOpen.value = !isStageModalOpen.value;
 };
+
+const closeTheseСhangesBlock = () => {
+  theseChanges.value.show = false;
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+    hideTimeout = null;
+  }
+}
 
 const onlyDigits = (): boolean => {
   return /^\d+$/.test(dayInputObj.value);
@@ -67,6 +92,12 @@ const giveMoreDays = async () => {
       return;
     };
     await giveMoreDaysForWork(Number(applicantId), daysToSeconds());
+    theseChanges.value.show = true;
+    theseChanges.value.text = 'Абитуриенту дано дополнительное время на выполнение задания';
+    if (hideTimeout) clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      theseChanges.value.show = false;
+    }, 4000);
   } catch (error: any) {
     if(error.message) {
       dayInputObj.error.show = true;
@@ -82,6 +113,12 @@ const moveNextStage = async () => {
   try {
     if (!applicantId) return
     await moveToNextStage(Number(applicantId));
+    theseChanges.value.show = true;
+    theseChanges.value.text = 'Абитуриент переведён на следующий этап';
+    if (hideTimeout) clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      theseChanges.value.show = false;
+    }, 4000);
   } catch (error: any) {
     if(error.message) {
       errorNextStage.value.show = true;
@@ -175,6 +212,29 @@ const moveNextStage = async () => {
         </div>
       </div>
     </div>
+    <transition name="fadeFast">
+      <div 
+        class="success-block"
+        v-if="theseChanges.show"
+      >
+        <div>
+          <span
+            v-html="mainIcons['checkCurcle']"
+          ></span>
+        </div>
+        <div>
+          <p>{{ theseChanges.text }}</p>
+        </div>
+        <div  
+          @click="closeTheseСhangesBlock"
+          class="success-block__close"
+        > 
+          <span
+            v-html="mainIcons['closeGray']"
+          ></span>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -255,6 +315,29 @@ const moveNextStage = async () => {
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0%;
+}
+
+.success-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 422px;
+  position: fixed;
+  padding: 16px;
+  background: color.$colorBlack;
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextWhite;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.success-block__close {
+  cursor: pointer;
 }
 
 /* Анимация появления/исчезновения ошибки */
