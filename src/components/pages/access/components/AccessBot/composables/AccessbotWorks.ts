@@ -2,12 +2,13 @@ import { createAccessAdmin, deleteContentAccessAdmin, getContentAccessAdmins } f
 import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TAdminRole, TDataAdmins } from "@/types/pages/access/accessTypes";
-import { reactive, ref, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
 export default function AccessbotWorks () {
   const pageDataArr = ref<null | TDataAdmins>(null);
   const selectedItemBot = ref<number>(1);
   const companyStore = useCompanyStore();
+  const viewportWidth = ref(window.innerWidth);
 
   const phoneInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -43,7 +44,15 @@ export default function AccessbotWorks () {
       value: "Менеджер продвижения"
     }
   ];
-  
+
+  onMounted(() => {
+    window.addEventListener('resize', updateWidth);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateWidth);
+  });
+
   watch(() => phoneInputObj.value, () => {
     phoneInputObj.error.show = false;
   });
@@ -51,6 +60,10 @@ export default function AccessbotWorks () {
   watch(() => fioInputObj.value, () => {
     fioInputObj.error.show = false;
   });
+
+  const updateWidth = () => {
+    viewportWidth.value = window.innerWidth;
+  };
 
   const setNewSelectValue = (id: number) => {
     selectedItemBot.value = id;
@@ -145,6 +158,7 @@ export default function AccessbotWorks () {
     phoneInputObj,
     fioInputObj,
     selectArr,
+    viewportWidth,
     setNewSelectValue,
     createNewAdmin,
     deleteAdmin

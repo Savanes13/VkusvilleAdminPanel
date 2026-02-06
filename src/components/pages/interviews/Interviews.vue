@@ -2,7 +2,7 @@
 import { getContentInterviewsPage } from '@/api/pages/Interviews/apiInterviews';
 import PageHeader from '@/components/shared/elements/PageHeader.vue';
 import InterviewsTable from './components/table/InterviewsTable.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
 import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
@@ -19,6 +19,19 @@ const visibilityAddExpertWindow = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
   idInterview: null,
   arrExpertIds: null
+});
+const viewportWidth = ref(window.innerWidth);
+
+const updateWidth = () => {
+  viewportWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWidth);
 });
 
 const getPageData = async () => {
@@ -86,13 +99,13 @@ const setSelectedWeek = (id: number) => {
     class="interviews"
     v-if="pageDataArr"
   >
-    <PageHeader>
+    <PageHeader
+      hint-text="Календарь слотов собеседований. Цветом показано, сколько экспертов доступно в каждый час. Нажмите на слот, чтобы посмотреть состав экспертов и детали"
+      :hint-width="viewportWidth > 374 ? 280 : 160"
+      :hint-height="viewportWidth > 374 ? 120 : 200"
+    >
       Собеседования
     </PageHeader>
-
-
-    <!-- {{ pageDataArr }} -->
-
     <div class="interviews__table-wrap">
 
       <div class="info-table">
@@ -125,7 +138,6 @@ const setSelectedWeek = (id: number) => {
           </div>
         </div>
       </div>
-
       <div class="table-wrapper">
         <InterviewsTable
           v-if="pageDataArr.length != 0"
@@ -141,7 +153,6 @@ const setSelectedWeek = (id: number) => {
           <p>Эта неделя пуста</p>
         </div>
       </div>
-
     </div>
     <transition name="fadeFast">
       <InterviewsAddWindow
@@ -261,6 +272,12 @@ const setSelectedWeek = (id: number) => {
 
   .weeks {
     padding-left: 24px;
+  }
+}
+
+@media(max-width: 340px) {
+  .weeks__item {
+    width: 80px;
   }
 }
 </style>

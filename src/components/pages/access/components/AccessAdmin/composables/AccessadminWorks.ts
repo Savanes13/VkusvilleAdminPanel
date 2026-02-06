@@ -2,7 +2,7 @@ import { createAccessToken, deleteAccessAdminsAdminPanel, deleteAccessToken, get
 import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TDataAdminAdminsAccess, TDataTokenAccess } from "@/types/pages/access/accessTypes";
-import { reactive, ref, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
 export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
@@ -11,6 +11,7 @@ export default function AccessadminWorks () {
   const showTokenWindow = ref<boolean>(false);
   const createdToken = ref<string>('');
   const companyStore = useCompanyStore();
+  const viewportWidth = ref(window.innerWidth);
   
   const selectArr = [
     {
@@ -22,6 +23,18 @@ export default function AccessadminWorks () {
       value: "Менеджер"
     }
   ];
+
+  onMounted(() => {
+    window.addEventListener('resize', updateWidth);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateWidth);
+  });
+
+  const updateWidth = () => {
+    viewportWidth.value = window.innerWidth;
+  };
 
   const setNewSelectValue = (id: number) => {
     selectedItemAdmin.value = id;
@@ -94,6 +107,7 @@ export default function AccessadminWorks () {
     adminTableArr,
     showTokenWindow,
     createdToken,
+    viewportWidth,
     setNewSelectValue,
     createToken,
     deleteToken,

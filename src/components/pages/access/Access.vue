@@ -49,7 +49,11 @@ const dataSwitchResponsive = computed(() => {
 
 <template>
   <div class="access">
-    <PageHeader>
+    <PageHeader
+      hint-text="Управление доступами к тех-боту и админке. Доступ в бот выдаётся по номеру телефона, доступ в админку — по токену"
+      :hint-width="280"
+      :hint-height="100"
+    >
       Доступы
     </PageHeader>
     <div class="access__switch">

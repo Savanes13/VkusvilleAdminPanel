@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+import HintItem from '@/components/shared/elements/HintItem.vue';
 </script>
 
 <template>
@@ -7,14 +7,18 @@
     <div class="table-header__big-cell fio-cell">
       <p>ФИО</p>
     </div>
-
     <div class="table-header__double-cell">
       <div class="title">
         <div>
           <p>Непровереннные работы</p>
         </div>
         <div>
-          <!-- подсказка -->
+          <HintItem
+            text="Количество работ, которые эксперт получил, но ещё не проверил"
+            :width="244"
+            :height="80"
+            position="bottom-right"
+          />
         </div>
       </div>
       <div class="stages">
@@ -26,14 +30,18 @@
         </div>
       </div>
     </div>
-
     <div class="table-header__double-cell">
       <div class="title">
         <div>
           <p>Просроченные проверки</p>
         </div>
         <div>
-          <!-- подсказка -->
+          <HintItem
+            text="Количество работ, по которым эксперт не успел предоставить оценку"
+            :width="244"
+            :height="80"
+            position="bottom-right"
+          />
         </div>
       </div>
       <div class="stages">
@@ -45,14 +53,18 @@
         </div>
       </div>
     </div>
-
     <div class="table-header__double-cell">
       <div class="title">
         <div>
           <p>На грани дедлайна</p>
         </div>
         <div>
-          <!-- подсказка -->
+          <HintItem
+            text="Количество работ, по которым скоро наступит дедлайн проверки"
+            :width="244"
+            :height="80"
+            position="bottom-right"
+          />
         </div>
       </div>
       <div class="stages">
@@ -64,7 +76,6 @@
         </div>
       </div>
     </div>
-
     <div class="table-header__big-cell auth-cell">
       <p>Авторизован</p>
     </div>
@@ -102,6 +113,9 @@
 }
 
 .title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: 12px;
   flex: 1;
   border-bottom: 1px solid #DDE0E8;

@@ -6,6 +6,7 @@ import DefaultSelect from '@/components/shared/ui/select/DefaultSelect.vue';
 import TableExperts from './components/table/TableExperts.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import AccessbotWorks from './composables/AccessbotWorks';
+import HintItem from '@/components/shared/elements/HintItem.vue';
 
 const {
   pageDataArr,
@@ -13,6 +14,7 @@ const {
   phoneInputObj,
   fioInputObj,
   selectArr,
+  viewportWidth,
   setNewSelectValue,
   createNewAdmin,
   deleteAdmin
@@ -32,7 +34,12 @@ const {
           <p>Выдача доступа</p>
         </div>
         <div>
-          <!-- TODO: сюда подсказку -->
+          <HintItem
+            text="Выдача доступа в тех-бот проверяющим и менеджерам продвижения. Укажите роль и номер телефона — доступ в тех-бот будет привязан к этому номеру"
+            :width="viewportWidth > 420 ? 300 : 220"
+            :height="viewportWidth > 420 ? 120 : 160"
+            :position="viewportWidth > 420 ? 'bottom-center' : 'bottom-right'"
+          />
         </div>
       </div>
       <div class="granting-access__content">
@@ -62,14 +69,18 @@ const {
         </DefaultButton>
       </div>
     </WrapperBlock>
-
     <WrapperBlock class="table-bot">
       <div class="table-bot__title-block">
         <div>
           <p>Роли экспертов</p>
         </div>
         <div>
-          <!-- TODO: подсказка -->
+          <HintItem
+            text="Список пользователей с доступом в тех-бот. Доступ можно удалить. Чтобы изменить роль, выдайте новый доступ с нужной ролью"
+            :width="viewportWidth > 420 ? 300 : 220"
+            :height="viewportWidth > 420 ? 100 : 140"
+            :position="viewportWidth > 420 ? 'bottom-center' : 'bottom-right'"
+          />
         </div>
       </div>
       <div class="table-wrapper">
@@ -121,6 +132,9 @@ const {
 }
 
 .granting-access__title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -139,6 +153,9 @@ const {
 }
 
 .table-bot__title-block {
+  display: flex;
+  gap: 8px;
+  align-items: center;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;

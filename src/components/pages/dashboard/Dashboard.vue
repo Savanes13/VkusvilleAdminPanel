@@ -4,12 +4,26 @@ import WrapperBlock from '../../shared/elements/WrapperBlock.vue';
 import StageElement from './components/StageElement.vue';
 import { getDashboard } from '@/api/pages/dashboard/apiDashboard';
 import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
-import { ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { buttonIcons } from '@/components/shared/icons/button/icons';
 import { useCompanyStore } from '@/store/company/companyStore';
+import HintItem from '@/components/shared/elements/HintItem.vue';
 
 const padeDataArr = ref<null | IDashboardData>(null);
 const companyStore = useCompanyStore();
+const viewportWidth = ref(window.innerWidth);
+
+const updateWidth = () => {
+  viewportWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWidth);
+});
 
 const getPageData = async () => {
   try {
@@ -37,9 +51,16 @@ watch(() => companyStore.selectedCompany, () => {
     <div class="dashboard__second-section">
       <WrapperBlock class="stages-charts">
         <div class="stages-charts__title">
-          <p>Конверсия движения абитуриентов</p>
+          <div>
+            <p>Конверсия движения абитуриентов</p>
+          </div>
+          <HintItem
+            text="Процент зарегистрированных абитуриентов, оказавшихся на каждом этапе, включая тех, кто не прошёл дальше."
+            :width="viewportWidth > 400 ? 330 : 260"
+            :height="viewportWidth > 400 ? 80 : 100"
+            position="bottom-right"
+          />
         </div>
-
         <div class="stages-charts__elements">
           <StageElement
             v-for="(item, index) in padeDataArr.charts"
@@ -51,7 +72,6 @@ watch(() => companyStore.selectedCompany, () => {
             :key='`${index} + ${item.titleKey}`'
           />
         </div>
-
       </WrapperBlock>
     </div>
     <div class="dashboard__first-section">
@@ -74,10 +94,14 @@ watch(() => companyStore.selectedCompany, () => {
             <p>Cредний балл</p>
           </div>
           <div>
-            <!-- подсказка -->
+            <HintItem
+              text="Средняя оценка по конкретному заданию. Используется, чтобы корректировать порог допуска, если этап проходит слишком мало абитуриентов."
+              :width="viewportWidth > 440 ? 330 : 170"
+              :height="viewportWidth > 440 ? 100 : 200"
+              position="bottom-center"
+            />
           </div>
         </div>
-
         <div class="average-score__info">
           <div 
             class="border-wrap"
@@ -92,7 +116,6 @@ watch(() => companyStore.selectedCompany, () => {
             </div>
           </div>
         </div>
-
       </WrapperBlock> 
     </div>
     <div class="dashboard__third-section">
@@ -101,10 +124,7 @@ watch(() => companyStore.selectedCompany, () => {
           <p>Горящие задачи</p>
         </div>
         <div class="deadline-tasks__content">
-
-
           <div class="deadline-item border-wrap">
-
             <div>
               <div class="deadline-item__name">
                 <p>Абитуриенты, пропустившие дедлайн</p>
@@ -122,10 +142,7 @@ watch(() => companyStore.selectedCompany, () => {
                 ></span>
               </div>
             </router-link>
-
           </div>
-
-
           <div class="deadline-item border-wrap">
 
             <div>
@@ -145,8 +162,6 @@ watch(() => companyStore.selectedCompany, () => {
               </div>
             </router-link>
           </div>
-
-
         </div>
       </WrapperBlock>
     </div>
@@ -234,6 +249,8 @@ watch(() => companyStore.selectedCompany, () => {
 }
 
 .average-score__header {
+  display: flex;
+  gap: 8px;
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 24px;
@@ -251,6 +268,8 @@ watch(() => companyStore.selectedCompany, () => {
 }
 
 .stages-charts__title {
+  display: flex;
+  gap: 8px;
   font-weight: 500;
   font-size: 24px;
   line-height: 25px;
@@ -406,6 +425,12 @@ watch(() => companyStore.selectedCompany, () => {
   }
 }
 
+@media (max-width: 827px) {
+  .stages-charts__title {
+    align-items: center;
+  }
+}
+
 @media (max-width: 768px) {
   .average-score {
     padding: 20px 24px;
@@ -429,6 +454,16 @@ watch(() => companyStore.selectedCompany, () => {
 
   .dashboard__first-section {
     margin-bottom: 20px;
+  }
+
+  .stages-charts__title {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 517px) {
+  .stages-charts__title {
+    align-items: center;
   }
 }
 </style>

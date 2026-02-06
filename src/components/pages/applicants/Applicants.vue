@@ -20,7 +20,11 @@ const {
 
 <template>
   <div class="applicants">
-    <PageHeader>
+    <PageHeader
+      hint-text="Общий список абитуриентов. Через кнопку “Подробнее” вы можете открыть карточку студента, вручную изменить оценки экспертов, дать дополнительное время или перевести на следующий этап"
+      :hint-width="230"
+      :hint-height="180"
+    >
       Абитуриенты
     </PageHeader>
     <WrapperBlock
