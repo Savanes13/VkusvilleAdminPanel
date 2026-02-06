@@ -10,6 +10,7 @@ import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 
 const {
+  pageDataArr,
   breadCrumb,
   selectedStage,
   dataSwitch,
@@ -20,14 +21,17 @@ const {
 </script>
 
 <template>
-  <div class="applicant">
+  <div 
+    class="applicant"
+    v-if="pageDataArr"
+  >
     <div class="applicant__bread-crumbs">
       <BreadCumbs
         :data="breadCrumb"
       />
     </div>
     <PageHeader>
-      Имя Абитуриента
+      {{ pageDataArr.display_name }}
     </PageHeader>
     <WrapperBlock class="applicant__management">
       <ApplicantManagement

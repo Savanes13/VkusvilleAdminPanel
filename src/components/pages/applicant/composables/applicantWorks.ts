@@ -1,6 +1,7 @@
 import { getApplicantPage } from "@/api/pages/applicant/apiApplicant";
 import { useCompanyStore } from "@/store/company/companyStore";
-import { ref, watch } from "vue";
+import type { IApplicantDataTypeFirstStage } from "@/types/pages/applicant/applicantTypes";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 export default function applicantWorks () {
@@ -10,7 +11,7 @@ export default function applicantWorks () {
 
   const route = useRoute();
   const applicantId = route.params.id;
-  const pageDataArr = ref<null | any>(null);
+  const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
   const selectedStage = ref<TStages>('stage1');
   const editingIsActive = ref<boolean>(false);
 
@@ -22,16 +23,16 @@ export default function applicantWorks () {
     editingIsActive.value = false;
   };
 
-  const breadCrumb = [
+  const breadCrumb = computed(() => [
     {
       name: "Абитуриенты",
       path: "/applicants"
     },
     {
-      name: "Корзина",
-      path: "/cart"
-    },
-  ];
+      name: pageDataArr.value?.display_name ?? "",
+      path: `/applicant/${applicantId}`
+    }
+  ]);
 
   const dataSwitch = [
     {
@@ -44,23 +45,23 @@ export default function applicantWorks () {
     }
   ];
 
+  const getPageData = async () => {
+    try {
+      if(!applicantId) return;
+      const respone = await getApplicantPage(Number(applicantId), 1);
+      pageDataArr.value = respone;
+    } catch (error) {
+      console.error('ошибка при получении данных страницы')
+    }
+  };
 
-
-  // const getPageData = async () => {
-  //   try {
-  //     if(!applicantId) return;
-  //     getApplicantPage(Number(applicantId), 1)
-  //   } catch (error) {
-  //     console.error('ошибка при получении данных страницы')
-  //   }
-  // };
-
-  // watch(() => companyStore.selectedCompany, () => {
-  //     getPageData()
-  //   },{ immediate: true }
-  // )
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
   
   return {
+    pageDataArr,
     breadCrumb,
     selectedStage,
     dataSwitch,

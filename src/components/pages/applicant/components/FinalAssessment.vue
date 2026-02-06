@@ -22,7 +22,6 @@ const {
 
 <template>
   <div class="final-assessment">
-
     <div class="final-assessment__title">
       <div>
         <p>{{ title }}</p>
@@ -31,7 +30,6 @@ const {
         <!-- hint -->
       </div>
     </div>
-
     <div class="final-assessment__content">
       <div class="score">
         <p>{{ score }}</p>
@@ -51,7 +49,6 @@ const {
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
