@@ -60,27 +60,29 @@ const setNewSelectValue = (id: number) => {
         ></span>
       </div>
     </div>
-    <div 
-      class="default-select__hide-block"
-      v-if="selectIsOpen"
-    >
-      <div
-        class="hide-item"
-        v-for="(item, index) in data"
-        :key="index"
-        @click="setNewSelectValue(item.id)"
+    <transition :name="'fade-slide'" mode="out-in">
+      <div 
+        class="default-select__hide-block"
+        v-if="selectIsOpen"
       >
-        <div>
-          <p>{{ item.value }}</p>
-        </div>
-        <div v-if="activeItem === item.id">
-          <span
-            class="svg check-svg"
-            v-html="selectIcons['check']"
-          ></span>
+        <div
+          class="hide-item"
+          v-for="(item, index) in data"
+          :key="index"
+          @click="setNewSelectValue(item.id)"
+        >
+          <div>
+            <p>{{ item.value }}</p>
+          </div>
+          <div v-if="activeItem === item.id">
+            <span
+              class="svg check-svg"
+              v-html="selectIcons['check']"
+            ></span>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -160,5 +162,25 @@ const setNewSelectValue = (id: number) => {
 
 .hide-item:hover {
   background: color.$colorBackgroundWhite_Hover;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity transition.$medium, transform transition.$medium, max-height transition.$medium;
+  overflow: hidden;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-14px);
+  max-height: 0;
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 400px;
 }
 </style>
