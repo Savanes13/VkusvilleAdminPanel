@@ -78,6 +78,10 @@ const {
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
 
+.applicant {
+  margin-bottom: 80px;
+}
+
 .applicant__management {
   margin-bottom: 24px;
 }
