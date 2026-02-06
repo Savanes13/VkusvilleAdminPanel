@@ -61,38 +61,6 @@ watch(() => errors, (errorsGrades) => {
   },{ deep: true }
 );
 
-const startEditing = (key: TEditingKey) => {
-  if (!props.editingIsActive) return;
-  if (editingKey.value === key) return;
-  editingKey.value = key;
-};
-
-
-
-const validateGrade = (key: TEditingKey, value: number) => {
-  const range = props.gradeRange[key];
-  if (!Number.isFinite(value)) {
-    return 'Введите число';
-  }
-  if (value < range.min || value > range.max) {
-    return `Значение должно быть от ${range.min} до ${range.max}`;
-  }
-  return null;
-};
-
-
-const onBlurGrade = (key: TEditingKey) => {
-  const value = localData.grades[key];
-  const error = validateGrade(key, value);
-  if (error) {
-    errors[key] = error;
-    return;
-  }
-  delete errors[key];
-  editingKey.value = null;
-};
-
-
 watch(
   () => localData.grades,
   (grades) => {
@@ -112,6 +80,34 @@ watch(
   },
   { deep: true }
 );
+
+const startEditing = (key: TEditingKey) => {
+  if (!props.editingIsActive) return;
+  if (editingKey.value === key) return;
+  editingKey.value = key;
+};
+
+const validateGrade = (key: TEditingKey, value: number) => {
+  const range = props.gradeRange[key];
+  if (!Number.isFinite(value)) {
+    return 'Введите число';
+  }
+  if (value < range.min || value > range.max) {
+    return `Значение должно быть от ${range.min} до ${range.max}`;
+  }
+  return null;
+};
+
+const onBlurGrade = (key: TEditingKey) => {
+  const value = localData.grades[key];
+  const error = validateGrade(key, value);
+  if (error) {
+    errors[key] = error;
+    return;
+  }
+  delete errors[key];
+  editingKey.value = null;
+};
 </script>
 
 <template>
@@ -136,8 +132,6 @@ watch(
         ></span>
       </div>
     </div>
-
-
     <div class="double-item">
       <div 
         class="stages__stage motivation-item edit-item" 
@@ -161,7 +155,6 @@ watch(
         />
         <p v-else>{{ localData.grades.Integrity }}</p>
       </div>
-
       <div 
         class="stages__stage argument-item edit-item"
         :class="{
@@ -184,7 +177,6 @@ watch(
         />
         <p v-else>{{ localData.grades.Arguments }}</p>
       </div>
-
       <div 
         class="stages__stage edit-item"
         :class="{
@@ -208,7 +200,6 @@ watch(
         <p v-else>{{ localData.grades.RealisticMeaningful }}</p>
       </div>
     </div>
-
     <div 
       class="line-table__item score-item edit-item"
       :class="{
@@ -234,7 +225,6 @@ watch(
     <div class="line-table__item comment-item">
       <p >{{ data.comment }}</p>
     </div>
-    
   </div>
 </template>
 

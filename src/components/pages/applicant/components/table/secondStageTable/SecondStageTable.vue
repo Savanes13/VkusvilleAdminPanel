@@ -29,6 +29,10 @@ interface IFirstStageTableProps {
   editingIsActive: boolean
 }
 
+type TEditingKey = 'Integrity' | 'Arguments' | 'RealisticMeaningful' | 'Original';
+
+type GradeErrors = Partial<Record<TEditingKey, string>>;
+
 const {
   editingIsActive,
 } = defineProps<IFirstStageTableProps>();
@@ -42,64 +46,66 @@ const applicantId = route.params.id;
 const pageDataArr = ref<null | IApplicantDataTypeSecondStage>(null);
 const companyStore = useCompanyStore();
 const undoChangesTriger = ref<boolean>(false);
-
 const showErrorsBlock = ref<boolean>(false);
+const allErrors = ref<Record<string, GradeErrors>>({});
+const combinedError = ref<string | null>(null);
 
-const ApplicantStab = {
-  display_name: "Тестовый Персонаж",
-  grades: {
-    3: {
-      expert: {
-        display_name: "Мамут Рахал",
-        level: 2
-      },
-      grades: {
-        Integrity: 2,
-        Arguments: 2,
-        RealisticMeaningful: 4,
-        Original: 2
-      },
-      comment: "Ну наш слоняра ну харош"
-    },
-    4: {
-      expert: {
-        display_name: "Мамут Рахал",
-        level: 1
-      },
-      grades: {
-        Integrity: 2,
-        Arguments: 2,
-        RealisticMeaningful: 4,
-        Original: 2
-      },
-      comment: 'fdsfd'
-    }
-  },
-  pass_info: {
-    is_passed: true,
-    total_grade: 12,
-    grade_1: 12,
-    grade_2: 12
-  },
-  grade_range: {
-    Integrity: {
-      min: 0,
-      max: 2
-    },
-    Arguments: {
-      min: 0,
-      max: 8
-    },
-    RealisticMeaningful: {
-      min: 0,
-      max: 2
-    },
-    Original: {
-      min: 0,
-      max: 2
-    },
-  }
-};
+
+// const ApplicantStab = {
+//   display_name: "Тестовый Персонаж",
+//   grades: {
+//     3: {
+//       expert: {
+//         display_name: "Мамут Рахал",
+//         level: 2
+//       },
+//       grades: {
+//         Integrity: 2,
+//         Arguments: 2,
+//         RealisticMeaningful: 4,
+//         Original: 2
+//       },
+//       comment: "Ну наш слоняра ну харош"
+//     },
+//     4: {
+//       expert: {
+//         display_name: "Мамут Рахал",
+//         level: 1
+//       },
+//       grades: {
+//         Integrity: 2,
+//         Arguments: 2,
+//         RealisticMeaningful: 4,
+//         Original: 2
+//       },
+//       comment: 'fdsfd'
+//     }
+//   },
+//   pass_info: {
+//     is_passed: true,
+//     total_grade: 12,
+//     grade_1: 12,
+//     grade_2: 12
+//   },
+//   grade_range: {
+//     Integrity: {
+//       min: 0,
+//       max: 2
+//     },
+//     Arguments: {
+//       min: 0,
+//       max: 8
+//     },
+//     RealisticMeaningful: {
+//       min: 0,
+//       max: 2
+//     },
+//     Original: {
+//       min: 0,
+//       max: 2
+//     },
+//   }
+// };
 
 const pathRequestData: PathRequestData = {
   abit_id: Number(applicantId),
@@ -118,7 +124,6 @@ const undoChanges = () => {
 
 const changesFieldInLine = (id: string, obj: Grades) => {
   pathRequestData.patched_grades[id] = obj;
-  pathRequestData.patched_grades;
   showErrorsBlock.value = false;
 };
 
@@ -130,7 +135,6 @@ const valideteNewValue = () => {
   return true
 }
 
-
 const setNewValues = async () => {
   try {
     if(!valideteNewValue()) return
@@ -140,8 +144,6 @@ const setNewValues = async () => {
     console.error("ошибка при изменении значений")
   };
 };
-
-
 
 const getPageData = async () => {
   try {
@@ -159,17 +161,9 @@ watch(() => companyStore.selectedCompany, () => {
   },{ immediate: true }
 )
 
-
-
-
 const closeErrorBlock = () => {
   showErrorsBlock.value = false;
 }
-
-type TEditingKey = 'Integrity' | 'Arguments' | 'RealisticMeaningful' | 'Original';
-type GradeErrors = Partial<Record<TEditingKey, string>>;
-const allErrors = ref<Record<string, GradeErrors>>({});
-const combinedError = ref<string | null>(null);
 
 const fieldNames: Record<TEditingKey, string> = {
   Integrity: 'Целостность решения',
@@ -199,9 +193,6 @@ const getErrors = (index: string, errors: GradeErrors) => {
     class="applicant-table"
     v-if="pageDataArr"
   >
-
-  {{ combinedError }}
-
     <div class="table-wrapper">
       <div class="main-table">
         <HeaderTable/>
@@ -252,7 +243,6 @@ const getErrors = (index: string, errors: GradeErrors) => {
         :score="pageDataArr.pass_info.grade_2"
       />
     </div>
-
     <transition name="fadeFast">
       <div 
         class="errors-block"
