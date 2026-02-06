@@ -36,6 +36,7 @@ const {
   gap: 8px;
   font-weight: 500;
   font-size: 32px;
+  align-items: center;
   line-height: 100%;
   color: #333333;
   margin-bottom: 24px

@@ -29,17 +29,16 @@ const toggleHint = () => {
 
 <template>
   <div class="hint-item">
-    
     <div 
       class="hint-item__icon"
       :class="{'hint-item__icon--active' : isHintVisible}"
-      @click="toggleHint "
+      @click="toggleHint"
     >
       <span
+        class="svg"
         v-html="mainIcons['hint']"
       ></span>
     </div>
-
     <transition name="fadeFast">
       <div 
         class="hint-item__content"
@@ -51,7 +50,6 @@ const toggleHint = () => {
         <p>{{ text }}</p>
       </div>
     </transition>
-
   </div>
 </template>
 
@@ -254,5 +252,13 @@ const toggleHint = () => {
   &--right-bottom::before {
     bottom: 12px;
   }
+}
+
+.svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 </style>

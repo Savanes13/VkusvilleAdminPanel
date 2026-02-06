@@ -148,31 +148,33 @@ const moveNextStage = async () => {
         <div>
           <HintItem
             text="Позволяет продлить дедлайн для этапа. Абитуриент сможет отправить задание после первоначального срока."
-            :width="300"
-            :height="80"
-            position="bottom-center"
+            :width="270"
+            :height="100"
+            position="bottom-right"
           />
         </div>
-        <div 
-          class="management-item__modal"
-          v-if="isDayModalOpen"
-          v-clickOutside="toggleDayModal"
-          @click.stop
-        >
-          <DefaultInput
-            class="day-input"
-            v-model:value="dayInputObj.value"
-            :label="dayInputObj.label"
-            :placeholder="dayInputObj.placeholder"
-            :error="dayInputObj.error"
-          />  
-          <DefaultButton
-            class="default-button__size--large default-button__color-green"
-            @click="giveMoreDays"
+        <transition name="fadeFast">
+          <div 
+            class="management-item__modal"
+            v-if="isDayModalOpen"
+            v-clickOutside="toggleDayModal"
+            @click.stop
           >
-            Выдать
-          </DefaultButton>
-        </div>
+            <DefaultInput
+              class="day-input"
+              v-model:value="dayInputObj.value"
+              :label="dayInputObj.label"
+              :placeholder="dayInputObj.placeholder"
+              :error="dayInputObj.error"
+            />  
+            <DefaultButton
+              class="default-button__size--large default-button__color-green"
+              @click="giveMoreDays"
+            >
+              Выдать
+            </DefaultButton>
+          </div>
+        </transition>
       </div>
       <div 
         class="management-item"
@@ -184,43 +186,45 @@ const moveNextStage = async () => {
         <div>
           <HintItem
             text="Ручной перевод абитуриента на следующий этап вне зависимости от сроков и полученных баллов."
-            :width="300"
+            :width="270"
             :height="80"
-            position="bottom-center"
+            position="bottom-right"
           />
         </div>
-        <div 
-          class="management-item__modal"
-          v-if="isStageModalOpen"
-          v-clickOutside="toggleStageModal"
-          @click.stop
-        >
-          <div class="you-sure">
-            <p>Вы уверены?</p>
-          </div>
-          <transition :name="'fade-slide'" mode="out-in">
-            <div 
-              v-if="errorNextStage.show"
-              class="error-stage"
-            >
-              <p>{{ errorNextStage.text }}</p>
+        <transition name="fadeFast">
+          <div 
+            class="management-item__modal"
+            v-if="isStageModalOpen"
+            v-clickOutside="toggleStageModal"
+            @click.stop
+          >
+            <div class="you-sure">
+              <p>Вы уверены?</p>
             </div>
-          </transition>
-          <div class="buttons-block">
-            <DefaultButton
-              class="default-button__size--large default-button__color-gray"
-              @click="toggleStageModal"
-            >
-              Отменить
-            </DefaultButton>
-            <DefaultButton
-              class="default-button__size--large default-button__color-green"
-              @click="moveNextStage"
-            >
-              Перевести
-            </DefaultButton>
+            <transition :name="'fade-slide'" mode="out-in">
+              <div 
+                v-if="errorNextStage.show"
+                class="error-stage"
+              >
+                <p>{{ errorNextStage.text }}</p>
+              </div>
+            </transition>
+            <div class="buttons-block">
+              <DefaultButton
+                class="default-button__size--large default-button__color-gray"
+                @click="toggleStageModal"
+              >
+                Отменить
+              </DefaultButton>
+              <DefaultButton
+                class="default-button__size--large default-button__color-green"
+                @click="moveNextStage"
+              >
+                Перевести
+              </DefaultButton>
+            </div>
           </div>
-        </div>
+        </transition>
       </div>
     </div>
     <transition name="fadeFast">
@@ -273,6 +277,7 @@ const moveNextStage = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   height: 44px;
   background: color.$colorBackgroundSecondary;
   border-radius: 16px;
@@ -375,6 +380,15 @@ const moveNextStage = async () => {
 @media (max-width: 950px) {
   .applicant-management__content {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 450px) {
+  .success-block {
+    width: 310px;
+    font-size: 14px;
+    line-height: 20px;
+    bottom: 70px;
   }
 }
 </style>
