@@ -56,11 +56,6 @@ const {
   color: color.$colorTextPrimary !important;
   padding: 12px 0px;
   .svg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
     :deep(svg path) {
       fill: color.$colorTextPrimary;
     }
