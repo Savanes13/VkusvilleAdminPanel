@@ -165,7 +165,7 @@ const toggleHint = () => {
   }
 
   &--bottom-left::before {
-    left: 12px;
+    left: 7px;
   }
 
   &--bottom-center::before {
@@ -174,7 +174,7 @@ const toggleHint = () => {
   }
 
   &--bottom-right::before {
-    right: 12px;
+    right: 7px;
   }
 
   &--top-left::before,
