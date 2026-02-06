@@ -62,16 +62,11 @@ watch(() => errors, (errorsGrades) => {
   },{ deep: true }
 );
 
-
-
-const toggleEditingKey = (key: TEditingKey) => {
-  if (editingKey.value === key) {
-    editingKey.value = null;
-  } else {
-    editingKey.value = key
-  };
+const startEditing = (key: TEditingKey) => {
+  if (!props.editingIsActive) return;
+  if (editingKey.value === key) return;
+  editingKey.value = key;
 };
-
 
 
 
@@ -153,7 +148,7 @@ watch(
           'edit-item--active' : editingKey === 'ContentMotivation' && props.editingIsActive,
           'edit-item--error' : errors.ContentMotivation
          }"
-        @dblclick="toggleEditingKey('ContentMotivation')"
+        @click="startEditing('ContentMotivation')"
       >
         <input
           type="number"
@@ -176,7 +171,7 @@ watch(
           'edit-item--active' : editingKey === 'StructLogic' && props.editingIsActive,
           'edit-item--error' : errors.StructLogic
          }"
-        @dblclick="toggleEditingKey('StructLogic')"
+         @click="startEditing('StructLogic')"
       >
         <input
           type="number"
@@ -199,7 +194,7 @@ watch(
         'edit-item--active' : editingKey === 'ProgramGoals' && props.editingIsActive,
         'edit-item--error' : errors.ProgramGoals
        }"
-      @dblclick="toggleEditingKey('ProgramGoals')"
+      @click="startEditing('ProgramGoals')"
     >
       <input
         type="number"

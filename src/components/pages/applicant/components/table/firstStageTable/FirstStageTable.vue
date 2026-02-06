@@ -44,55 +44,55 @@ const undoChangesTriger = ref<boolean>(false);
 
 const showErrorsBlock = ref<boolean>(false);
 
-// const ApplicantStab = {
-//   display_name: "Тестовый Персонаж",
-//   grades: {
-//     3: {
-//       expert: {
-//         display_name: "Мамут Рахал",
-//         level: 2
-//       },
-//       grades: {
-//         StructLogic: 2,
-//         ContentMotivation: 8,
-//         ProgramGoals: 2
-//       },
-//       comment: "Ну наш слоняра ну харош"
-//     },
-//     4: {
-//       expert: {
-//         display_name: "Мамут Рахал",
-//         level: 1
-//       },
-//       grades: {
-//         StructLogic: 2,
-//         ContentMotivation: 8,
-//         ProgramGoals: 2
-//       },
-//       comment: 'fdsfd'
-//     }
-//   },
-//   pass_info: {
-//     is_passed: true,
-//     total_grade: 12,
-//     grade_1: 12,
-//     grade_2: 12
-//   },
-//   grade_range: {
-//     StructLogic: {
-//       min: 0,
-//       max: 2
-//     },
-//     ContentMotivation: {
-//       min: 0,
-//       max: 8
-//     },
-//     ProgramGoals: {
-//       min: 0,
-//       max: 2
-//     }
-//   }
-// };
+const ApplicantStab = {
+  display_name: "Тестовый Персонаж",
+  grades: {
+    3: {
+      expert: {
+        display_name: "Мамут Рахал",
+        level: 2
+      },
+      grades: {
+        StructLogic: 2,
+        ContentMotivation: 8,
+        ProgramGoals: 2
+      },
+      comment: "Ну наш слоняра ну харош"
+    },
+    4: {
+      expert: {
+        display_name: "Мамут Рахал",
+        level: 1
+      },
+      grades: {
+        StructLogic: 2,
+        ContentMotivation: 8,
+        ProgramGoals: 2
+      },
+      comment: 'fdsfd'
+    }
+  },
+  pass_info: {
+    is_passed: true,
+    total_grade: 12,
+    grade_1: 12,
+    grade_2: 12
+  },
+  grade_range: {
+    StructLogic: {
+      min: 0,
+      max: 2
+    },
+    ContentMotivation: {
+      min: 0,
+      max: 8
+    },
+    ProgramGoals: {
+      min: 0,
+      max: 2
+    }
+  }
+};
 
 
 
@@ -142,9 +142,9 @@ const setNewValues = async () => {
 const getPageData = async () => {
   try {
     if(!applicantId) return;
-    // pageDataArr.value = ApplicantStab
-    const response = await getApplicantPage(Number(applicantId), 1);
-    pageDataArr.value = response;
+    pageDataArr.value = ApplicantStab
+    // const response = await getApplicantPage(Number(applicantId), 1);
+    // pageDataArr.value = response;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }

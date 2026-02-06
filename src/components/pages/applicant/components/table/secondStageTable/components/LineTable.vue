@@ -55,12 +55,10 @@ watch(() => localData.grades, (newGrades) => {
   },{ deep: true }
 );
 
-const toggleEditingKey = (key: TEditingKey) => {
-  if (editingKey.value === key) {
-    editingKey.value = null;
-  } else {
-    editingKey.value = key
-  };
+const startEditing = (key: TEditingKey) => {
+  if (!props.editingIsActive) return;
+  if (editingKey.value === key) return;
+  editingKey.value = key;
 };
 </script>
 
@@ -92,7 +90,7 @@ const toggleEditingKey = (key: TEditingKey) => {
       <div 
         class="stages__stage motivation-item edit-item" 
         :class="{'edit-item--active' : editingKey === 'Integrity' && props.editingIsActive }"
-        @dblclick="toggleEditingKey('Integrity')"
+        @click="startEditing('Integrity')"
       >
         <input
           class="editable-input"
@@ -108,7 +106,7 @@ const toggleEditingKey = (key: TEditingKey) => {
       <div 
         class="stages__stage argument-item edit-item"
         :class="{'edit-item--active' : editingKey === 'Arguments' && props.editingIsActive }"
-        @dblclick="toggleEditingKey('Arguments')"
+        @click="startEditing('Arguments')"
       >
         <input
           class="editable-input"
@@ -124,7 +122,7 @@ const toggleEditingKey = (key: TEditingKey) => {
       <div 
         class="stages__stage edit-item"
         :class="{'edit-item--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive }"
-        @dblclick="toggleEditingKey('RealisticMeaningful')"
+        @click="startEditing('RealisticMeaningful')"
       >
         <input
           class="editable-input"
@@ -141,7 +139,7 @@ const toggleEditingKey = (key: TEditingKey) => {
     <div 
       class="line-table__item score-item edit-item"
       :class="{'edit-item--active' : editingKey === 'Original' && props.editingIsActive }"
-      @dblclick="toggleEditingKey('Original')"
+      @click="startEditing('Original')"
     >
       <input
         class="editable-input"
