@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { giveMoreDaysForWork, moveToNextStage } from '@/api/pages/applicant/apiApplicant';
+import HintItem from '@/components/shared/elements/HintItem.vue';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
@@ -145,7 +146,12 @@ const moveNextStage = async () => {
           <p>Дать дополнительное время</p>
         </div>
         <div>
-          <!-- hint -->
+          <HintItem
+            text="Позволяет продлить дедлайн для этапа. Абитуриент сможет отправить задание после первоначального срока."
+            :width="300"
+            :height="80"
+            position="bottom-center"
+          />
         </div>
         <div 
           class="management-item__modal"
@@ -176,7 +182,12 @@ const moveNextStage = async () => {
           <p>Перевести на следующий этап</p>
         </div>
         <div>
-          <!-- hint -->
+          <HintItem
+            text="Ручной перевод абитуриента на следующий этап вне зависимости от сроков и полученных баллов."
+            :width="300"
+            :height="80"
+            position="bottom-center"
+          />
         </div>
         <div 
           class="management-item__modal"

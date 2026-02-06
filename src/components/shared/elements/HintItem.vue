@@ -32,6 +32,7 @@ const toggleHint = () => {
     
     <div 
       class="hint-item__icon"
+      :class="{'hint-item__icon--active' : isHintVisible}"
       @click="toggleHint "
     >
       <span
@@ -56,6 +57,7 @@ const toggleHint = () => {
 
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
+@use "@/style/variables/transition.scss" as transition;
 
 .hint-item {
   position: relative;
@@ -63,6 +65,19 @@ const toggleHint = () => {
 
 .hint-item__icon {
   cursor: pointer;
+}
+
+.hint-item__icon:hover {
+  :deep(svg path) {
+    transition: fill transition.$fast;
+    fill: color.$colorTextSecondary;
+  } 
+}
+
+.hint-item__icon--active {
+  :deep(svg path) {
+    fill: color.$colorTextPrimary !important
+  } 
 }
 
 .hint-item__content {
