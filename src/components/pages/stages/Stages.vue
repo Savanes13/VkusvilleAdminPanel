@@ -10,10 +10,12 @@ import { ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
+import { useCompanyStore } from '@/store/company/companyStore';
 
 const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
+const companyStore = useCompanyStore();
 
 watch(stageWindowVisibility, (val) => {
   if (val) {
@@ -58,7 +60,11 @@ const getPageData = async () => {
     console.error('ошибка при получении данных страницы')
   }
 }
-getPageData();
+
+watch(() => companyStore.selectedCompany, () => {
+    getPageData()
+  },{ immediate: true }
+)
 </script>
 
 <template>

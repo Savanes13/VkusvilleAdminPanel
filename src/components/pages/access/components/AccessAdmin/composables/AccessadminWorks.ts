@@ -1,7 +1,8 @@
 import { createAccessToken, deleteAccessAdminsAdminPanel, deleteAccessToken, getAccessAdminsAdminPanel, getAccessTokens } from "@/api/pages/access/apiAccess";
+import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TDataAdminAdminsAccess, TDataTokenAccess } from "@/types/pages/access/accessTypes";
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 
 export default function AccessadminWorks () {
   const selectedItemAdmin = ref<number>(1);
@@ -9,6 +10,7 @@ export default function AccessadminWorks () {
   const adminTableArr = ref<null | TDataAdminAdminsAccess>(null);
   const showTokenWindow = ref<boolean>(false);
   const createdToken = ref<string>('');
+  const companyStore = useCompanyStore();
   
   const selectArr = [
     {
@@ -79,7 +81,11 @@ export default function AccessadminWorks () {
       console.error("ошибка при получении данных");
     }
   };
-  getPageData();
+  
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
 
   return {
     selectedItemAdmin,

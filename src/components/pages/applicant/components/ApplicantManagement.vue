@@ -176,13 +176,14 @@ const moveNextStage = async () => {
 
 .management-item__modal {
   position: absolute;
-  top: 60px;
+  top: 55px;
   width: 100%;
   padding: 16px;
   background: color.$colorTextWhite;
   border: 0.5px solid #DDE0E8;
   border-radius: 16px;
   box-shadow: 0px 15px 36.8px 0px #00000026;
+  z-index: 1;
 }
 
 .day-input {

@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import ColumnTable from './components/columnTable/ColumnTable.vue';
 import TimeBlock from './components/timeBlock/TimeBlock.vue';
 
 type Interview = {
+  id: number
   start_time: number;
   reviewer_ids: number[];
 };
@@ -20,33 +22,36 @@ const {
   data
 } = defineProps<IInterviewsTableProps>();
 
-const daysOfMonth = data.map(item => {
-  const date = new Date(item.day);
-  return date.getDate();
-});
-// можно уникализироовать по timestamp
+const emit = defineEmits<{
+  (e: 'openAddWindow', id: number, experts: number[]): void
+}>();
+
+const daysOfMonth = computed(() =>
+  data.map(item => {
+    const date = new Date(item.day);
+    return date.getDate();
+  })
+);
+
+const openAddExpertWindow = (id: number, arrExperts: number[]) => {
+  emit('openAddWindow', id, arrExperts)
+}
 </script>
 
 <template>
-  <div class="table">
-    
-
-    <!-- {{ data }} -->
-
-    <!-- {{ daysOfMonth }} -->
-    
+  <div class="table">     
     <TimeBlock/>
 
     <div class="table__columns">
       <ColumnTable
         v-for="(item, index) in data"
         :data="item"
-        :index="index"
-        :number-day="daysOfMonth[index]"
+        :index-column="index"
+        :number-day="daysOfMonth[index]!"
         :key="index"
+        @open-add-window="openAddExpertWindow"
       />
     </div>
-
   </div>
 </template>
 
@@ -59,6 +64,6 @@ const daysOfMonth = data.map(item => {
 
 .table__columns {
   display: flex;
-  flex: 1;        // ← занимает всю доступную ширину
+  flex: 1; 
 }
 </style>

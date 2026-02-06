@@ -107,6 +107,7 @@ const closeWindow = () => {
 
 .key-item {
   flex: 330;
+  overflow: hidden;
 }
 
 .empty-item {

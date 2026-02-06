@@ -4,7 +4,9 @@
 
 <template>
   <div class="time-block">
-    
+    <div class="time-block__item">
+      <p></p>
+    </div>
     <div class="time-block__item">
       <p>09:00</p>
     </div>

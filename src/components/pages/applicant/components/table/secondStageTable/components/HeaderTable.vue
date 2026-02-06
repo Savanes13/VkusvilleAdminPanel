@@ -9,23 +9,26 @@
     </div>
 
     <div class="table-header__double-cell">
-      <div class="title">
+      <!-- <div class="title">
         <div>
           <p>Баллы по критериям</p>
         </div>
-      </div>
+      </div> -->
       <div class="stages">
         <div class="stages__stage">
-          <p>Мотивация</p>
+          <p>Целостность решения</p>
         </div>
         <div class="stages__stage">
-          <p>Структура и логика</p>
+          <p>Аргументация предложенного решения</p>
+        </div>
+        <div class="stages__stage">
+          <p>Реалистичность и здравый смысл</p>
         </div>
       </div>
     </div>
 
     <div class="table-header__big-cell summary-cell">
-      <p>Итоговый балл</p>
+      <p>Оригинальность подхода</p>
     </div>
     <div class="table-header__big-cell comment-cell">
       <p>Комментарий</p>
@@ -87,7 +90,11 @@
   flex: 1;
 }
 
-.stages__stage:first-child {
+.stages__stage:nth-child(1) {
+  border-right: 1px solid #DDE0E8;
+}
+
+.stages__stage:nth-child(2) {
   border-right: 1px solid #DDE0E8;
 }
 

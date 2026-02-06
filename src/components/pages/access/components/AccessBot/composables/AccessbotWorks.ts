@@ -1,4 +1,5 @@
 import { createAccessAdmin, deleteContentAccessAdmin, getContentAccessAdmins } from "@/api/pages/access/apiAccess";
+import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TAdminRole, TDataAdmins } from "@/types/pages/access/accessTypes";
 import { reactive, ref, watch } from "vue";
@@ -6,6 +7,7 @@ import { reactive, ref, watch } from "vue";
 export default function AccessbotWorks () {
   const pageDataArr = ref<null | TDataAdmins>(null);
   const selectedItemBot = ref<number>(1);
+  const companyStore = useCompanyStore();
 
   const phoneInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -131,7 +133,11 @@ export default function AccessbotWorks () {
       console.error("ошибка при получении данных")
     };
   };
-  getPageData();
+  
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
 
   return {
     pageDataArr,

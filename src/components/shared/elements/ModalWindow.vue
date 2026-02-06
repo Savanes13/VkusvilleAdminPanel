@@ -66,6 +66,8 @@ const closeWindow = () => {
 </template>
 
 <style lang="scss" scoped>
+@use "@/style/variables/color.scss" as color;
+
 .modal-window {
   width: 100%;
   position: relative;
@@ -74,6 +76,25 @@ const closeWindow = () => {
   background: #FFFFFF;
   max-height: calc(100vh - 40px);
   overflow-y: auto;
+}
+
+.modal-window::-webkit-scrollbar {
+  width: 8px;
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.modal-window::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.modal-window::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
 }
 
 .modal-window__header {

@@ -1,17 +1,72 @@
+import { getApplicantPage } from "@/api/pages/applicant/apiApplicant";
+import { useCompanyStore } from "@/store/company/companyStore";
+import type { IApplicantDataTypeFirstStage } from "@/types/pages/applicant/applicantTypes";
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
 export default function applicantWorks () {
-  const breadCrumb = [
+  type TStages = "stage1" | "stage2"
+
+  const companyStore = useCompanyStore();
+
+  const route = useRoute();
+  const applicantId = route.params.id;
+  const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
+  const selectedStage = ref<TStages>('stage1');
+  const editingIsActive = ref<boolean>(false);
+
+  const activateEditing = () => {
+    editingIsActive.value = true;
+  };
+
+  const finishEditing = () => {
+    editingIsActive.value = false;
+  };
+
+  const breadCrumb = computed(() => [
     {
-      name: "Главная",
-      path: "/"
+      name: "Абитуриенты",
+      path: "/applicants"
     },
     {
-      name: "Корзина",
-      path: "/cart"
+      name: pageDataArr.value?.display_name ?? "",
+      path: `/applicant/${applicantId}`
+    }
+  ]);
+
+  const dataSwitch = [
+    {
+      name: "stage1",
+      text: "1 этап"
     },
+    {
+      name: "stage2",
+      text: "2 этап"
+    }
   ];
 
+  const getPageData = async () => {
+    try {
+      if(!applicantId) return;
+      const respone = await getApplicantPage(Number(applicantId), 1);
+      pageDataArr.value = respone;
+    } catch (error) {
+      console.error('ошибка при получении данных страницы')
+    }
+  };
+
+  watch(() => companyStore.selectedCompany, () => {
+      getPageData()
+    },{ immediate: true }
+  )
   
   return {
-    breadCrumb
+    pageDataArr,
+    breadCrumb,
+    selectedStage,
+    dataSwitch,
+    editingIsActive,
+    activateEditing,
+    finishEditing
   }
 }
