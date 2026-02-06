@@ -3,8 +3,13 @@ import { giveMoreDaysForWork, moveToNextStage } from '@/api/pages/applicant/apiA
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import type { IInputDefaultProps } from '@/types/inputs/types';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+
+interface IErrorNextStage {
+  show: boolean
+  text: string
+}
 
 const dayInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -20,6 +25,18 @@ const route = useRoute();
 const applicantId = route.params.id;
 const isDayModalOpen = ref<boolean>(false);
 const isStageModalOpen = ref<boolean>(false);
+const errorNextStage = ref<IErrorNextStage>({
+  show: false,
+  text: ''
+})
+
+watch(() => dayInputObj.value, () => {
+  dayInputObj.error.show = false;
+});
+
+watch(() => isStageModalOpen.value, () => {
+  errorNextStage.value.show = false;
+});
 
 const toggleDayModal = () => {
   isDayModalOpen.value = !isDayModalOpen.value;
@@ -27,6 +44,10 @@ const toggleDayModal = () => {
 
 const toggleStageModal = () => {
   isStageModalOpen.value = !isStageModalOpen.value;
+};
+
+const onlyDigits = (): boolean => {
+  return /^\d+$/.test(dayInputObj.value);
 };
 
 const daysToSeconds = () => {
@@ -40,9 +61,20 @@ const daysToSeconds = () => {
 const giveMoreDays = async () => {
   try {
     if (!applicantId) return
+    if (!onlyDigits()) {
+      dayInputObj.error.show = true;
+      dayInputObj.error.text = "вводите только цифры"
+      return;
+    };
     await giveMoreDaysForWork(Number(applicantId), daysToSeconds());
-  } catch (error) {
-    console.error('ошибка при выдаче доп времени')
+  } catch (error: any) {
+    if(error.message) {
+      dayInputObj.error.show = true;
+      dayInputObj.error.text = error.message
+    } else {
+      dayInputObj.error.show = true;
+      dayInputObj.error.text = 'ошибка при предоставлении доп времени'
+    }
   }
 }
 
@@ -50,8 +82,14 @@ const moveNextStage = async () => {
   try {
     if (!applicantId) return
     await moveToNextStage(Number(applicantId));
-  } catch (error) {
-    console.error('ошибка при переводе на следующий этап')
+  } catch (error: any) {
+    if(error.message) {
+      errorNextStage.value.show = true;
+      errorNextStage.value.text = error.message
+    } else {
+      errorNextStage.value.show = true;
+      errorNextStage.value.text = 'ошибка при переводе на следущий этап'
+    }
   }
 }
 </script>
@@ -112,6 +150,14 @@ const moveNextStage = async () => {
           <div class="you-sure">
             <p>Вы уверены?</p>
           </div>
+          <transition :name="'fade-slide'" mode="out-in">
+            <div 
+              v-if="errorNextStage.show"
+              class="error-stage"
+            >
+              <p>{{ errorNextStage.text }}</p>
+            </div>
+          </transition>
           <div class="buttons-block">
             <DefaultButton
               class="default-button__size--large default-button__color-gray"
@@ -195,12 +241,41 @@ const moveNextStage = async () => {
   font-size: 16px;
   line-height: 24px;
   color: color.$colorTextPrimary;
-  margin-bottom: 16px;
 }
 
 .buttons-block {
   display: flex;
   gap: 8px;
+  margin-top: 16px;
+}
+
+.error-stage {
+  color: #FF3347;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+
+/* Анимация появления/исчезновения ошибки */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity transition.$medium, transform transition.$medium, max-height transition.$medium;
+  overflow: hidden;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-14px);
+  max-height: 0;
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 100px;
 }
 
 @media (max-width: 950px) {

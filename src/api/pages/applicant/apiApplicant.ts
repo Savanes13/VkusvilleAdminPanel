@@ -21,7 +21,13 @@ export const moveToNextStage = async (abit_id: number): Promise<any> => {
     const response: AxiosResponse = await api.post(`/api/abit/next_stage`, request);
     return response.data;
   } catch (error: unknown) {
-    if (error instanceof AxiosError && error.response) throw error.response;
+    if (error instanceof AxiosError && error.response) {
+      const detail = (error.response.data as any)?.detail;
+      if (detail) {
+        throw new Error(detail);
+      }
+      throw error.response;
+    }
     throw new Error('An unknown error');
   }
 };
@@ -33,7 +39,13 @@ export const giveMoreDaysForWork = async (abit_id: number, extend_time: number):
     const response: AxiosResponse = await api.post(`/api/abit/extend_stage_time`, request);
     return response.data;
   } catch (error: unknown) {
-    if (error instanceof AxiosError && error.response) throw error.response;
+    if (error instanceof AxiosError && error.response) {
+      const detail = (error.response.data as any)?.detail;
+      if (detail) {
+        throw new Error(detail);
+      }
+      throw error.response;
+    }
     throw new Error('An unknown error');
   }
 };
