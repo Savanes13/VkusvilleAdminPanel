@@ -7,6 +7,7 @@ import type { IDashboardData } from '@/types/pages/dashboard/typesDashboard';
 import { ref, watch } from 'vue';
 import { buttonIcons } from '@/components/shared/icons/button/icons';
 import { useCompanyStore } from '@/store/company/companyStore';
+import HintItem from '@/components/shared/elements/HintItem.vue';
 
 const padeDataArr = ref<null | IDashboardData>(null);
 const companyStore = useCompanyStore();
@@ -37,7 +38,14 @@ watch(() => companyStore.selectedCompany, () => {
     <div class="dashboard__second-section">
       <WrapperBlock class="stages-charts">
         <div class="stages-charts__title">
-          <p>Конверсия движения абитуриентов</p>
+          <div>
+            <p>Конверсия движения абитуриентов</p>
+          </div>
+          <HintItem
+            text="Процент зарегистрированных абитуриентов, оказавшихся на каждом этапе, включая тех, кто не прошёл дальше."
+            :width="330"
+            :height="80"
+          />
         </div>
 
         <div class="stages-charts__elements">
@@ -74,7 +82,11 @@ watch(() => companyStore.selectedCompany, () => {
             <p>Cредний балл</p>
           </div>
           <div>
-            <!-- подсказка -->
+            <HintItem
+              text="Средняя оценка по конкретному заданию. Используется, чтобы корректировать порог допуска, если этап проходит слишком мало абитуриентов."
+              :width="330"
+              :height="100"
+            />
           </div>
         </div>
 
@@ -234,6 +246,8 @@ watch(() => companyStore.selectedCompany, () => {
 }
 
 .average-score__header {
+  display: flex;
+  gap: 8px;
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 24px;
@@ -251,6 +265,8 @@ watch(() => companyStore.selectedCompany, () => {
 }
 
 .stages-charts__title {
+  display: flex;
+  gap: 8px;
   font-weight: 500;
   font-size: 24px;
   line-height: 25px;
