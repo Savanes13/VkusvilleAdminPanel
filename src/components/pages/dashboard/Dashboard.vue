@@ -45,6 +45,7 @@ watch(() => companyStore.selectedCompany, () => {
             text="Процент зарегистрированных абитуриентов, оказавшихся на каждом этапе, включая тех, кто не прошёл дальше."
             :width="330"
             :height="80"
+            position="bottom-center"
           />
         </div>
 
@@ -86,6 +87,7 @@ watch(() => companyStore.selectedCompany, () => {
               text="Средняя оценка по конкретному заданию. Используется, чтобы корректировать порог допуска, если этап проходит слишком мало абитуриентов."
               :width="330"
               :height="100"
+              position="bottom-center"
             />
           </div>
         </div>
