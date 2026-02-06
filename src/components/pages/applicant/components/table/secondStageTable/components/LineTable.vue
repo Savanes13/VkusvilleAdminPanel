@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { mainIcons } from '@/components/shared/icons/mainIcons';
+import type { IGradeRangeSecond } from '@/types/pages/applicant/applicantTypes';
 import { reactive, ref, watch } from 'vue';
 
 type TEditingKey = 'Integrity' | 'Arguments' | 'RealisticMeaningful' | 'Original';
@@ -26,16 +27,21 @@ interface ILineTableProps {
   data: ExpertData;
   editingIsActive: boolean;
   undoChangesTriger: boolean
+  gradeRange: IGradeRangeSecond;
   lastLine: boolean;
 }
+
+type GradeErrors = Partial<Record<TEditingKey, string>>;
 
 const props = defineProps<ILineTableProps>();
 
 const emit = defineEmits<{
   (e: 'changeScores', obj: Grades): void;
+  (e: 'errors', obj: GradeErrors): void;
 }>();
 
 const editingKey = ref<null | TEditingKey>(null);
+const errors = reactive<GradeErrors>({});
 
 // локальная копия объекта строки
 const localData = reactive<ExpertData>({
@@ -50,8 +56,8 @@ watch(() => props.undoChangesTriger, () => {
   localData.comment = props.data.comment;
 }, { deep: true });
 
-watch(() => localData.grades, (newGrades) => {
-    emit('changeScores', { ...newGrades });
+watch(() => errors, (errorsGrades) => {
+    emit('errors', errorsGrades);
   },{ deep: true }
 );
 
@@ -60,6 +66,52 @@ const startEditing = (key: TEditingKey) => {
   if (editingKey.value === key) return;
   editingKey.value = key;
 };
+
+
+
+const validateGrade = (key: TEditingKey, value: number) => {
+  const range = props.gradeRange[key];
+  if (!Number.isFinite(value)) {
+    return 'Введите число';
+  }
+  if (value < range.min || value > range.max) {
+    return `Значение должно быть от ${range.min} до ${range.max}`;
+  }
+  return null;
+};
+
+
+const onBlurGrade = (key: TEditingKey) => {
+  const value = localData.grades[key];
+  const error = validateGrade(key, value);
+  if (error) {
+    errors[key] = error;
+    return;
+  }
+  delete errors[key];
+  editingKey.value = null;
+};
+
+
+watch(
+  () => localData.grades,
+  (grades) => {
+    const hasErrors = (Object.keys(grades) as TEditingKey[]).some((key) => {
+      const error = validateGrade(key, grades[key]);
+      if (error) {
+        errors[key] = error;
+        return true;
+      }
+      delete errors[key];
+      return false;
+    });
+
+    if (!hasErrors) {
+      emit('changeScores', { ...grades });
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -89,15 +141,22 @@ const startEditing = (key: TEditingKey) => {
     <div class="double-item">
       <div 
         class="stages__stage motivation-item edit-item" 
-        :class="{'edit-item--active' : editingKey === 'Integrity' && props.editingIsActive }"
+        :class="{
+          'edit-item--active' : editingKey === 'Integrity' && props.editingIsActive,
+          'edit-item--error' : errors.Integrity
+         }"
         @click="startEditing('Integrity')"
       >
         <input
+          type="number"
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'Integrity' && props.editingIsActive}"
+          :class="{
+            'editable-input--active' : editingKey === 'Integrity' && props.editingIsActive,
+            'editable-input--error' : errors.Integrity
+          }"
           v-if="editingKey === 'Integrity' && props.editingIsActive"
           v-model.number="localData.grades.Integrity"
-          @blur="editingKey = null"
+          @blur="onBlurGrade('Integrity')"
           autofocus
         />
         <p v-else>{{ localData.grades.Integrity }}</p>
@@ -105,15 +164,22 @@ const startEditing = (key: TEditingKey) => {
 
       <div 
         class="stages__stage argument-item edit-item"
-        :class="{'edit-item--active' : editingKey === 'Arguments' && props.editingIsActive }"
+        :class="{
+          'edit-item--active' : editingKey === 'Arguments' && props.editingIsActive,
+          'edit-item--error' : errors.Arguments
+         }"
         @click="startEditing('Arguments')"
       >
         <input
+          type="number"
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'Arguments' && props.editingIsActive}"
+          :class="{
+            'editable-input--active' : editingKey === 'Arguments' && props.editingIsActive,
+            'editable-input--error' : errors.Arguments
+          }"
           v-if="editingKey === 'Arguments' && props.editingIsActive"
           v-model.number="localData.grades.Arguments"
-          @blur="editingKey = null"
+          @blur="onBlurGrade('Arguments')"
           autofocus
         />
         <p v-else>{{ localData.grades.Arguments }}</p>
@@ -121,15 +187,22 @@ const startEditing = (key: TEditingKey) => {
 
       <div 
         class="stages__stage edit-item"
-        :class="{'edit-item--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive }"
+        :class="{
+          'edit-item--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive,
+          'edit-item--error' : errors.RealisticMeaningful
+         }"
         @click="startEditing('RealisticMeaningful')"
       >
         <input
+          type="number"
           class="editable-input"
-          :class="{'editable-input--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive}"
+          :class="{
+            'editable-input--active' : editingKey === 'RealisticMeaningful' && props.editingIsActive,
+            'editable-input--error' : errors.RealisticMeaningful
+          }"
           v-if="editingKey === 'RealisticMeaningful' && props.editingIsActive"
           v-model.number="localData.grades.RealisticMeaningful"
-          @blur="editingKey = null"
+          @blur="onBlurGrade('RealisticMeaningful')"
           autofocus
         />
         <p v-else>{{ localData.grades.RealisticMeaningful }}</p>
@@ -138,15 +211,22 @@ const startEditing = (key: TEditingKey) => {
 
     <div 
       class="line-table__item score-item edit-item"
-      :class="{'edit-item--active' : editingKey === 'Original' && props.editingIsActive }"
+      :class="{
+        'edit-item--active' : editingKey === 'Original' && props.editingIsActive,
+        'edit-item--error' : errors.Original
+      }"
       @click="startEditing('Original')"
     >
       <input
+        type="number"
         class="editable-input"
-        :class="{'editable-input--active' : editingKey === 'Original' && props.editingIsActive}"
+        :class="{
+          'editable-input--active' : editingKey === 'Original' && props.editingIsActive,
+          'editable-input--error' : errors.Original
+        }"
         v-if="editingKey === 'Original' && props.editingIsActive"
         v-model.number="localData.grades.Original"
-        @blur="editingKey = null"
+        @blur="onBlurGrade('Original')"
         autofocus
       />
       <p v-else>{{ localData.grades.Original }}</p>
@@ -247,12 +327,20 @@ const startEditing = (key: TEditingKey) => {
   background: color.$colorBackgroundAccentAlternative;
 }
 
+.edit-item--error {
+  background: color.$colorBackgroundNegativeTint !important;
+}
+
 .editable-input--active:hover {
   background: color.$colorBackgroundAccentAlternative !important;
 }
 
 .editable-input--active {
   background: color.$colorBackgroundAccentAlternative;
+}
+
+.editable-input--error {
+  background: color.$colorBackgroundNegativeTint !important;
 }
 
 .editable-input {
@@ -272,5 +360,17 @@ const startEditing = (key: TEditingKey) => {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

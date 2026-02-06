@@ -142,9 +142,9 @@ const setNewValues = async () => {
 const getPageData = async () => {
   try {
     if(!applicantId) return;
-    pageDataArr.value = ApplicantStab
-    // const response = await getApplicantPage(Number(applicantId), 1);
-    // pageDataArr.value = response;
+    // pageDataArr.value = ApplicantStab
+    const response = await getApplicantPage(Number(applicantId), 1);
+    pageDataArr.value = response;
   } catch (error) {
     console.error('ошибка при получении данных страницы')
   }
@@ -206,8 +206,7 @@ const getErrors = (index: string, errors: GradeErrors) => {
           :grade-range="pageDataArr.grade_range"
           :last-line="Number(index) === Object.keys(pageDataArr.grades).length"
           @change-scores="(obj) => changesFieldInLine(index, obj)"
-
-           @errors="(errors) => getErrors(index, errors)"
+          @errors="(errors) => getErrors(index, errors)"
         />
       </div>
     </div>
