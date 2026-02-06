@@ -6,6 +6,7 @@ import AccessadminWorks from './composables/AccessadminWorks';
 import TableAdmin from './components/TableAdmin/TableAdmin.vue';
 import TableToken from './components/TableToken/TableToken.vue';
 import TokenWindow from '@/components/shared/elements/modalWindow/access/TokenWindow.vue';
+import HintItem from '@/components/shared/elements/HintItem.vue';
 
 const {
   selectedItemAdmin,
@@ -14,6 +15,7 @@ const {
   adminTableArr,
   showTokenWindow,
   createdToken,
+  viewportWidth,
   setNewSelectValue,
   createToken,
   deleteToken,
@@ -35,7 +37,12 @@ const {
           <p>Генерация токена</p>
         </div>
         <div>
-          <!-- TODO: сюда подсказку -->
+          <HintItem
+            text="Сгенерируйте токен для выдачи доступа в админку. Пользователь сможет войти, указав этот токен при регистрации"
+            :width="viewportWidth > 420 ? 300 : 220"
+            :height="viewportWidth > 420 ? 100 : 120"
+            :position="viewportWidth > 420 ? 'bottom-center' : 'bottom-right'"
+          />
         </div>
       </div>
       <div class="granting-access__content">
@@ -59,7 +66,12 @@ const {
           <p>Админы</p>
         </div>
         <div>
-          <!-- TODO: подсказка -->
+          <HintItem
+            text="Список пользователей, имеющих доступ в админку. Можно удалить пользователя. Чтобы изменить роль, выдайте новый доступ с нужной ролью"
+            :width="viewportWidth > 440 ? 300 : 240"
+            :height="viewportWidth > 440 ? 100 : 120"
+            :position="viewportWidth > 440 ? 'bottom-left' : 'bottom-center'"
+          />
         </div>
       </div>
       <div 
@@ -85,7 +97,12 @@ const {
           <p>Неиспользованные токены</p>
         </div>
         <div>
-          <!-- TODO: подсказка -->
+          <HintItem
+            text="Токены, которые были сгенерированы, но ещё не использованы при регистрации. Их можно удалить, чтобы отозвать доступ"
+            :width="viewportWidth > 420 ? 300 : 220"
+            :height="viewportWidth > 420 ? 100 : 140"
+            position="bottom-right"
+          />
         </div>
       </div>
       <div 
@@ -127,6 +144,9 @@ const {
 }
 
 .granting-access__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -187,6 +207,9 @@ const {
 }
 
 .table-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -208,7 +231,9 @@ const {
   }
 
   .granting-access__title {
+    justify-content: stretch;
     margin-bottom: 20px;
+    margin-right: 0px;
   }
 }
 
