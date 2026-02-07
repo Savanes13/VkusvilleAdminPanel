@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
 
 interface IExpert {
   display_name: string
@@ -40,12 +40,14 @@ const {
 
 const emit = defineEmits<{
   (e: 'openAddWindow', id: number, experts: number[]): void
+  (e: 'openDataWindow', id: number, experts: number[], day: string, data: number, month: string, time: number ): void
 }>();
 
 const isVisibleHideBlock = ref<boolean>(false);
 const expertDataArr = ref<null | IExpert[]>(null);
 const hideBlockRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);
+const viewportWidth = ref(window.innerWidth);
 
 const localTime = computed(() => time + 8);
 const localTimePlus = computed(() => time + 9);
@@ -56,6 +58,14 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
+});
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWidth);
 });
 
 const times = computed(() =>
@@ -88,6 +98,10 @@ const requiredItem = computed(() => {
   });
 });
 
+const updateWidth = () => {
+  viewportWidth.value = window.innerWidth;
+};
+
 const handleClickOutside = (event: MouseEvent) => {
   const target = event.target as Node;
   // если клик вне pop-up и вне контента
@@ -100,6 +114,7 @@ const toggleHideBlock = () => {
   isVisibleHideBlock.value = !isVisibleHideBlock.value;
   if (isVisibleHideBlock.value && requiredItem.value?.reviewer_ids) {
     getExpertForHimId(requiredItem.value.reviewer_ids);
+    if (viewportWidth.value < 1001) emit('openDataWindow',  requiredItem.value.id, requiredItem.value.reviewer_ids, day, numberDay, month.value, localTime.value)
   }
 };
 
@@ -161,7 +176,7 @@ const month = computed(() => {
     <div 
       class="column-item__hide-block"
       :class="{'column-item__hide-block--left' : columnIndex === 3 || columnIndex === 4}"
-      v-if="isVisibleHideBlock && requiredItem"
+      v-if="isVisibleHideBlock && requiredItem && viewportWidth > 1000"
       ref="hideBlockRef"
     >
       <div class="hide-date">
@@ -181,14 +196,16 @@ const month = computed(() => {
           <p>Будут присутствовать</p>
         </div>
         <div class="experts-block__items">
-
           <div 
             class="expert-item"
             v-for="expert in expertDataArr"
           >
-            <div>
+            <div v-if="expertDataArr?.length">
               <p>{{ expert.display_name }}</p>
             </div>
+          </div>
+          <div v-if="!expertDataArr?.length">
+            <p>Нет экспертов</p>
           </div>
         </div>
       </div>
@@ -200,7 +217,6 @@ const month = computed(() => {
         Добавить эксперта
       </DefaultButton>
     </div>
-
   </div>
 </template>
 
