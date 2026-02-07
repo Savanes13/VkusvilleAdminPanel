@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
-import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
@@ -24,6 +23,8 @@ type DayInterviews = {
 interface IColumnItemProps {
   data: DayInterviews ;
   time: number;
+  day: string,
+  numberDay: number,
   firstLine: boolean;
   columnIndex: number;
 }
@@ -31,6 +32,8 @@ interface IColumnItemProps {
 const {
   data,
   time,
+  day,
+  numberDay,
   firstLine,
   columnIndex
 } = defineProps<IColumnItemProps>();
@@ -124,6 +127,14 @@ const contentClass = computed(() => {
     'column-item__content--red': reviewersLength === 0
   };
 });
+
+const month = computed(() => {
+  if (!requiredItem.value?.start_time) return "";
+  return new Intl.DateTimeFormat("ru-RU", {
+    month: "long",
+    timeZone: "Europe/Moscow",
+  }).format(new Date(requiredItem.value?.start_time));
+});
 </script>
 
 <template>
@@ -147,7 +158,6 @@ const contentClass = computed(() => {
         <p>{{ requiredItem?.reviewer_ids.length }} экспертов</p>
       </div>
     </div>
-    
     <div 
       class="column-item__hide-block"
       :class="{'column-item__hide-block--left' : columnIndex === 3 || columnIndex === 4}"
@@ -159,7 +169,7 @@ const contentClass = computed(() => {
           <p>Время и дата</p>
         </div>
         <div class="hide-date__text">
-          <p>Понедельник, 17 ноября, 
+          <p>{{ day }}, {{ numberDay }} {{ month }}, 
             <span v-if="localTime === 8">0{{ localTime }}:00 – 0{{ localTimePlus }}:00</span>
             <span v-if="localTime === 9">0{{ localTime }}:00 – {{ localTimePlus }}:00</span>
             <span v-if="localTime > 9">{{ localTime }}:00 – {{ localTimePlus }}:00</span>
@@ -180,7 +190,6 @@ const contentClass = computed(() => {
               <p>{{ expert.display_name }}</p>
             </div>
           </div>
-
         </div>
       </div>
       <DefaultButton

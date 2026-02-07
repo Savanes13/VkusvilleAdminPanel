@@ -54,6 +54,8 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
       v-for="(item, index) in 12"
       :time="index"
       :data="data"
+      :day="day!"
+      :number-day="numberDay"
       :first-line="index === 0"
       :column-index="indexColumn"
       @open-add-window="openAddExpertWindow"
