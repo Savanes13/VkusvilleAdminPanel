@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import ColumnItem from './components/ColumnItem.vue';
-import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
+import ColumnItem from './components/ColumnItem.vue';;
 
 type Interview = {
   id: number;
@@ -27,7 +26,8 @@ const {
 } = defineProps<IColumnTableProps>();
 
 const emit = defineEmits<{
-  (e: 'openAddWindow', id: number, experts: number[]): void
+  (e: 'openAddWindow', id: number, experts: number[]): void;
+  (e: 'openDataWindow', id: number, experts: number[], day: string, data: number, month: string, time: number ): void
 }>();
 
 const day = computed(() => {
@@ -40,6 +40,10 @@ const day = computed(() => {
 
 const openAddExpertWindow = (id: number, arrExperts: number[]) => {
   emit('openAddWindow', id, arrExperts)
+}
+
+const openDataWindow = (id: number, experts: number[], day: string, data: number, month: string, time: number) => {
+  emit('openDataWindow',id, experts, day, data, month, time)
 }
 </script>
 
@@ -54,9 +58,12 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
       v-for="(item, index) in 12"
       :time="index"
       :data="data"
+      :day="day!"
+      :number-day="numberDay"
       :first-line="index === 0"
       :column-index="indexColumn"
       @open-add-window="openAddExpertWindow"
+      @open-data-window="openDataWindow"
     />
 
   </div>

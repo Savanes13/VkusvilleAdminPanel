@@ -24,6 +24,7 @@ const {
 
 const emit = defineEmits<{
   (e: 'openAddWindow', id: number, experts: number[]): void
+  (e: 'openDataWindow', id: number, experts: number[], day: string, data: number, month: string, time: number ): void
 }>();
 
 const daysOfMonth = computed(() =>
@@ -36,12 +37,15 @@ const daysOfMonth = computed(() =>
 const openAddExpertWindow = (id: number, arrExperts: number[]) => {
   emit('openAddWindow', id, arrExperts)
 }
+
+const openDataWindow = (id: number, experts: number[], day: string, data: number, month: string, time: number) => {
+  emit('openDataWindow', id, experts, day, data, month, time)
+}
 </script>
 
 <template>
   <div class="table">     
     <TimeBlock/>
-
     <div class="table__columns">
       <ColumnTable
         v-for="(item, index) in data"
@@ -50,6 +54,7 @@ const openAddExpertWindow = (id: number, arrExperts: number[]) => {
         :number-day="daysOfMonth[index]!"
         :key="index"
         @open-add-window="openAddExpertWindow"
+        @open-data-window="openDataWindow"
       />
     </div>
   </div>

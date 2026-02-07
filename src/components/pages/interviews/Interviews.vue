@@ -6,25 +6,53 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import type { TInterviewsData } from '@/types/pages/interviews/typesInterviews';
 import InterviewsAddWindow from '@/components/shared/elements/modalWindow/interviews/InterviewsAddWindow.vue';
+import { mainIcons } from '@/components/shared/icons/mainIcons';
+import DataInterviewWindow from '@/components/shared/elements/modalWindow/interviews/DataInterviewWindow.vue';
 
 interface IAddExpertWindowObj {
   idInterview: number | null;
   arrExpertIds: number[] | null;
 }
 
+interface IDataWindowObj {
+  id: number | null;
+  experts: number[] | null;
+  day: string | null;
+  data: number | null;
+  month: string | null;
+  time: number | null;
+}
+
 const pageDataArr = ref<null | TInterviewsData>(null);
 const selectedWeek = ref<number>(0);
 const companyStore = useCompanyStore();
+const successBlockIsVisible = ref<boolean>(false);
 const visibilityAddExpertWindow = ref<boolean>(false);
 const addExpertWindowObj = ref<IAddExpertWindowObj>({
   idInterview: null,
   arrExpertIds: null
 });
+const visibilityDataWindow = ref<boolean>(false);
+const dataWindowObj = ref<IDataWindowObj>({
+  id: null,
+  experts: null,
+  day: null,
+  data: null,
+  month: null,
+  time: null
+});
 const viewportWidth = ref(window.innerWidth);
+let hideTimeout: number | null = null;
 
 const updateWidth = () => {
   viewportWidth.value = window.innerWidth;
 };
+
+onUnmounted(() => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+});
 
 onMounted(() => {
   window.addEventListener('resize', updateWidth);
@@ -78,6 +106,20 @@ const closeAddExpertWindow = () => {
   addExpertWindowObj.value.idInterview = null;
 }
 
+const openDataWindow = (id: number, experts: number[], day: string, data: number, month: string, time: number) => {
+  visibilityDataWindow.value = true;
+  dataWindowObj.value.id = id;
+  dataWindowObj.value.experts = experts;
+  dataWindowObj.value.day = day;
+  dataWindowObj.value.data = data;
+  dataWindowObj.value.month = month;
+  dataWindowObj.value.time = time;
+}
+
+const closeDataWindow = () => {
+  visibilityDataWindow.value = false;
+}
+
 const changeExpertsInInrerview = (id: number, arr: number[]) => {
   if (!pageDataArr.value) return
   pageDataArr.value.forEach(day => {
@@ -87,10 +129,23 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
       }
     });
   });
+  successBlockIsVisible.value = true;
+  if (hideTimeout) clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(() => {
+    successBlockIsVisible.value = false;
+  }, 4000);
 }
 
 const setSelectedWeek = (id: number) => {
   selectedWeek.value = id
+}
+
+const closeSuccessBlock = () => {
+  successBlockIsVisible.value = false;
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+    hideTimeout = null;
+  }
 }
 </script>
 
@@ -145,6 +200,7 @@ const setSelectedWeek = (id: number) => {
           :key="selectedWeek"
           :data="pageDataArr"
           @open-add-window="openAddExpertWindow"
+          @open-data-window="openDataWindow"
         />
         <div 
           v-else
@@ -162,6 +218,37 @@ const setSelectedWeek = (id: number) => {
         @close="closeAddExpertWindow"
         @change-experts="changeExpertsInInrerview"
       />
+    </transition>
+    <transition name="fadeFast">
+      <DataInterviewWindow
+        v-if="viewportWidth < 1001 && visibilityDataWindow"
+        :data="dataWindowObj"
+        @close="closeDataWindow"
+        @open-add-window="openAddExpertWindow"
+      />
+    </transition>
+    <transition name="fadeFast">
+      <div 
+        class="success-block"
+        v-if="successBlockIsVisible"
+      >
+        <div>
+          <span
+            v-html="mainIcons['checkCurcle']"
+          ></span>
+        </div>
+        <div>
+          <p>Эксперты успешно изменены</p>
+        </div>
+        <div  
+          @click="closeSuccessBlock"
+          class="success-block__close"
+        > 
+          <span
+            v-html="mainIcons['closeGray']"
+          ></span>
+        </div>
+      </div>
     </transition>
   </div>
 </template>
@@ -264,6 +351,29 @@ const setSelectedWeek = (id: number) => {
   cursor: default !important;
 }
 
+.success-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 422px;
+  position: fixed;
+  padding: 16px;
+  background: color.$colorBlack;
+  border-radius: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextWhite;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.success-block__close {
+  cursor: pointer;
+}
+
 @media(max-width: 830px) {
   .info-table {
     flex-direction: column;
@@ -272,6 +382,15 @@ const setSelectedWeek = (id: number) => {
 
   .weeks {
     padding-left: 24px;
+  }
+}
+
+@media (max-width: 450px) {
+  .success-block {
+    width: 310px;
+    font-size: 14px;
+    line-height: 20px;
+    bottom: 70px;
   }
 }
 
