@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
+type DictKey = keyof typeof dict;
+
+type Stage = "INIT" | "STAGE_1" | "STAGE_2" | "STAGE_3";
+
 interface IStageElementProps {
   title: string;
   totalParticipants: number;
@@ -21,6 +25,17 @@ const percent = computed(() => {
     (passedCount / totalParticipants) * 100
   );
 });
+
+const dict = {
+  INIT: "Вход в бота",
+  STAGE_1: "1 этап. Эссе и кружок",
+  STAGE_2: "2 этап. Кейс",
+  STAGE_3: "3 этап. Собеседование"
+};
+
+const getValue = (key: DictKey) => {
+  return dict[key];
+}
 </script>
 
 <template>
@@ -37,7 +52,7 @@ const percent = computed(() => {
         <p>{{ percent }} %</p>
       </div>
       <div class="title-elem">
-        <p>{{ title }}</p>
+        <p>{{ getValue(title as Stage) }}</p>
       </div>
     </div>
     <div class="stage-element__info">
