@@ -101,7 +101,7 @@ const authUser = async () => {
             <p>Вход в аккаунт</p>
           </div>
           <div class="text">
-            <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту — обратитесь на <span>рабочий аккаунт</span></p>
+            <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту — обратитесь на <a href="https://t.me/vv_magistr" target="_blank">рабочий аккаунт</a></p>
           </div>
         </div>
         <div class="authorization__inputs">
@@ -184,7 +184,7 @@ const authUser = async () => {
   margin-bottom: 24px;
 }
 
-.text span {
+.text a {
   color: color.$colorTextAcccent;
 }
 
