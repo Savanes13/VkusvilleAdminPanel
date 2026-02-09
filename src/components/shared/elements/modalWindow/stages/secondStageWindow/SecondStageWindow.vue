@@ -179,15 +179,21 @@ const {
             </div>
             <div 
               class="warning-block__text"
-              v-if="objPrepathData?.students_extend"
+              v-if="objPrepathData?.allow_on_pass_grade_change"
             >
-              <p>После изменения дат {{ objPrepathData?.students_extend }} студентов снова смогут выполнить задание</p>
+              <p>После изменения дат {{ objPrepathData?.allow_on_pass_grade_change }} столько студентов автоматически смогут пойти дальше при условии смены проходного балла</p>
             </div>
             <div 
               class="warning-block__text"
-              v-if="objPrepathData?.students_stop"
+              v-if="objPrepathData?.deadlines_decreased_duration"
             >
-              <p>После изменения дат у {{ objPrepathData?.students_stop }} студентов сократятся дедлайны</p>
+              <p>После изменения дат {{ objPrepathData?.deadlines_decreased_duration }} у стольки студентов изменится дедлайн в меньшую сторону при условии смены "отправить до"</p>
+            </div>
+            <div 
+              class="warning-block__text"
+              v-if="objPrepathData?.deadlines_extended_duration"
+            >
+              <p>После изменения дат у {{ objPrepathData?.deadlines_extended_duration }} у стольки студентов изменится дедлайн в большую сторону при условии смены "отправить после"</p>
             </div>
           </div>
         </transition>

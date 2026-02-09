@@ -325,12 +325,14 @@ watch(() => companyStore.selectedCompany, () => {
           <p>Этот этап не настраивается</p>
         </div>
         <div class="interview-button">
-          <DefaultButton 
-            class="default-button__color-green-transparent default-button__size--small"
-            right-icon="chevronRight"
-          >
-            К собеседованиям
-          </DefaultButton>
+          <router-link to="/interviews">
+            <DefaultButton 
+              class="default-button__color-green-transparent default-button__size--small"
+              right-icon="chevronRight"
+            >
+              К собеседованиям
+            </DefaultButton>
+          </router-link>
         </div>
       </WrapperBlock>
     </div>

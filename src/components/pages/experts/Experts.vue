@@ -9,8 +9,10 @@ import TableExperts from './components/table/TableExperts.vue';
 import { getContentExpertsPage } from '@/api/pages/experts/apiExperts';
 import type { IExpertPage, TExpertsPageData } from '@/types/pages/experts/typesExperts';
 import { useCompanyStore } from '@/store/company/companyStore';
+import { useRoute } from 'vue-router';
 
-const haveWorkDeadline = ref<boolean>(false);
+const route = useRoute();
+const haveWorkDeadline = ref<boolean>(route.query.stuck === 'true');
 const expertsPageData = ref<null | TExpertsPageData>(null);
 const companyStore = useCompanyStore();
 
@@ -61,7 +63,7 @@ watch(() => companyStore.selectedCompany, () => {
     v-if="expertsPageData" 
   >
     <PageHeader
-      hint-text="Статистика работы экспертов: непроверенные задания, просрочки и риск дедлайна. Помогает отслеживать загрузку и оперативно реагировать."
+      hint-text="Статистика работы экспертов: непроверенные задания, просрочки и риск дедлайна. Помогает отслеживать загрузку и оперативно реагировать"
       :hint-width="300"
       :hint-height="100"
     >

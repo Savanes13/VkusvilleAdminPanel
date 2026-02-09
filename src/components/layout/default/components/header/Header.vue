@@ -2,6 +2,8 @@
 import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { useCompanyStore } from '@/store/company/companyStore';
 import logo from '@/assets/images/logo/logo.svg'
+import bigAvatar from '@/assets/images/user/AvatarBig.svg'
+import smallAvatar from '@/assets/images/user/AvatarSmall.svg'
 import { storeToRefs } from 'pinia';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import { useUserStore } from '@/store/user/userStore';
@@ -93,13 +95,13 @@ getPageData();
         @click="toggleUserOpen"
       >
         <div class="user-icon user-icon-desktop--top">
-          <p>P</p>
+          <img :src="bigAvatar" alt="">
         </div>
         <div 
           class="user-icon user-icon-mobile--top"
           v-if="!userInfoIsOpen"
         >
-          <p>P</p>
+          <img :src="smallAvatar" alt="">
         </div>
         <div class="user-fields">
           <div class="user-fields__name">
@@ -138,7 +140,7 @@ getPageData();
             </div>
             <div class="hidden-user-mobile">
               <div class="user-icon">
-                <p>P</p>
+                <img :src="bigAvatar" alt="">
               </div>
               <div class="user-fields user-fields--mobile">
                 <div class="user-fields__name">
@@ -193,19 +195,19 @@ getPageData();
   gap: 24px;
 }
 
-.user-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
-  background: color.$colorStrokeAccent;
-  color: color.$colorIconWhite;
-}
+// .user-icon {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 50px;
+//   font-weight: 500;
+//   font-size: 16px;
+//   line-height: 20px;
+//   background: color.$colorStrokeAccent;
+//   color: color.$colorIconWhite;
+// }
 
 .user-icon-mobile--top {
   display: none;

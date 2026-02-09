@@ -76,8 +76,13 @@ const authUser = async () => {
     userStore.setAccessToken(response.access_token);
     router.push('/');
     console.log(response)
-  } catch (error) {
-    console.error("ошибка при авторизации пользователя");
+  } catch (error: any) {
+    if (error.status === 400) {
+      emailInputObj.error.show = true;
+      emailInputObj.error.text = '';
+      passwordInputObj.error.show = true;
+      passwordInputObj.error.text = 'Не верный логин или пароль'
+    } 
   };
 };
 </script>
@@ -101,7 +106,7 @@ const authUser = async () => {
             <p>Вход в аккаунт</p>
           </div>
           <div class="text">
-            <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту — обратитесь на <span>рабочий аккаунт</span></p>
+            <p>Введите почту и пароль, указанные при регистрации, чтобы войти в систему. Если забыли почту — обратитесь на <a href="https://t.me/vv_magistr" target="_blank">рабочий аккаунт</a></p>
           </div>
         </div>
         <div class="authorization__inputs">
@@ -184,7 +189,7 @@ const authUser = async () => {
   margin-bottom: 24px;
 }
 
-.text span {
+.text a {
   color: color.$colorTextAcccent;
 }
 

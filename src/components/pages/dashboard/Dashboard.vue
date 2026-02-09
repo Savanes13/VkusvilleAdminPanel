@@ -55,7 +55,7 @@ watch(() => companyStore.selectedCompany, () => {
             <p>Конверсия движения абитуриентов</p>
           </div>
           <HintItem
-            text="Процент зарегистрированных абитуриентов, оказавшихся на каждом этапе, включая тех, кто не прошёл дальше."
+            text="Процент зарегистрированных абитуриентов, оказавшихся на каждом этапе, включая тех, кто не прошёл дальше"
             :width="viewportWidth > 400 ? 330 : 260"
             :height="viewportWidth > 400 ? 80 : 100"
             position="bottom-right"
@@ -95,7 +95,7 @@ watch(() => companyStore.selectedCompany, () => {
           </div>
           <div>
             <HintItem
-              text="Средняя оценка по конкретному заданию. Используется, чтобы корректировать порог допуска, если этап проходит слишком мало абитуриентов."
+              text="Средняя оценка по конкретному заданию. Используется, чтобы корректировать порог допуска, если этап проходит слишком мало абитуриентов"
               :width="viewportWidth > 440 ? 330 : 170"
               :height="viewportWidth > 440 ? 100 : 200"
               position="bottom-center"
@@ -112,7 +112,7 @@ watch(() => companyStore.selectedCompany, () => {
               <p>{{ item.id }} этап</p>
             </div>
             <div class="border-wrap__value">
-              <p>{{ item.current }}<span> / {{ item.max }}</span></p>
+              <p>{{ item.current ?? '-' }}<span> / {{ item.max }}</span></p>
             </div>
           </div>
         </div>
@@ -133,8 +133,7 @@ watch(() => companyStore.selectedCompany, () => {
                 <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
               </div>
             </div>
-
-            <router-link to="/applicants">
+            <router-link to="/applicants?missedDeadline=true">
               <div class="switch-to">
                 <span
                   class="svg"
@@ -144,7 +143,6 @@ watch(() => companyStore.selectedCompany, () => {
             </router-link>
           </div>
           <div class="deadline-item border-wrap">
-
             <div>
               <div class="deadline-item__name">
                 <p>Зависшие эксперты</p>
@@ -153,7 +151,7 @@ watch(() => companyStore.selectedCompany, () => {
                 <p>{{ padeDataArr.deadlineTasks.experts }}</p>
               </div>
             </div>
-            <router-link to="/experts">
+            <router-link to="/experts?stuck=true">
               <div class="switch-to">
                 <span
                   class="svg"
