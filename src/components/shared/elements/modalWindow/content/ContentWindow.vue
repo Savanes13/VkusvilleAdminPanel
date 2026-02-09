@@ -152,6 +152,8 @@ const closeWindow = () => {
 }
 
 .value-key {
+  word-break: break-word;
+  overflow-wrap: break-word;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
@@ -165,10 +167,11 @@ const closeWindow = () => {
 }
 
 .content-window__required-keys {
-  margin-top: 8px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
+  margin-top: 8px;
 }
 
 .key-item {

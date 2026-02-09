@@ -23,7 +23,7 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
       start_date: props.data.deadlines.start_date,
       start_until: props.data.deadlines.start_until,
       send_until: props.data.deadlines.send_until,
-      time_to_complete: props.data.deadlines.time_to_complete,
+      time_to_complete_hours: props.data.deadlines.time_to_complete_hours,
     },
     grades: props.data.grades.map(g => ({
       criteria: g.criteria,
@@ -73,10 +73,10 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
   const original = computed(() => localStage.grades.find(item => item.criteria === 'Original')?.grades ?? []);
   
   const timeToCompleteStr = computed({
-    get: () => String(localStage.deadlines.time_to_complete),
+    get: () => String(localStage.deadlines.time_to_complete_hours),
     set: (val: string) => {
       const num = Number(val);
-      localStage.deadlines.time_to_complete = isNaN(num) ? 0 : num
+      localStage.deadlines.time_to_complete_hours = isNaN(num) ? 0 : num
     },
   })
   

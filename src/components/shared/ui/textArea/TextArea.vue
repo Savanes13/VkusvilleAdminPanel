@@ -72,4 +72,23 @@ const areaValue = computed({
   color: color.$colorTextPrimary;
   height: 136px;
 }
+
+.text-area__textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px !important;
+  cursor: default !important;
+}
+
+.text-area__textarea::-webkit-scrollbar-track {
+  background: color.$colorBackgroundSecondary;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: default !important;
+}
+
+.text-area__textarea::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: color.$colorTextTertiary;
+  cursor: default !important;
+}
 </style>

@@ -2,7 +2,7 @@ interface Deadline {
   start_date: number;
   start_until: number;
   send_until: number;
-  time_to_complete: number;
+  time_to_complete_hours: number;
 }
 
 interface GradeCriteria {

@@ -133,7 +133,7 @@ watch(() => companyStore.selectedCompany, () => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.deadlines.time_to_complete }} часа</p>
+                  <p>{{ pageDataArr[0]?.deadlines.time_to_complete_hours }} часа</p>
                 </div>
               </div>
             </div>
@@ -245,7 +245,7 @@ watch(() => companyStore.selectedCompany, () => {
                   <p>Время на выполнение задания</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.deadlines.time_to_complete }} часа</p>
+                  <p>{{ pageDataArr[1]?.deadlines.time_to_complete_hours }} часа</p>
                 </div>
               </div>
             </div>

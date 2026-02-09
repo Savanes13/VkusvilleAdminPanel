@@ -257,6 +257,10 @@ const closeSuccessBlock = () => {
 @use "@/style/variables/color.scss" as color;
 @use "@/style/variables/transition.scss" as transition;
 
+.interviews {
+  margin-bottom: 80px;
+}
+
 .interviews__table-wrap {
   background: color.$colorIconWhite;
   border-radius: 24px;
