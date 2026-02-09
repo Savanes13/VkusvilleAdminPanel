@@ -9,8 +9,9 @@ type FirstStageEmits = {
 }
 
 interface IPrepathData {
-  students_extend: null | number;
-  students_stop: null | number;
+  allow_on_pass_grade_change: null | number;
+  deadlines_decreased_duration: null | number;
+  deadlines_extended_duration: null | number;
 }
 
 export default function secondStageWindowWorks (props: { data: IStage }, emit: FirstStageEmits) {  
