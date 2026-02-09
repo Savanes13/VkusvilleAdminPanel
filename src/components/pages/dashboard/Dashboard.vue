@@ -112,7 +112,7 @@ watch(() => companyStore.selectedCompany, () => {
               <p>{{ item.id }} этап</p>
             </div>
             <div class="border-wrap__value">
-              <p>{{ item.current }}<span> / {{ item.max }}</span></p>
+              <p>{{ item.current ?? '-' }}<span> / {{ item.max }}</span></p>
             </div>
           </div>
         </div>
@@ -133,7 +133,6 @@ watch(() => companyStore.selectedCompany, () => {
                 <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
               </div>
             </div>
-
             <router-link to="/applicants">
               <div class="switch-to">
                 <span
@@ -144,7 +143,6 @@ watch(() => companyStore.selectedCompany, () => {
             </router-link>
           </div>
           <div class="deadline-item border-wrap">
-
             <div>
               <div class="deadline-item__name">
                 <p>Зависшие эксперты</p>
