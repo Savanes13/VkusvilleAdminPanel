@@ -152,6 +152,8 @@ const closeWindow = () => {
 }
 
 .value-key {
+  word-break: break-word;
+  overflow-wrap: break-word;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
