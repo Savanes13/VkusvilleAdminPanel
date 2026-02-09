@@ -2,6 +2,7 @@ import { getApplicantsPage } from "@/api/pages/applicants/apiApplicants";
 import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
 export default function applicantsWorks () {
   interface IUser {
@@ -13,8 +14,9 @@ export default function applicantsWorks () {
     deadline_expired: boolean;
   }
 
+  const route = useRoute();
   const contentPageData = ref<null | IUser[]>(null);
-  const overdueDeadlineSortActivity = ref<boolean>(false);
+  const overdueDeadlineSortActivity = ref<boolean>(route.query.missedDeadline === 'true');
   const companyStore = useCompanyStore();
   const currentPage = ref<number>(1);
   const pageSize = 8;

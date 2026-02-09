@@ -133,7 +133,7 @@ watch(() => companyStore.selectedCompany, () => {
                 <p>{{ padeDataArr.deadlineTasks.applicants }}</p>
               </div>
             </div>
-            <router-link to="/applicants">
+            <router-link to="/applicants?missedDeadline=true">
               <div class="switch-to">
                 <span
                   class="svg"
@@ -151,7 +151,7 @@ watch(() => companyStore.selectedCompany, () => {
                 <p>{{ padeDataArr.deadlineTasks.experts }}</p>
               </div>
             </div>
-            <router-link to="/experts">
+            <router-link to="/experts?stuck=true">
               <div class="switch-to">
                 <span
                   class="svg"
