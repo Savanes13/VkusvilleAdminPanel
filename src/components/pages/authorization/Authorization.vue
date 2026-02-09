@@ -76,8 +76,13 @@ const authUser = async () => {
     userStore.setAccessToken(response.access_token);
     router.push('/');
     console.log(response)
-  } catch (error) {
-    console.error("ошибка при авторизации пользователя");
+  } catch (error: any) {
+    if (error.status === 400) {
+      emailInputObj.error.show = true;
+      emailInputObj.error.text = '';
+      passwordInputObj.error.show = true;
+      passwordInputObj.error.text = 'Не верный логин или пароль'
+    } 
   };
 };
 </script>
