@@ -156,7 +156,7 @@ watch(() => companyStore.selectedCompany, () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Текущий диапазон оценки</p>
+                  <p>Текущий множитель оценки</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[0]?.grade_mul }}</p>
@@ -268,7 +268,7 @@ watch(() => companyStore.selectedCompany, () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Текущий диапазон оценки</p>
+                  <p>Текущий множитель оценки</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[1]?.grade_mul }}</p>
