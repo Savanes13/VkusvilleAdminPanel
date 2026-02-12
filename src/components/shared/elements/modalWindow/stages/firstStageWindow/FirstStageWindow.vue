@@ -166,19 +166,19 @@ const {
               class="warning-block__text"
               v-if="objPrepathData?.allow_on_pass_grade_change"
             >
-              <p>После изменения дат {{ objPrepathData?.allow_on_pass_grade_change }} столько студентов автоматически смогут пойти дальше при условии смены проходного балла</p>
+              <p>После изменения столько студентов: ({{ objPrepathData?.allow_on_pass_grade_change }}) автоматически смогут пойти дальше при условии смены проходного балла</p>
             </div>
             <div 
               class="warning-block__text"
               v-if="objPrepathData?.deadlines_decreased_duration"
             >
-              <p>После изменения дат {{ objPrepathData?.deadlines_decreased_duration }} у стольки студентов изменится дедлайн в меньшую сторону при условии смены "отправить до"</p>
+              <p>После изменения у стольки студентов: ({{ objPrepathData?.deadlines_decreased_duration }}) изменится дедлайн в меньшую сторону при условии смены "отправить до"</p>
             </div>
             <div 
               class="warning-block__text"
               v-if="objPrepathData?.deadlines_extended_duration"
             >
-              <p>После изменения дат у {{ objPrepathData?.deadlines_extended_duration }} у стольки студентов изменится дедлайн в большую сторону при условии смены "отправить после"</p>
+              <p>После изменения у стольки студентов: ({{ objPrepathData?.deadlines_extended_duration }}) изменится дедлайн в большую сторону при условии смены "отправить после"</p>
             </div>
           </div>
         </transition>
