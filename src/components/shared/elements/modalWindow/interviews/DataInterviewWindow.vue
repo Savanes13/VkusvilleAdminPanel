@@ -4,6 +4,7 @@ import ModalWindow from '../../ModalWindow.vue';
 import { computed, ref } from 'vue';
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import { useUserStore } from '@/store/user/userStore';
 
 interface IExpert {
   display_name: string
@@ -37,6 +38,7 @@ const closeWindow = () => {
   emit("close");
 };
 
+const userStore = useUserStore()
 const expertDataArr = ref<null | IExpert[]>(null);
 const localTimePlus = computed(() => (data.time ?? 0) + 1);
 
@@ -105,6 +107,7 @@ const openAddExpertWindow = () => {
         </div>
         <DefaultButton
           class="default-button__size--large default-button__color-gray"
+          :class="{'default-button__color-gray--disabled' : userStore.role === 'GUEST'}"
           left-icon="plusBlack"
           @click="openAddExpertWindow"
           >

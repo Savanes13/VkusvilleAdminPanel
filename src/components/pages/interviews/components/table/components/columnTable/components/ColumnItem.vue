@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { getExpertsForId } from '@/api/pages/Interviews/apiInterviews';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
+import { useUserStore } from '@/store/user/userStore';
 import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
 
 interface IExpert {
@@ -43,12 +44,12 @@ const emit = defineEmits<{
   (e: 'openDataWindow', id: number, experts: number[], day: string, data: number, month: string, time: number ): void
 }>();
 
+const userStore = useUserStore()
 const isVisibleHideBlock = ref<boolean>(false);
 const expertDataArr = ref<null | IExpert[]>(null);
 const hideBlockRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);
 const viewportWidth = ref(window.innerWidth);
-
 const localTime = computed(() => time + 8);
 const localTimePlus = computed(() => time + 9);
 
@@ -211,6 +212,7 @@ const month = computed(() => {
       </div>
       <DefaultButton
         class="default-button__size--large default-button__color-gray"
+        :class="{'default-button__color-gray--disabled' : userStore.role === 'GUEST'}"
         left-icon="plusBlack"
         @click="openAddExpertWindow"
       >
