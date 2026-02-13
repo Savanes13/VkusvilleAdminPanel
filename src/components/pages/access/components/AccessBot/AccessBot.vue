@@ -83,12 +83,21 @@ const {
           />
         </div>
       </div>
-      <div class="table-wrapper">
+      <div 
+        class="table-wrapper"
+        v-if="pageDataArr.length > 0"
+      >
         <TableExperts
           class="table-experts"
           :data="pageDataArr"
           @delete="deleteAdmin"
         />
+      </div>
+      <div
+        v-else
+        class="table__hint"
+      >
+        <p>Здесь будут отображаться роли экспертов</p>
       </div>
     </WrapperBlock>
   </div>
@@ -161,6 +170,13 @@ const {
   line-height: 24px;
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.table__hint {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: color.$colorTextPrimary;
 }
 
 @media(max-width: 1500px) {
