@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { TAccessToken } from './types';
+import type { TUserRole, TAccessToken } from './types';
 
 export const useUserStore = defineStore('UserStore', () => {
   const accessToken = ref<TAccessToken>(null);
+  const role = ref<TUserRole>('GUEST');
 
   const setAccessToken = (token: string) => {
     accessToken.value = token;
@@ -15,6 +16,7 @@ export const useUserStore = defineStore('UserStore', () => {
 
   return { 
     accessToken,
+    role,
     setAccessToken,
     deleteAccessToken
   };

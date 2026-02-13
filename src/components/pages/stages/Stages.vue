@@ -11,11 +11,13 @@ import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
 import { useCompanyStore } from '@/store/company/companyStore';
+import { useUserStore } from '@/store/user/userStore';
 
 const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 const companyStore = useCompanyStore();
+const userStore = useUserStore()
 
 watch(stageWindowVisibility, (val) => {
   if (val) {
@@ -93,6 +95,7 @@ watch(() => companyStore.selectedCompany, () => {
             </div>
             <IconButton
               class="button-icon__color-green-transparent"
+              :class="{'button-icon__color-green-transparent--disabled' : userStore.role === 'GUEST'}"
               icon="edit"
               color-icon="transparent"
               @click="openStageWindow(1)"
@@ -205,6 +208,7 @@ watch(() => companyStore.selectedCompany, () => {
             </div>
             <IconButton
               class="button-icon__color-green-transparent"
+              :class="{'button-icon__color-green-transparent--disabled' : userStore.role === 'GUEST'}"
               icon="edit"
               color-icon="transparent"
               @click="openStageWindow(2)"

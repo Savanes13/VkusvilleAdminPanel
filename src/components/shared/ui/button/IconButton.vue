@@ -54,6 +54,11 @@ const {
   background: color.$colorBackgroundAccentAlternative_Hover;
 }
 
+.button-icon__color-green-transparent--disabled {
+  opacity: 0.64;
+  pointer-events: none;
+} 
+
 .button-icon__color-gray {
   background: color.$colorBackgroundSecondary;
   color: color.$colorTextPrimary;
