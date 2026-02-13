@@ -132,6 +132,7 @@ const setNewValues = async () => {
     if(!valideteNewValue()) return
     await pathApplicantScores(pathRequestData);
     finishEditing();
+    getPageData();
   } catch (error) {
     console.error("ошибка при изменении значений")
   };
