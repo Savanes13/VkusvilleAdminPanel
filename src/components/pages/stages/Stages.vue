@@ -72,7 +72,11 @@ watch(() => companyStore.selectedCompany, () => {
     class="stages"
     v-if="pageDataArr"
   >
-    <PageHeader>
+    <PageHeader
+      hint-text="Будьте осторжны и внимательны с правками. В системе не стоит никаких ограничений на время выполнение заданий"
+      :hint-width="230"
+      :hint-height="120"
+    >
       Этапы
     </PageHeader>
     <div class="stages__items">
