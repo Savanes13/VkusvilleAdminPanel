@@ -48,6 +48,20 @@ const {
           <p>Не прошел</p>
         </div>
       </div>
+      <div 
+        class="success"
+        v-if="showState && passed"
+      >
+        <div>
+          <span
+            class="svg"
+            v-html="mainIcons['check']"
+          ></span>
+        </div>
+        <div>
+          <p>Прошел</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,12 +104,27 @@ const {
   display: flex;
   align-items: center;
   height: 28px;
+  gap: 2px;
   padding: 0px 6px;
   background: color.$colorBackgroundNegativeTint;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
   color: color.$colorTextNegative;
+  border-radius: 12px;
+}
+
+.success {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  gap: 2px;
+  padding: 0px 6px;
+  background: color.$colorBackgroundAccentAlternative;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: color.$colorTextAcccent;
   border-radius: 12px;
 }
 
