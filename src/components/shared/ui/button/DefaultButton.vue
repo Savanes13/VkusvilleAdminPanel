@@ -112,6 +112,12 @@ const {
   background: #C0EDD0;
 }
 
+.default-button__color-green-transparent--disabled {
+  opacity: 0.64;
+  pointer-events: none;
+} 
+
+
 .default-button--disabled {
   opacity: 64%;
   pointer-events: none;

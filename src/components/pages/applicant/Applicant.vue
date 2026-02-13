@@ -15,6 +15,7 @@ const {
   selectedStage,
   dataSwitch,
   editingIsActive,
+  userStore,
   activateEditing,
   finishEditing
 } = applicantWorks();
@@ -51,6 +52,7 @@ const {
         <DefaultButton
           v-if="!editingIsActive"
           class="default-button__size--large default-button__color-green-transparent control-button"
+          :class="{'default-button__color-green-transparent--disabled' : userStore.role === 'GUEST'}"
           left-icon="edit"
           @click="activateEditing"
         >

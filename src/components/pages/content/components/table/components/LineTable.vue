@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ContentWindow from '@/components/shared/elements/modalWindow/content/ContentWindow.vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
+import { useUserStore } from '@/store/user/userStore';
 import { ref } from 'vue';
 
 const editModalVisibility = ref<boolean>(false);
@@ -29,6 +30,8 @@ const changeText = (text: string) => {
   emit('changeText', text, keyLine);
 }
 
+const userStore = useUserStore()
+
 const openWindow = () => {
   editModalVisibility.value = true;
 };
@@ -53,6 +56,7 @@ const closeWindow = () => {
       <IconButton
         @click="openWindow"
         class="button-icon__color-green-transparent"
+        :class="{'button-icon__color-green-transparent--disabled' : userStore.role === 'GUEST'}"
         icon="edit"
         color-icon="transparent"
         v-if="!empty"

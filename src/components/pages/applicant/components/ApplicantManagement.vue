@@ -4,6 +4,7 @@ import HintItem from '@/components/shared/elements/HintItem.vue';
 import { mainIcons } from '@/components/shared/icons/mainIcons';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
+import { useUserStore } from '@/store/user/userStore';
 import type { IInputDefaultProps } from '@/types/inputs/types';
 import { onUnmounted, reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -32,6 +33,7 @@ const route = useRoute();
 const applicantId = route.params.id;
 const isDayModalOpen = ref<boolean>(false);
 const isStageModalOpen = ref<boolean>(false);
+const userStore = useUserStore();
 const errorNextStage = ref<IErrorNextStage>({
   show: false,
   text: ''
@@ -139,7 +141,8 @@ const moveNextStage = async () => {
     </div>
     <div class="applicant-management__content">
       <div 
-        class="management-item" 
+        class="management-item"
+        :class="{'management-item--disabled' : userStore.role === 'GUEST'}"
         @click="toggleDayModal"
       >
         <div class="management-item__text">
@@ -178,6 +181,7 @@ const moveNextStage = async () => {
       </div>
       <div 
         class="management-item"
+        :class="{'management-item--disabled' : userStore.role === 'GUEST'}"
         @click="toggleStageModal"
       >
         <div class="management-item__text">
@@ -294,6 +298,11 @@ const moveNextStage = async () => {
 
 .management-item:hover {
   background: color.$colorBackgroundSecondary_Hover;
+}
+
+.management-item--disabled {
+  opacity: 0.64;
+  pointer-events: none;
 }
 
 .management-item__modal {
