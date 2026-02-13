@@ -4,10 +4,14 @@ import DefaultSwitch from '@/components/shared/ui/switch/DefaultSwitch.vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import AccessBot from './components/AccessBot/AccessBot.vue';
 import AccessAdmin from './components/AccessAdmin/AccessAdmin.vue';
+import { useUserStore } from '@/store/user/userStore';
+import { useRouter } from 'vue-router';
 
 type TSelectType = "bot" | "admin";
 
 const selectedBot = ref<TSelectType>('bot');
+const userStore = useUserStore();
+const router = useRouter();
 
 const dataSwitch = [
   {
@@ -19,6 +23,14 @@ const dataSwitch = [
     text: "Доступ в админку"
   }
 ];
+
+onMounted(() => {
+  if (userStore.role === 'GUEST') {
+    router.push('/dashboard');
+    return;
+  }
+  window.addEventListener('resize', updateWidth);
+});
 
 const windowWidth = ref(window.innerWidth);
 
