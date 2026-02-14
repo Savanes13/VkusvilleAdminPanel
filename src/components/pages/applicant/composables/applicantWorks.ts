@@ -1,5 +1,6 @@
 import { getApplicantPage } from "@/api/pages/applicant/apiApplicant";
 import { useCompanyStore } from "@/store/company/companyStore";
+import { useUserStore } from "@/store/user/userStore";
 import type { IApplicantDataTypeFirstStage } from "@/types/pages/applicant/applicantTypes";
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -14,6 +15,7 @@ export default function applicantWorks () {
   const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
   const selectedStage = ref<TStages>('stage1');
   const editingIsActive = ref<boolean>(false);
+  const userStore = useUserStore();
 
   const activateEditing = () => {
     editingIsActive.value = true;
@@ -66,6 +68,7 @@ export default function applicantWorks () {
     selectedStage,
     dataSwitch,
     editingIsActive,
+    userStore,
     activateEditing,
     finishEditing
   }

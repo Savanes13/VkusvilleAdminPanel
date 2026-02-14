@@ -63,6 +63,7 @@ const getPageData = async () => {
   try {
     const respone = await checkAuth();
     pageDataArr.value = respone;
+    // userStore.role = respone.role;
   } catch (error) {
     console.error("ошибка при загрузке страницы")
   }

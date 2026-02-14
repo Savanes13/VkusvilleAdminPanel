@@ -103,6 +103,11 @@ const {
   background: #EBEBEB;
 }
 
+.default-button__color-gray--disabled {
+  opacity: 0.64;
+  pointer-events: none;
+}
+
 .default-button__color-green-transparent {
   background: #DCFAE7;
   color: #179C49;
@@ -111,6 +116,11 @@ const {
 .default-button__color-green-transparent:hover {
   background: #C0EDD0;
 }
+
+.default-button__color-green-transparent--disabled {
+  opacity: 0.64;
+  pointer-events: none;
+} 
 
 .default-button--disabled {
   opacity: 64%;
