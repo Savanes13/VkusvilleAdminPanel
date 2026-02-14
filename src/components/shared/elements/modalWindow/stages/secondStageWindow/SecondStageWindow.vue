@@ -81,6 +81,7 @@ const {
               :placeholder="dayToWorkInputObj.placeholder"
               :error="dayToWorkInputObj.error"
               :small-mobile="true"
+              :number-type="true"
             />
           </div>
         </div>
@@ -159,6 +160,7 @@ const {
               :placeholder="multiplierInputObj.placeholder"
               :error="multiplierInputObj.error"
               :small-mobile="true"
+              :number-type="true"
             />
             <DefaultInput
               v-model:value="minGradePass"
@@ -166,6 +168,7 @@ const {
               :placeholder="passingGradeInputObj.placeholder"
               :error="passingGradeInputObj.error"
               :small-mobile="true"
+              :number-type="true"
             />
           </div>
         </div>

@@ -169,6 +169,7 @@ const moveNextStage = async () => {
               :label="dayInputObj.label"
               :placeholder="dayInputObj.placeholder"
               :error="dayInputObj.error"
+              :number-type="true"
             />  
             <DefaultButton
               class="default-button__size--large default-button__color-green"
