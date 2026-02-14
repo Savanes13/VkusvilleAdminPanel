@@ -25,7 +25,7 @@ const dataSwitch = [
 ];
 
 onMounted(() => {
-  if (userStore.role === 'GUEST') {
+  if (userStore.role === 'GUEST' || userStore.role === 'ADMIN') {
     router.push('/dashboard');
     return;
   }
