@@ -12,6 +12,7 @@ interface IDefaultInputProps {
   }
   isSearch?: boolean;
   smallMobile?: boolean;
+  numberType?: boolean;
 };
 
 let {
@@ -23,7 +24,8 @@ let {
     text: ''
   },
   isSearch = false,
-  smallMobile = false 
+  smallMobile = false,
+  numberType = false
 } = defineProps<IDefaultInputProps>();
 
 const emit = defineEmits<{
@@ -57,6 +59,7 @@ const inputValue = computed({
       </div>
       <input
         class="input"
+        :type="numberType ? 'number' : 'text'"
         :class="{ 
           'input--error': error.show,
           'input--search': isSearch,
@@ -89,6 +92,18 @@ const inputValue = computed({
 
 .input--search {
   padding-left: 36px;
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 @media (max-width: 425px) {
