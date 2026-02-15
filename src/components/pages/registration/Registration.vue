@@ -11,7 +11,7 @@ import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/typ
 import { reactive, ref, watch } from 'vue';
 import { register } from '@/api/user/apiUser';
 
-const rememberUser = ref<boolean>(false);
+// const rememberUser = ref<boolean>(false);
 
 const fioInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -215,14 +215,14 @@ const registerUser = async () => {
         >
           Зарегистрировать аккаунт
         </DefaultButton>
-        <div class="checkbox-block">
+        <!-- <div class="checkbox-block">
           <CheckMark
             v-model:state="rememberUser"
           />
           <div class="checkbox-block__text">
             <p>Запомнить меня</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="register__authorization">
         <div class="have-account">
