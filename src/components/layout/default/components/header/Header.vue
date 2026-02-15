@@ -9,6 +9,7 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 import { useUserStore } from '@/store/user/userStore';
 import { checkAuth, logout } from '@/api/user/apiUser';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 interface IDataArr {
   email: string
@@ -17,6 +18,7 @@ interface IDataArr {
   display_name: string
 };
 
+const router = useRouter();
 const pageDataArr = ref<null | IDataArr>(null);
 const userInfoIsOpen = ref<boolean>(false);
 const companyStore = useCompanyStore();
@@ -54,6 +56,7 @@ const exitFromAccount = async () => {
     await logout();
     userStore.deleteAccessToken();
     toggleUserOpen();
+    router.push("/authorization");
   } catch (error) {
     console.error('ошибка выхода из аккаунта')
   }
@@ -195,20 +198,6 @@ getPageData();
   align-items: center;
   gap: 24px;
 }
-
-// .user-icon {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 40px;
-//   height: 40px;
-//   border-radius: 50px;
-//   font-weight: 500;
-//   font-size: 16px;
-//   line-height: 20px;
-//   background: color.$colorStrokeAccent;
-//   color: color.$colorIconWhite;
-// }
 
 .user-icon-mobile--top {
   display: none;
