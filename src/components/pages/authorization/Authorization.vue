@@ -13,9 +13,9 @@ import { auth } from '@/api/user/apiUser';
 import { useUserStore } from '@/store/user/userStore';
 import { useRouter } from 'vue-router';
 
-const rememberUser = ref<boolean>(false);
 const router = useRouter();
 const userStore = useUserStore();
+// const rememberUser = ref<boolean>(false);
 
 const emailInputObj = reactive<IInputPasswordProps>({
   value: '',
@@ -129,14 +129,14 @@ const authUser = async () => {
         >
           Войти
         </DefaultButton>
-        <div class="checkbox-block">
+        <!-- <div class="checkbox-block">
           <CheckMark
             v-model:state="rememberUser"
           />
           <div class="checkbox-block__text">
             <p>Запомнить меня</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="authorization__register">
         <div class="no-account">
