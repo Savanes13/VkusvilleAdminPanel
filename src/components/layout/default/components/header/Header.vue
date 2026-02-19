@@ -9,7 +9,7 @@ import { mainIcons } from '@/components/shared/icons/mainIcons';
 import { useUserStore } from '@/store/user/userStore';
 import { checkAuth, logout } from '@/api/user/apiUser';
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 interface IDataArr {
   email: string
@@ -19,6 +19,7 @@ interface IDataArr {
 };
 
 const router = useRouter();
+const route = useRoute();
 const pageDataArr = ref<null | IDataArr>(null);
 const userInfoIsOpen = ref<boolean>(false);
 const companyStore = useCompanyStore();
@@ -35,6 +36,10 @@ const dataSwitch = [
     text: "Росбиотех"
   }
 ];
+
+const hideSwitch = computed(() => {
+  return route.name === 'applicant'
+})
 
 const roleLabel = computed(() => {
   if (!pageDataArr.value) return '';
@@ -86,7 +91,10 @@ getPageData();
             <img :src="logo" alt="logo"/>
           </div>
         </router-link>
-        <div class="select-collaboration">
+        <div 
+          class="select-collaboration"
+          v-if="!hideSwitch"
+        >
           <DefaultSwitch
             v-model:value="selectedCompany"
             :data="dataSwitch"

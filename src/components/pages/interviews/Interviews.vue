@@ -33,6 +33,7 @@ const addExpertWindowObj = ref<IAddExpertWindowObj>({
   arrExpertIds: null
 });
 const visibilityDataWindow = ref<boolean>(false);
+const visibilityErrorWeek = ref<boolean>(false);
 const dataWindowObj = ref<IDataWindowObj>({
   id: null,
   experts: null,
@@ -42,16 +43,16 @@ const dataWindowObj = ref<IDataWindowObj>({
   time: null
 });
 const viewportWidth = ref(window.innerWidth);
-let hideTimeout: number | null = null;
+let hideTimeoutSuccess: number | null = null;
+let hideTimeoutError: number | null = null;
 
 const updateWidth = () => {
   viewportWidth.value = window.innerWidth;
 };
 
 onUnmounted(() => {
-  if (hideTimeout) {
-    clearTimeout(hideTimeout);
-  }
+  if (hideTimeoutSuccess) clearTimeout(hideTimeoutSuccess);
+  if (hideTimeoutError) clearTimeout(hideTimeoutError);
 });
 
 onMounted(() => {
@@ -67,6 +68,12 @@ const getPageData = async () => {
     const response = await getContentInterviewsPage(selectedWeek.value);
     pageDataArr.value = [...response.items]
   } catch (error) {
+    visibilityErrorWeek.value = true;
+    selectedWeek.value = 0;
+    if (hideTimeoutError) clearTimeout(hideTimeoutError);
+    hideTimeoutError = setTimeout(() => {
+      visibilityErrorWeek.value = false;
+    }, 4000);
     console.error('ошибка при получении данных страницы')
   }
 }
@@ -130,8 +137,8 @@ const changeExpertsInInrerview = (id: number, arr: number[]) => {
     });
   });
   successBlockIsVisible.value = true;
-  if (hideTimeout) clearTimeout(hideTimeout);
-  hideTimeout = setTimeout(() => {
+  if (hideTimeoutSuccess) clearTimeout(hideTimeoutSuccess);
+  hideTimeoutSuccess = setTimeout(() => {
     successBlockIsVisible.value = false;
   }, 4000);
 }
@@ -142,9 +149,17 @@ const setSelectedWeek = (id: number) => {
 
 const closeSuccessBlock = () => {
   successBlockIsVisible.value = false;
-  if (hideTimeout) {
-    clearTimeout(hideTimeout);
-    hideTimeout = null;
+  if (hideTimeoutSuccess) {
+    clearTimeout(hideTimeoutSuccess);
+    hideTimeoutSuccess = null;
+  }
+}
+
+const closeErrorBlock = () => {
+  visibilityErrorWeek.value = false;
+  if (hideTimeoutError) {
+    clearTimeout(hideTimeoutError);
+    hideTimeoutError = null;
   }
 }
 </script>
@@ -229,7 +244,7 @@ const closeSuccessBlock = () => {
     </transition>
     <transition name="fadeFast">
       <div 
-        class="success-block"
+        class="success-block info-block"
         v-if="successBlockIsVisible"
       >
         <div>
@@ -242,7 +257,30 @@ const closeSuccessBlock = () => {
         </div>
         <div  
           @click="closeSuccessBlock"
-          class="success-block__close"
+          class="success-block__close info-block__close"
+        > 
+          <span
+            v-html="mainIcons['closeGray']"
+          ></span>
+        </div>
+      </div>
+    </transition>
+    <transition name="fadeFast">
+      <div 
+        class="error-block info-block"
+        v-if="visibilityErrorWeek"
+      >
+        <div>
+          <span
+            v-html="mainIcons['warning']"
+          ></span>
+        </div>
+        <div>
+          <p>Вы не можете открыть эту неделю</p>
+        </div>
+        <div  
+          @click="closeErrorBlock"
+          class="error-block__close info-block__close"
         > 
           <span
             v-html="mainIcons['closeGray']"
@@ -355,7 +393,7 @@ const closeSuccessBlock = () => {
   cursor: default !important;
 }
 
-.success-block {
+.info-block{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -374,7 +412,7 @@ const closeSuccessBlock = () => {
   transform: translateX(-50%);
 }
 
-.success-block__close {
+.info-block__close {
   cursor: pointer;
 }
 
