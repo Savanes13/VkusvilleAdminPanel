@@ -75,7 +75,6 @@ const authUser = async () => {
     const response = await auth(emailInputObj.value, passwordInputObj.value);
     userStore.setAccessToken(response.access_token);
     router.push('/');
-    console.log(response)
   } catch (error: any) {
     if (error.status === 400) {
       emailInputObj.error.show = true;
