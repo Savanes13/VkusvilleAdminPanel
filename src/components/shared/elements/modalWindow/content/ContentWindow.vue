@@ -107,6 +107,7 @@ const closeWindow = () => {
         <div class="buttons-block">
           <DefaultButton
              class="default-button__size--large default-button__color-gray"
+             @click="closeWindow"
           >
             Отменить
           </DefaultButton>
