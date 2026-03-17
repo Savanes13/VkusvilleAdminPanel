@@ -11,7 +11,7 @@
     </div>
     <div class="table-header__item">
       <div>
-        <p>Номер телефона</p>
+        <p>Роль</p>
       </div>
     </div>
     <div class="table-header__item">

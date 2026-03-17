@@ -36,12 +36,12 @@ const deleteAdmin = () => {
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ email }}</p>
+        <p>{{ role === 'Guest' ? 'Менеджер' : 'Админ' }}</p>
       </div>
     </div>
     <div class="line-table__item">
       <div>
-        <p>{{ role }}</p>
+        <p>{{ email }}</p>
       </div>
     </div>
     <div class="line-table__item button-line">
