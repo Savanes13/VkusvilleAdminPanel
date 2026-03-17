@@ -149,7 +149,7 @@ const {
                 :number="index"
                 :key="index"
                 :activity="original.includes(index)"
-                @click="addNewScore('Originals', index)"
+                @click="addNewScore('Original', index)"
               />
             </div>
           </div>
