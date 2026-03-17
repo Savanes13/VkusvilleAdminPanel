@@ -10,8 +10,11 @@ import smallLogo from '@/assets/images/logo/smallLogo.svg';
 import type { IInputDefaultProps, IInputPasswordProps } from '@/types/inputs/types';
 import { reactive, ref, watch } from 'vue';
 import { register } from '@/api/user/apiUser';
+import { useRouter } from 'vue-router';
 
 // const rememberUser = ref<boolean>(false);
+
+const router = useRouter();
 
 const fioInputObj = reactive<IInputDefaultProps>({
   value: '',
@@ -148,7 +151,7 @@ const registerUser = async () => {
   try {
     if(!checkingFormValidity()) return;
     await register(fioInputObj.value, emailInputObj.value, passwordInputObj.value, tokenInputObj.value);
-    // TODO: сюда установку токена
+    router.push('/authorization');
   } catch (error) {
     console.error('ошибка при авторизации пользователя')
   };
