@@ -83,7 +83,7 @@ watch(() => companyStore.selectedCompany, () => {
           <div>
             <p>{{ padeDataArr.totalRegistrations.all }}</p>
           </div>
-          <div class="registrations-weak">
+          <div class="registrations-weak" v-if="padeDataArr.totalRegistrations.forWeek > 0">
             <p><span>+{{ padeDataArr.totalRegistrations.forWeek }}</span> за неделю</p>
           </div>
         </div>
