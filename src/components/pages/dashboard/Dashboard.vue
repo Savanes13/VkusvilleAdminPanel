@@ -112,7 +112,7 @@ watch(() => companyStore.selectedCompany, () => {
               <p>{{ item.id }} этап</p>
             </div>
             <div class="border-wrap__value">
-              <p>{{ item.current ?? '-' }}<span> / {{ item.max }}</span></p>
+              <p>{{ item.current != null ? Number(item.current).toFixed(2) : '-' }}<span> / {{ item.max }}</span></p>
             </div>
           </div>
         </div>
