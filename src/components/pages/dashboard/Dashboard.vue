@@ -66,7 +66,7 @@ watch(() => companyStore.selectedCompany, () => {
             v-for="(item, index) in padeDataArr.charts"
             class="graf-elem"
             :title = "item.titleKey"
-            :totalParticipants="item.totalParticipants"
+            :totalParticipants="padeDataArr.charts && padeDataArr.charts[0] ? padeDataArr.charts[0].totalParticipants : 0"
             :passedCount="item.passedCount"
             :noPassedCount="item.noPassedCount"
             :key='`${index} + ${item.titleKey}`'
