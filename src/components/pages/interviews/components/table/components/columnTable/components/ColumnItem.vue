@@ -176,7 +176,11 @@ const month = computed(() => {
     </div>
     <div 
       class="column-item__hide-block"
-      :class="{'column-item__hide-block--left' : columnIndex === 3 || columnIndex === 4}"
+      :class="{
+        'column-item__hide-block--left' : columnIndex === 3 || columnIndex === 4,
+        'column-item__hide-block--top' : time >= 12,
+        'column-item__hide-block--bottom' : time <= 3
+      }"
       v-if="isVisibleHideBlock && requiredItem && viewportWidth > 1000"
       ref="hideBlockRef"
     >
@@ -290,6 +294,16 @@ const month = computed(() => {
 .column-item__hide-block--left {
   left: auto; 
   right: 100%;
+}
+
+.column-item__hide-block--top {
+  top: -200px;
+  left: auto;
+}
+
+.column-item__hide-block--bottom {
+    top: 70px;
+  left: auto;
 }
 
 .hide-date {
