@@ -55,7 +55,7 @@ const openDataWindow = (id: number, experts: number[], day: string, data: number
     </div>
 
     <ColumnItem
-      v-for="(item, index) in 12"
+      v-for="(item, index) in 15"
       :time="index"
       :data="data"
       :day="day!"

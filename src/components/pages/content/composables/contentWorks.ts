@@ -1,7 +1,9 @@
 import { changeTextContentAbit, changeTextContentAdmin, getContentAbit, getContentAdmin } from "@/api/pages/content/apiContent";
 import { useCompanyStore } from "@/store/company/companyStore";
+import { useUserStore } from "@/store/user/userStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
 export default function contentWorks () {
   type TBotsType = "technical" | "applicants"
@@ -16,7 +18,9 @@ export default function contentWorks () {
   const currentPage = ref<number>(1);
   const pageSize = 8;
   const selectedBot = ref<TBotsType>('technical');
-  const companyStore = useCompanyStore()
+  const companyStore = useCompanyStore();
+  const userStore = useUserStore();
+  const router = useRouter();
 
   const searchInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -44,6 +48,14 @@ export default function contentWorks () {
   const updateWidth = () => {
     windowWidth.value = window.innerWidth;
   };
+
+  onMounted(() => {
+    if (userStore.role === 'GUEST') {
+      router.push('/dashboard');
+      return;
+    }
+    window.addEventListener('resize', updateWidth);
+  });
 
   onMounted(() => {
     window.addEventListener('resize', updateWidth);

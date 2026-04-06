@@ -35,6 +35,19 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: Fi
   const closeWindow = () => {
     emit("close");
   };
+
+  const openCloseWindow = () => {
+    showCloseWindow.value = true;
+  };
+
+  const closeCloseWindow = () => {
+    showCloseWindow.value = false;
+  };
+
+  const handleOuterClose = () => {
+    if (showCloseWindow.value) return;
+    openCloseWindow();
+  };
   
   const dayToWorkInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -68,6 +81,8 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: Fi
 
   const readyToSendDateAfterPrepatch = ref<Boolean>(false);
   const objPrepathData = ref<null | IPrepathData>(null);
+  const showCloseWindow = ref<boolean>(false);
+
   const structLogic = computed(() => localStage.grades.find(item => item.criteria === 'StructLogic')?.grades ?? []);
   const contentMotivation = computed(() => localStage.grades.find(item => item.criteria === 'ContentMotivation')?.grades ?? []);
   const programGoals = computed(() => localStage.grades.find(item => item.criteria === 'ProgramGoals')?.grades ?? []);
@@ -107,7 +122,7 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: Fi
     if (type === 'opportunity') localStage.deadlines.start_until = new Date(date).getTime();
     if (type === 'deadline') localStage.deadlines.send_until = new Date(date).getTime();
   };
-  
+
   function timestampToDateString(timestamp: number): string {
     const date = new Date(timestamp);
     const year = date.getFullYear();
@@ -164,11 +179,15 @@ export default function firstStageWindowWorks (props: { data: IStage }, emit: Fi
     programGoals,
     readyToSendDateAfterPrepatch,
     objPrepathData,
+    showCloseWindow,
     changeStageData,
     closeWindow,
     timestampToDateString,
     updateDate,
-    addNewScore
+    addNewScore,
+    openCloseWindow,
+    closeCloseWindow,
+    handleOuterClose
   }
 }
 

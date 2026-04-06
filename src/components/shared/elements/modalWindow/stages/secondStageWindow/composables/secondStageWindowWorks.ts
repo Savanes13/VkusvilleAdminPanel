@@ -35,6 +35,19 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
   const closeWindow = () => {
     emit("close");
   };
+
+  const openCloseWindow = () => {
+    showCloseWindow.value = true;
+  };
+
+  const closeCloseWindow = () => {
+    showCloseWindow.value = false;
+  };
+
+  const handleOuterClose = () => {
+    if (showCloseWindow.value) return;
+    openCloseWindow();
+  };
   
   const dayToWorkInputObj = reactive<IInputDefaultProps>({
     value: '',
@@ -68,6 +81,8 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
 
   const readyToSendDateAfterPrepatch = ref<Boolean>(false);
   const objPrepathData = ref<null | IPrepathData>(null);
+  const showCloseWindow = ref<boolean>(false);
+
   const integrity = computed(() => localStage.grades.find(item => item.criteria === 'Integrity')?.grades ?? []);
   const argument = computed(() => localStage.grades.find(item => item.criteria === 'Arguments')?.grades ?? []);
   const realisticMeaningful = computed(() => localStage.grades.find(item => item.criteria === 'RealisticMeaningful')?.grades ?? []);
@@ -166,10 +181,14 @@ export default function secondStageWindowWorks (props: { data: IStage }, emit: F
     original,
     readyToSendDateAfterPrepatch,
     objPrepathData,
+    showCloseWindow,
     changeStageData,
     closeWindow,
     timestampToDateString,
     updateDate,
-    addNewScore
+    addNewScore,
+    openCloseWindow,
+    closeCloseWindow,
+    handleOuterClose
   }
 }

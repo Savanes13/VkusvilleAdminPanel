@@ -66,7 +66,7 @@ watch(() => companyStore.selectedCompany, () => {
             v-for="(item, index) in padeDataArr.charts"
             class="graf-elem"
             :title = "item.titleKey"
-            :totalParticipants="item.totalParticipants"
+            :totalParticipants="padeDataArr.charts && padeDataArr.charts[0] ? padeDataArr.charts[0].totalParticipants : 0"
             :passedCount="item.passedCount"
             :noPassedCount="item.noPassedCount"
             :key='`${index} + ${item.titleKey}`'
@@ -83,7 +83,7 @@ watch(() => companyStore.selectedCompany, () => {
           <div>
             <p>{{ padeDataArr.totalRegistrations.all }}</p>
           </div>
-          <div class="registrations-weak">
+          <div class="registrations-weak" v-if="padeDataArr.totalRegistrations.forWeek > 0">
             <p><span>+{{ padeDataArr.totalRegistrations.forWeek }}</span> за неделю</p>
           </div>
         </div>
@@ -112,7 +112,7 @@ watch(() => companyStore.selectedCompany, () => {
               <p>{{ item.id }} этап</p>
             </div>
             <div class="border-wrap__value">
-              <p>{{ item.current ?? '-' }}<span> / {{ item.max }}</span></p>
+              <p>{{ item.current != null ? Number(item.current).toFixed(2) : '-' }}<span> / {{ item.max }}</span></p>
             </div>
           </div>
         </div>

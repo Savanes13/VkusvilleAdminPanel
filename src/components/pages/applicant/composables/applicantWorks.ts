@@ -3,7 +3,7 @@ import { useCompanyStore } from "@/store/company/companyStore";
 import { useUserStore } from "@/store/user/userStore";
 import type { IApplicantDataTypeFirstStage } from "@/types/pages/applicant/applicantTypes";
 import { computed, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default function applicantWorks () {
   type TStages = "stage1" | "stage2"
@@ -11,6 +11,7 @@ export default function applicantWorks () {
   const companyStore = useCompanyStore();
 
   const route = useRoute();
+  const router = useRouter();
   const applicantId = route.params.id;
   const pageDataArr = ref<null | IApplicantDataTypeFirstStage>(null);
   const selectedStage = ref<TStages>('stage1');
@@ -52,7 +53,10 @@ export default function applicantWorks () {
       if(!applicantId) return;
       const respone = await getApplicantPage(Number(applicantId), 1);
       pageDataArr.value = respone;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.data.detail === 'Assignment not found') {
+        router.push('/applicants')
+      } 
       console.error('ошибка при получении данных страницы')
     }
   };

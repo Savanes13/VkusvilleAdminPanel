@@ -43,6 +43,15 @@
     <div class="time-block__item">
       <p>20:00</p>
     </div>
+    <div class="time-block__item">
+      <p>21:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>22:00</p>
+    </div>
+    <div class="time-block__item">
+      <p>23:00</p>
+    </div>
   </div>
 </template>
 
