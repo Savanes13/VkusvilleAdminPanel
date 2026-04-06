@@ -31,11 +31,15 @@ const {
   original,
   readyToSendDateAfterPrepatch,
   objPrepathData,
+  showCloseWindow,
   changeStageData,
   closeWindow,
   timestampToDateString,
   updateDate,
-  addNewScore
+  addNewScore,
+  openCloseWindow,
+  closeCloseWindow,
+  handleOuterClose
 } = secondStageWindowWorks(props, emit);
 </script>
 
@@ -43,11 +47,11 @@ const {
   <BackgroundModal :grey-mobile="true">
     <div 
       class="stage-window"
-      v-clickOutside="closeWindow"
+      v-clickOutside="handleOuterClose"
     > 
       <ModalWindow
         :name="`Настройка ${2} этапа`"
-        @close="closeWindow"
+        @close="handleOuterClose"
         :have-mobile-type="true"
       >
         <div class="dates-deadlines wrap-block">
@@ -85,6 +89,46 @@ const {
             />
           </div>
         </div>
+
+        <div
+          v-if="showCloseWindow"
+        >
+          <BackgroundModal 
+            :grey-mobile="false"
+            v-clickOutside="closeCloseWindow"
+          >
+            <div 
+              class="permission-close"
+              @click.stop
+              @mousedown.stop
+            >
+              <ModalWindow
+                name="Закрыть"
+                @close="closeCloseWindow"
+                :have-mobile-type="false"
+              >
+                <div class="permission-close__text">
+                  <p>Вы точно хотите закрыть окно настройки этапа?</p>
+                </div>
+                <div class="permission-close__buttons">
+                  <DefaultButton
+                    class="default-button__size--large default-button__color-gray"
+                    @click="closeWindow"
+                  >
+                    Закрыть
+                  </DefaultButton>
+                  <DefaultButton
+                    class="default-button__size--large default-button__color-green"
+                    @click="closeCloseWindow"
+                  >
+                    Отменить
+                  </DefaultButton>
+                </div>
+              </ModalWindow>
+            </div>
+          </BackgroundModal>
+        </div>
+
         <div class="estimation wrap-block">
           <div class="estimation__title-block wrap-block__title">
             <div>
