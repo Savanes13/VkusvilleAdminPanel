@@ -1,4 +1,4 @@
-import { getApplicantsPage } from "@/api/pages/applicants/apiApplicants";
+import { downloadStatisticsApplicantsPage, getApplicantsPage } from "@/api/pages/applicants/apiApplicants";
 import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import { computed, reactive, ref, watch } from "vue";
@@ -86,13 +86,31 @@ export default function applicantsWorks () {
     },{ immediate: true }
   )
 
+  const downloadStatistics = async () => {
+    try {
+      const data = await downloadStatisticsApplicantsPage();
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'grades.csv';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("ошибка при скачивании статистики абитуриентов");
+    }
+  };
+
   return {
     paginatedContent,
     searchInputObj,
     totalPages,
     currentPage,
     overdueDeadlineSortActivity,
+    missingLines,
     goToPage,
-    missingLines
+    downloadStatistics
   }
 }

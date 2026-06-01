@@ -6,6 +6,7 @@ import applicantsWorks from './composables/applicantsWorks';
 import TableApplicants from './components/table/TableApplicants.vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import CheckMark from '@/components/shared/ui/checkbox/CheckMark.vue';
+import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 
 const {
   paginatedContent,
@@ -13,8 +14,9 @@ const {
   totalPages,
   currentPage,
   overdueDeadlineSortActivity,
+  missingLines,
   goToPage,
-  missingLines
+  downloadStatistics
 } = applicantsWorks();
 </script>
 
@@ -40,12 +42,20 @@ const {
         />
       </div>
       <div class="checkbox-block">
-        <CheckMark
-          v-model:state="overdueDeadlineSortActivity"
-        />
-        <div>
-          <p>Просрочившие дедлайн</p>
+        <div class="checkbox-block__checkbox">
+          <CheckMark
+            v-model:state="overdueDeadlineSortActivity"
+          />
+          <div>
+            <p>Просрочившие дедлайн</p>
+          </div>
         </div>
+        <DefaultButton
+          class="default-button__size--small default-button__color-green download-button"
+          @click="downloadStatistics"
+        >
+          Скачать статистику
+        </DefaultButton>
       </div>
       <div class="table-wrapper">
         <TableApplicants
@@ -127,14 +137,20 @@ const {
 
 .checkbox-block {
   display: flex;
+  justify-content: space-between;
   padding: 10px 0px;
-  gap: 10px;
   align-items: center;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;  
   color: color.$colorTextPrimary;
   margin-bottom: 20px;
+}
+
+.checkbox-block__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .pagination {
@@ -173,5 +189,17 @@ const {
   border-radius: 8px;
   border: 1px solid #DDE0E8;
   font-weight: 500;
+}
+
+.download-button {
+  width: 200px;
+}
+
+@media (max-width: 820px) {
+  .checkbox-block {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
 }
 </style>
