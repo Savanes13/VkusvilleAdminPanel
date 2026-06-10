@@ -12,9 +12,12 @@ import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
 import { useCompanyStore } from '@/store/company/companyStore';
 import { useUserStore } from '@/store/user/userStore';
+import BackgroundModal from '@/components/layout/background/BackgroundModal.vue';
+import close from '@/assets/images/mainIcons/close.svg'
 
 const pageDataArr = ref<null | IStage[]>(null);
 const stageWindowVisibility = ref<boolean>(false);
+const changeWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 const companyStore = useCompanyStore();
 const userStore = useUserStore()
@@ -50,8 +53,9 @@ const formatTimestamp = (ts: number) => {
 
 const setNewStageValue = (id: number, obj: IStage) => {
   if(!pageDataArr.value) return;
-  if(id === 1) pageDataArr.value[0] = obj
-  if(id === 2) pageDataArr.value[1] = obj
+  if(id === 1) pageDataArr.value[0] = obj;
+  if(id === 2) pageDataArr.value[1] = obj;
+  showChangeWindow();
 };
 
 const getPageData = async () => {
@@ -66,7 +70,15 @@ const getPageData = async () => {
 watch(() => companyStore.selectedCompany, () => {
     getPageData()
   },{ immediate: true }
-)
+);
+
+const showChangeWindow = () => {
+  changeWindowVisibility.value = true;
+}
+
+const closeChangeWindow = () => {
+  changeWindowVisibility.value = false;
+}
 </script>
 
 <template>
@@ -360,6 +372,34 @@ watch(() => companyStore.selectedCompany, () => {
         @set-new-obj="(obj) => setNewStageValue(2, obj)"
       />
     </transition>
+    <transition name="fadeFast">
+      <div v-if="changeWindowVisibility">
+        <BackgroundModal :grey-mobile="false">
+          <div 
+            class="change-window"
+            v-clickOutside="closeChangeWindow"
+          > 
+            <div class="change-window__wrap">
+              <div class="save-changes">
+                <p>Изменения сохранены</p>
+              </div>
+              <div 
+                class="close-changes"
+                @click="closeChangeWindow"
+              >
+                <img :src="close" alt="">
+              </div>
+              <DefaultButton
+                class="default-button__size--small default-button__color-green"
+                @click="closeChangeWindow"
+              >
+                Хорошо
+              </DefaultButton>
+            </div>
+          </div>
+        </BackgroundModal>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -470,6 +510,28 @@ watch(() => companyStore.selectedCompany, () => {
   line-height: 24px;
   margin-bottom: 20px;
   color: color.$colorTextSecondary;
+}
+
+.change-window {
+  position: relative;
+  width: 260px;
+}
+
+.change-window__wrap {
+  background-color: #FFFFFF;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.save-changes {
+  margin-bottom: 14px;
+}
+
+.close-changes {
+  position: absolute;
+  right: 24px;
+  top: 22px;
+  cursor: pointer;
 }
 
 .interview-button {
