@@ -1,13 +1,22 @@
 <script lang="ts" setup>
+import { useCompanyStore } from '@/store/company/companyStore';
+import { computed } from 'vue';
 
+const companyStore = useCompanyStore();
+
+const isRosbioteh = computed(() => {
+  return companyStore.selectedCompany === "Rosbioteh";
+})
 </script>
 
 <template>
-  <div class="table-header">
+  <div 
+    class="table-header"
+    :class="{'table-header--high' : isRosbioteh}"
+  >
     <div class="table-header__big-cell expert-cell">
       <p>Эксперт</p>
     </div>
-
     <div class="table-header__double-cell">
       <!-- <div class="title">
         <div>
@@ -16,19 +25,18 @@
       </div> -->
       <div class="stages">
         <div class="stages__stage">
-          <p>Целостность решения</p>
+          <p>{{ isRosbioteh ? "Стремление решение бизнес-задачи и продуктовый подход" : "Целостность решения"}}</p>
         </div>
         <div class="stages__stage">
-          <p>Аргументация предложенного решения</p>
+          <p>{{ isRosbioteh ? "Соответствие решения ценностям ВкусВилла" : "Аргументация предложенного решения"}}</p>
         </div>
         <div class="stages__stage">
-          <p>Реалистичность и здравый смысл</p>
+          <p>{{ isRosbioteh ? "Технологическая состоятельность и грамотность решения" : "Реалистичность и здравый смысл"}}</p>
         </div>
       </div>
     </div>
-
     <div class="table-header__big-cell summary-cell">
-      <p>Оригинальность подхода</p>
+      <p>{{ isRosbioteh ? "Нестандартность мышления и креативность в решении бизнес-задачи" : "Оригинальность подхода"}}</p>
     </div>
     <div class="table-header__big-cell comment-cell">
       <p>Комментарий</p>
@@ -46,6 +54,10 @@
   border-top-right-radius: 16px;
   background: color.$colorBackgroundSecondary;
   height: 88px;
+}
+
+.table-header--high {
+  height: 120px;
 }
 
 .summary-cell {
