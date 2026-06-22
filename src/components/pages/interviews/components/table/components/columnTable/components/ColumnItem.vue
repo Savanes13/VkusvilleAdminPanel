@@ -50,8 +50,15 @@ const expertDataArr = ref<null | IExpert[]>(null);
 const hideBlockRef = ref<HTMLElement | null>(null);
 const contentRef = ref<HTMLElement | null>(null);
 const viewportWidth = ref(window.innerWidth);
-const localTime = computed(() => time + 8);
-const localTimePlus = computed(() => time + 9);
+
+const slotStartMinutes = computed(() => time * 30 + 8 * 60);
+const slotEndMinutes = computed(() => slotStartMinutes.value + 30);
+
+const formatMinutes = (totalMinutes: number) => {
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+};
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
@@ -69,33 +76,23 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateWidth);
 });
 
-const times = computed(() =>
-  data.interviews.map(interview => {
-    const date = new Date(interview.start_time);
-    return Number(
-      date.toLocaleTimeString("ru-RU", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Moscow",
-      }).split(":")[0]
-    );
-  })
-);
-
-const timestampToNumber = (date: number) => {
+const timestampToMinutes = (date: number) => {
   const newDate = new Date(date);
-  return Number(
-    newDate.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Moscow",
-    }).split(":")[0]
-  );
-}
+  const parts = newDate.toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Moscow",
+  }).split(":").map(Number);
+  return (parts[0] ?? 0) * 60 + (parts[1] ?? 0);
+};
+
+const times = computed(() =>
+  data.interviews.map(interview => timestampToMinutes(interview.start_time))
+);
 
 const requiredItem = computed(() => {
   return data.interviews.find(item => {
-    return timestampToNumber(item.start_time) === localTime.value;
+    return timestampToMinutes(item.start_time) === slotStartMinutes.value;
   });
 });
 
@@ -115,7 +112,7 @@ const toggleHideBlock = () => {
   isVisibleHideBlock.value = !isVisibleHideBlock.value;
   if (isVisibleHideBlock.value && requiredItem.value?.reviewer_ids) {
     getExpertForHimId(requiredItem.value.reviewer_ids);
-    if (viewportWidth.value < 1001) emit('openDataWindow',  requiredItem.value.id, requiredItem.value.reviewer_ids, day, numberDay, month.value, localTime.value)
+    if (viewportWidth.value < 1001) emit('openDataWindow',  requiredItem.value.id, requiredItem.value.reviewer_ids, day, numberDay, month.value, slotStartMinutes.value)
   }
 };
 
@@ -158,17 +155,15 @@ const month = computed(() => {
     class="column-item"
     :class="{'column-item--border-top' : firstLine}"
   >
-    <div 
+    <div
       class="column-item__content"
       :class="contentClass"
-      v-if="times.includes(localTime)"
+      v-if="times.includes(slotStartMinutes)"
       @click="toggleHideBlock"
       ref="contentRef"
     >
       <div class="time">
-        <p v-if="localTime === 8">0{{ localTime }}:00 – 0{{ localTimePlus }}:00</p>
-        <p v-if="localTime === 9">0{{ localTime }}:00 – {{ localTimePlus }}:00</p>
-        <p v-if="localTime > 9">{{ localTime }}:00 – {{ localTimePlus }}:00</p>
+        <p>{{ formatMinutes(slotStartMinutes) }} – {{ formatMinutes(slotEndMinutes) }}</p>
       </div>
       <div class="experts">
         <p>{{ requiredItem?.reviewer_ids.length }} экспертов</p>
@@ -189,10 +184,8 @@ const month = computed(() => {
           <p>Время и дата</p>
         </div>
         <div class="hide-date__text">
-          <p>{{ day }}, {{ numberDay }} {{ month }}, 
-            <span v-if="localTime === 8">0{{ localTime }}:00 – 0{{ localTimePlus }}:00</span>
-            <span v-if="localTime === 9">0{{ localTime }}:00 – {{ localTimePlus }}:00</span>
-            <span v-if="localTime > 9">{{ localTime }}:00 – {{ localTimePlus }}:00</span>
+          <p>{{ day }}, {{ numberDay }} {{ month }},
+            <span>{{ formatMinutes(slotStartMinutes) }} – {{ formatMinutes(slotEndMinutes) }}</span>
           </p>
         </div>
       </div>
