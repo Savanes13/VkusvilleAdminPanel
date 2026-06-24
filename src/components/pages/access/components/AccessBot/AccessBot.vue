@@ -12,6 +12,7 @@ const {
   pageDataArr,
   selectedItemBot,
   phoneInputObj,
+  phoneCountries,
   fioInputObj,
   selectArr,
   viewportWidth,
@@ -54,6 +55,7 @@ const {
           :label="phoneInputObj.label"
           :placeholder="phoneInputObj.placeholder"
           :error="phoneInputObj.error"
+          :countries="phoneCountries"
         />
         <DefaultInput
           v-model:value="fioInputObj.value"
