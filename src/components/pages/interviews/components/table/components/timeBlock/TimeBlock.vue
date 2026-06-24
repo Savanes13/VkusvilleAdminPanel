@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-
+const slots = Array.from({ length: 30 }, (_, i) => {
+  const totalMinutes = (i + 1) * 30 + 8 * 60;
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+});
 </script>
 
 <template>
@@ -7,50 +12,12 @@
     <div class="time-block__item">
       <p></p>
     </div>
-    <div class="time-block__item">
-      <p>09:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>10:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>11:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>12:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>13:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>14:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>15:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>16:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>17:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>18:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>19:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>20:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>21:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>22:00</p>
-    </div>
-    <div class="time-block__item">
-      <p>23:00</p>
+    <div
+      v-for="time in slots"
+      :key="time"
+      class="time-block__item"
+    >
+      <p>{{ time }}</p>
     </div>
   </div>
 </template>

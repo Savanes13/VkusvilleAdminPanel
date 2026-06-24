@@ -2,7 +2,23 @@ import { createAccessAdmin, deleteContentAccessAdmin, getContentAccessAdmins } f
 import { useCompanyStore } from "@/store/company/companyStore";
 import type { IInputDefaultProps } from "@/types/inputs/types";
 import type { TAdminRole, TDataAdmins } from "@/types/pages/access/accessTypes";
+import type { IPhoneCountry } from "@/components/shared/ui/input/PhoneInput.vue";
 import { onMounted, onUnmounted, reactive, ref, watch } from "vue";
+
+const phoneCountries: IPhoneCountry[] = [
+  {
+    code: '+7',
+    label: '+7',
+    mask: '+7 ###-###-##-##',
+    placeholder: '+7 999-999-99-99',
+  },
+  {
+    code: '+54',
+    label: '+54',
+    mask: '+54 ## ####-####',
+    placeholder: '+54 99 9999-9999',
+  },
+];
 
 export default function AccessbotWorks () {
   const pageDataArr = ref<null | TDataAdmins>(null);
@@ -156,6 +172,7 @@ export default function AccessbotWorks () {
     pageDataArr,
     selectedItemBot,
     phoneInputObj,
+    phoneCountries,
     fioInputObj,
     selectArr,
     viewportWidth,

@@ -40,7 +40,13 @@ const closeWindow = () => {
 
 const userStore = useUserStore()
 const expertDataArr = ref<null | IExpert[]>(null);
-const localTimePlus = computed(() => (data.time ?? 0) + 1);
+const slotEndMinutes = computed(() => (data.time ?? 0) + 30);
+
+const formatMinutes = (totalMinutes: number) => {
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+};
 
 const getExpertForHimId = async (arr: number[]) => {
   try {
@@ -80,10 +86,8 @@ const openAddExpertWindow = () => {
             <p>Время и дата</p>
           </div>
           <div class="hide-date__text">
-            <p>{{ data.day }}, {{ data.data }} {{ data.month }}, 
-              <span v-if="data.time === 8">0{{ data.time }}:00 – 0{{ localTimePlus }}:00</span>
-              <span v-if="data.time === 9">0{{ data.time }}:00 – {{ localTimePlus }}:00</span>
-              <span v-if="(data.time ?? 0) > 9">{{ data.time }}:00 – {{ localTimePlus }}:00</span>
+            <p>{{ data.day }}, {{ data.data }} {{ data.month }},
+              <span>{{ formatMinutes(data.time ?? 0) }} – {{ formatMinutes(slotEndMinutes) }}</span>
             </p>
           </div>
         </div>

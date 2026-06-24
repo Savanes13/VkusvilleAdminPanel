@@ -49,7 +49,7 @@ const undoChangesTriger = ref<boolean>(false);
 const showErrorsBlock = ref<boolean>(false);
 const allErrors = ref<Record<string, GradeErrors>>({});
 const combinedError = ref<string | null>(null);
-
+const applicantNotStartTheTask = ref<boolean>(false);
 
 // const ApplicantStab = {
 //   display_name: "Тестовый Персонаж",
@@ -149,10 +149,14 @@ const setNewValues = async () => {
 const getPageData = async () => {
   try {
     if(!applicantId) return;
-    // pageDataArr.value = ApplicantStab
+    applicantNotStartTheTask.value = false;
     const response = await getApplicantPage(Number(applicantId), 2);
     pageDataArr.value = response;
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.status === 404) {
+      applicantNotStartTheTask.value = true;
+      return;
+    }
     console.error('ошибка при получении данных страницы')
   }
 };
@@ -267,6 +271,9 @@ const getErrors = (index: string, errors: GradeErrors) => {
         </div>
       </div>
     </transition>
+  </div>
+  <div v-if="applicantNotStartTheTask">
+    <p>Абитуриент еще не начал задание</p>
   </div>
 </template>
 
