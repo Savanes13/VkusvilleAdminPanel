@@ -9,6 +9,8 @@ import DefaultInput from '@/components/shared/ui/input/DefaultInput.vue';
 import ScoreButton from '../components/ScoreButton.vue';
 import secondStageWindowWorks from './composables/secondStageWindowWorks';
 import type { IStage } from '@/types/pages/stages/typesStages';
+import { useCompanyStore } from '@/store/company/companyStore.ts';
+import { computed } from 'vue';
 
 const emit = defineEmits<{
   (e: 'close'): void;
@@ -41,6 +43,12 @@ const {
   closeCloseWindow,
   handleOuterClose
 } = secondStageWindowWorks(props, emit);
+
+const companyStore = useCompanyStore();
+
+const isRosbioteh = computed(() => {
+  return companyStore.selectedCompany === "Rosbioteh";
+})
 </script>
 
 <template>
@@ -143,7 +151,7 @@ const {
           </div>
           <div class="score-block">
             <div class="score-block__title">
-              <p>Целостность решения</p>
+              <p>{{ isRosbioteh ? "Стремление решение бизнес-задачи и продуктовый подход" : "Целостность решения"}}</p>
             </div>
             <div class="score-block__items">
               <ScoreButton
@@ -157,7 +165,7 @@ const {
           </div>
           <div class="score-block">
             <div class="score-block__title">
-              <p>Аргументация предложенного решения</p>
+              <p>{{ isRosbioteh ? "Соответствие решения ценностям ВкусВилла" : "Аргументация предложенного решения"}}</p>
             </div>
             <div class="score-block__items">
               <ScoreButton
@@ -171,7 +179,7 @@ const {
           </div>
           <div class="score-block">
             <div class="score-block__title">
-              <p>Реалистичность и здравый смысл</p>
+              <p>{{ isRosbioteh ? "Технологическая состоятельность и грамотность решения" : "Реалистичность и здравый смысл"}}</p>
             </div>
             <div class="score-block__items">
               <ScoreButton
@@ -185,7 +193,7 @@ const {
           </div>
           <div class="score-block">
             <div class="score-block__title">
-              <p>Оригинальность подхода</p>
+              <p>{{ isRosbioteh ? "Нестандартность мышления и креативность в решении бизнес-задачи" : "Оригинальность подхода"}}</p>
             </div>
             <div class="score-block__items">
               <ScoreButton
