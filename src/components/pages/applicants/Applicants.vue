@@ -101,6 +101,10 @@ const {
 <style lang="scss" scoped>
 @use "@/style/variables/color.scss" as color;
 
+.applicants {
+  margin-bottom: 80px;
+}
+
 .search {
   margin-bottom: 8px;
 }
