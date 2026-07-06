@@ -224,7 +224,7 @@ const onBlurGrade = (key: TEditingKey) => {
 .line-table__item {
   display: flex;
   align-items: center;
-  height: 64px;
+  min-height: 64px;
   padding: 12px;
   border-right: 1px solid #DDE0E8;
   font-weight: 400;
@@ -261,7 +261,7 @@ const onBlurGrade = (key: TEditingKey) => {
 .double-item {
   display: flex;
   flex: 298;
-  height: 64px;
+  min-height: 64px;
   border-right: 1px solid #DDE0E8;
   font-weight: 400;
   font-size: 16px;

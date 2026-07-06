@@ -6,7 +6,7 @@ import WrapperBlock from '@/components/shared/elements/WrapperBlock.vue';
 import DefaultButton from '@/components/shared/ui/button/DefaultButton.vue';
 import meeting from '@/assets/images/mainIcons/meeting.svg';
 import one from '@/assets/images/mainIcons/one.svg';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import IconButton from '@/components/shared/ui/button/IconButton.vue';
 import { getContenStagesPage } from '@/api/pages/stages/apiStages';
 import type { IStage } from '@/types/pages/stages/typesStages';
@@ -21,6 +21,10 @@ const changeWindowVisibility = ref<boolean>(false);
 const numberSelectedStage = ref<number>(0);
 const companyStore = useCompanyStore();
 const userStore = useUserStore()
+
+const isRosbioteh = computed(() => {
+  return companyStore.selectedCompany === "Rosbioteh";
+})
 
 watch(stageWindowVisibility, (val) => {
   if (val) {
@@ -296,7 +300,7 @@ const closeChangeWindow = () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Целостность решения</p>
+                  <p>{{ isRosbioteh ? "Стремление решение бизнес-задачи и продуктовый подход" : "Целостность решения"}}</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[1]?.grades[0]?.grades.length ? Math.min(...pageDataArr[1].grades[0].grades) : '-' }} - {{ pageDataArr[1]?.grades[0]?.grades.length ? Math.max(...pageDataArr[1].grades[0].grades) : '-' }}</p>
@@ -304,7 +308,7 @@ const closeChangeWindow = () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Аргументация предложенного решения</p>
+                  <p>{{ isRosbioteh ? "Соответствие решения ценностям ВкусВилла" : "Аргументация предложенного решения"}}</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[1]?.grades[1]?.grades.length ? Math.min(...pageDataArr[1].grades[1].grades) : '-' }} - {{ pageDataArr[1]?.grades[1]?.grades.length ? Math.max(...pageDataArr[1].grades[1].grades) : '-' }}</p>
@@ -312,7 +316,7 @@ const closeChangeWindow = () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Реалистичность и здравый смысл</p>
+                  <p>{{ isRosbioteh ? "Технологическая состоятельность и грамотность решения" : "Реалистичность и здравый смысл"}}</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[1]?.grades[2]?.grades.length ? Math.min(...pageDataArr[1].grades[2].grades) : '-' }} - {{ pageDataArr[1]?.grades[2]?.grades.length ? Math.max(...pageDataArr[1].grades[2].grades) : '-' }}</p>
@@ -320,7 +324,7 @@ const closeChangeWindow = () => {
               </div>
               <div class="item-block">
                 <div class="item-block__name">
-                  <p>Оригинальность подхода</p>
+                  <p>{{ isRosbioteh ? "Нестандартность мышления и креативность в решении бизнес-задачи" : "Оригинальность подхода"}}</p>
                 </div>
                 <div class="item-block__text">
                   <p>{{ pageDataArr[1]?.grades[3]?.grades.length ? Math.min(...pageDataArr[1].grades[3].grades) : '-' }} - {{ pageDataArr[1]?.grades[3]?.grades.length ? Math.max(...pageDataArr[1].grades[3].grades) : '-' }}</p>
