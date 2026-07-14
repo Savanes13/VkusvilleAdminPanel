@@ -11,7 +11,7 @@ const api = axios.create({
 
 api.interceptors.request.use(config => {
   const companyStore = useCompanyStore();
-  config.baseURL = companyStore.selectedCompany === 'Reo' ? 'https://reu-adm.vv-rea.management' : 'https://rbu-adm.vv-rea.management';
+  config.baseURL = companyStore.selectedCompany === 'Reo' ? 'https://ajasdc-test.vv-rea.management' : 'https://ajasdc-test2.vv-rea.management';
   const userStore = useUserStore()
   if (userStore.accessToken) { config.headers.Authorization = `Bearer ${userStore.accessToken}` };
   return config
