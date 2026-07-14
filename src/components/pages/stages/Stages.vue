@@ -44,6 +44,11 @@ const openStageWindow = (number: number) => {
   numberSelectedStage.value = number;
 }
 
+const gradeRange = (stage: IStage | null | undefined, criteria: string) => {
+  const grades = stage?.grades.find(item => item.criteria === criteria)?.grades;
+  return grades?.length ? `${Math.min(...grades)} - ${Math.max(...grades)}` : '-';
+};
+
 const formatTimestamp = (ts: number) => {
   const date = new Date(ts)
   return new Intl.DateTimeFormat('ru-RU', {
@@ -190,7 +195,7 @@ const closeChangeWindow = () => {
                   <p>Оценки стуктуры и логики</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.grades[0]?.grades.length ? Math.min(...pageDataArr[0].grades[0].grades) : '-' }} - {{ pageDataArr[0]?.grades[0]?.grades.length ? Math.max(...pageDataArr[0].grades[0].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[0], 'StructLogic') }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -198,7 +203,7 @@ const closeChangeWindow = () => {
                   <p>Оценки содержательности и мотивация</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.grades[1]?.grades.length ? Math.min(...pageDataArr[0].grades[1].grades) : '-' }} - {{ pageDataArr[0]?.grades[1]?.grades.length ? Math.max(...pageDataArr[0].grades[1].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[0], 'ContentMotivation') }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -206,7 +211,7 @@ const closeChangeWindow = () => {
                   <p>Оценки цели и связь с программой</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[0]?.grades[2]?.grades.length ? Math.min(...pageDataArr[0].grades[2].grades) : '-' }} - {{ pageDataArr[0]?.grades[2]?.grades.length ? Math.max(...pageDataArr[0].grades[2].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[0], 'ProgramGoals') }}</p>
                 </div>
               </div>
             </div>
@@ -303,7 +308,7 @@ const closeChangeWindow = () => {
                   <p>{{ isRosbioteh ? "Стремление решение бизнес-задачи и продуктовый подход" : "Целостность решения"}}</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.grades[0]?.grades.length ? Math.min(...pageDataArr[1].grades[0].grades) : '-' }} - {{ pageDataArr[1]?.grades[0]?.grades.length ? Math.max(...pageDataArr[1].grades[0].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[1], 'Integrity') }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -311,7 +316,7 @@ const closeChangeWindow = () => {
                   <p>{{ isRosbioteh ? "Соответствие решения ценностям ВкусВилла" : "Аргументация предложенного решения"}}</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.grades[1]?.grades.length ? Math.min(...pageDataArr[1].grades[1].grades) : '-' }} - {{ pageDataArr[1]?.grades[1]?.grades.length ? Math.max(...pageDataArr[1].grades[1].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[1], 'Arguments') }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -319,7 +324,7 @@ const closeChangeWindow = () => {
                   <p>{{ isRosbioteh ? "Технологическая состоятельность и грамотность решения" : "Реалистичность и здравый смысл"}}</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.grades[2]?.grades.length ? Math.min(...pageDataArr[1].grades[2].grades) : '-' }} - {{ pageDataArr[1]?.grades[2]?.grades.length ? Math.max(...pageDataArr[1].grades[2].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[1], 'RealisticMeaningful') }}</p>
                 </div>
               </div>
               <div class="item-block">
@@ -327,7 +332,7 @@ const closeChangeWindow = () => {
                   <p>{{ isRosbioteh ? "Нестандартность мышления и креативность в решении бизнес-задачи" : "Оригинальность подхода"}}</p>
                 </div>
                 <div class="item-block__text">
-                  <p>{{ pageDataArr[1]?.grades[3]?.grades.length ? Math.min(...pageDataArr[1].grades[3].grades) : '-' }} - {{ pageDataArr[1]?.grades[3]?.grades.length ? Math.max(...pageDataArr[1].grades[3].grades) : '-' }}</p>
+                  <p>{{ gradeRange(pageDataArr[1], 'Original') }}</p>
                 </div>
               </div>
             </div>
